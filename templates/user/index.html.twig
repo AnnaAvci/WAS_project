@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome to the WAS club{% endblock %}
+
+{% block body %}
+<h1>Meet WAS club members</h1>
+
+    {%for user in users %}
+         <img src={{ asset("img/" ~ user.pictureUser)}} width="30" height="30" alt> 
+         <a href="{{path('show_user', {'id':user.id}) }}">{{user}}</a> <br>
+    {%endfor%}
+    
+{% endblock %}
+

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Available locations{% endblock %}
+
+{% block body %}
+<h1>Available locations</h1>
+
+    
+        {%for location in locations %}
+           <a href="{{path('show_location', {'id':location.id}) }}"> {{location}} </a> <br>
+        {%endfor%}
+
+
+
+{% if is_granted('ROLE_HOST') %}
+<a class="btn btn-success" href="{{path('add_location')}}">Add a location</a>
+{% endif %}
+
+{% endblock %}

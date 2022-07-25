@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Photoshoots{% endblock %}
+
+{% block body %}
+<h1>Available photoshoots</h1>
+
+    
+  {%for service in services %}
+     <a href="{{path('show_service', {'id':service.id}) }}"> {{service.nameService}} </a>  <br>
+  {%endfor%}
+
+{% if is_granted('ROLE_PHOTOGRAPHER') %}
+  <a class="btn btn-success" href="{{path('add_service')}}">Add a photoshoot</a>
+{%endif%}
+
+{% endblock %}

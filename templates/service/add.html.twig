@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add a shoot{% endblock %}
+
+{% block body %}
+<h1>Add a shoot</h1>
+
+
+{{form(formService)}}
+
+{# check if the route is for modifying displays photos added previously #}
+{% if app.request.attributes.get('_route') == 'update_service' %}
+
+    <strong>Edit Photos in your portfolio</strong>
+
+    {% for photoService in service.photoServices %}
+        <div>
+            <img src="{{ asset('img/'~ photoService.namePhoto)}}" alt = "photo" width="300">
+            <a href="{{path('service_delete_photoService', {'id':photoService.id}) }}" class="btn btn-link" 
+            data-delete data-token="{{csrf_token('delete'~ photoService.id)}}"> Delete </a>
+        </div>
+
+    {% endfor %}
+{% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/img.js') }}"></script>
+{% endblock %}
