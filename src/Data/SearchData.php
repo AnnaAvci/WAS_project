@@ -7,5 +7,4 @@ class SearchData {
     public $max;
     public $min;
     public $countryLocation;
-    public $save;
 }

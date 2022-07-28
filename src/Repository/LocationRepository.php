@@ -67,6 +67,7 @@ class LocationRepository extends ServiceEntityRepository
             ->setParameter('country', $search->countryLocation);
         } 
 
+
         return $query->getQuery()->getResult();
     }
 
