@@ -1,24 +1,17 @@
 {% for location in locations %}
-    <div class="shooting-myitem col-4">
- 
-        {# Informations du shooting (titre, prix, likes, comments, packages) #}
         
-            <div>
-                {# title #}
-                <a class="" href="{{ path('show_location', {'id': location.id }) }}">{{ location}}</a>
-
-            </div>
-                <p> Offered by {{ location.ownerLocation.nameUser }}</p>
+            <div class="card">
+                <a class="" href="{{ path('show_location', {'id': location.id }) }}"><img src={{ asset("img/" ~ location.photoLocations[0].namePhoto )}} width="250" height="270" alt>{{ location}}</a>
+                <div class="owner-edit">
+                    By {{ location.ownerLocation.nameUser}}            {# Edit if you are the admin or the owner#}
+                    {% if location.ownerLocation.id == app.user.id or is_granted("ROLE_ADMIN") %}
+                        <a href="{{ path('update_location', {'id': location.id}) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    {% endif %}
+                </div>
                 <p>{{ location.priceLocation}} € / hour </p>
-        
-    
-        {# Donner la possibilité d'éditer un shooting si on en est le propriétaire ou admin #}
-        {% if location.ownerLocation.id == app.user.id or is_granted("ROLE_ADMIN") %}
-        <div>
-            <a href="{{ path('update_location', {'id': location.id}) }}"><i class="fa-solid fa-sliders"></i></a>
-        </div>
-        {% endif %}
-    </div>
+            
+            </div>
+       
 {% endfor %}
 
 <div class="pagination">

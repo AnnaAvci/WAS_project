@@ -161,7 +161,7 @@ class LocationController extends AbstractController
             $entityManager = $doctrine->getManager();  
             $bookLocation = new BookLocation(); 
             // 
-            $form1 = $this->createForm(BookLocationType::class, $bookLocation, ['id' => $location->getId()]);
+            $form1 = $this->createForm(BookLocationType::class, $bookLocation);
             $form1->handleRequest($request);
 
         
@@ -172,7 +172,7 @@ class LocationController extends AbstractController
                 $bookLocation->setLocationClient($this->getUser()); 
                 $bookLocation->setLocation($location);
                 $bookLocation->setDateCreated(new \DateTime());
-                $bookLocation->isAccepted(0); 
+                $bookLocation->isIsAccepted(0); 
               
                 $entityManager->persist($bookLocation);
                 // inserts data in database

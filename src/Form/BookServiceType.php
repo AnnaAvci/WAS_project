@@ -16,7 +16,10 @@ class BookServiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('message', TextareaType::class)
+        ->add('message', TextareaType::class,[
+            'label' => 'Your message to the photographer',
+            'required' => true,
+        ])
         ->add('dateStart', DateType::class,[
             // displays a calendar to pick a date
             'widget' => 'single_text',

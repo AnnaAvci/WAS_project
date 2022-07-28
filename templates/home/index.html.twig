@@ -3,53 +3,26 @@
 {% block title %}Welcome to WAS!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    {% if app.user %}
-        <h1>Hello {{app.user.username}} !</h1>
-    {% else %}
-        <h1>Please log in!</h1>  
-    {% endif %}
+        {{ form_start(formSearch) }}
 
-          <h2>Find your shooting</h2>
-        <div class="js-filter-form">
-            {{ form_start(formSearch) }}
-            <div class="search-items">
-                <a class="reset" href="{{ path('app_home') }}#shootings"><i class="fa-solid fa-arrows-rotate"></i></a>
-                <div class="input-width">
-                    {{ form_row(formSearch.q) }}
-                    {{ form_row(formSearch.min) }}
-                    {{ form_row(formSearch.max) }}
-                    {{ form_row(formSearch.countryLocation) }}
+        <div class="searchField">
+         <button class="btn-search" href="path('app_home')}}"><i class="fa-solid fa-arrows-rotate"></i></button>
+                <div class="search-row-q">{{ form_row(formSearch.q) }}</div>
+                <div id="price-search">
+                    <div class="price-search-row">{{ form_row(formSearch.min) }}</div>
+                    <div class="price-search-row"> {{ form_row(formSearch.max) }}</div>
                 </div>
+                <div class="search-row-country">{{ form_row(formSearch.countryLocation) }}</div>
+            
                 <button type="submit" class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
+               
+            </div>
             {{ form_end(formSearch) }}
-        </div>
+        
 
-           <section class="shootings">
-        <h1>Let's choose a photoshoot !</h1>
-    
-        <div class="shootings-list js-filter-content" id="anchor-pagination">
-            <div class="row">
-                {# Boucler sur les shootings actifs (isActive) #}
-                {% include "home/_locations.html.twig" %}
-        </div>
-    </section>
-
-   {# {%for user in users %}
-         <img src={{ asset("img/" ~ user.pictureUser)}} width="30" height="30" alt> 
-         <a href="{{path('show_user', {'id':user.id}) }}">{{user}}</a> <br>
-    {%endfor%}
-
-   {%for location in locations %}
-         <a href="{{path('show_location', {'id':location.id}) }}">{{location}}</a> <br>
-    {%endfor%} #}
+        <section class="all-cards"> 
+            {% include "home/_locations.html.twig" %}
+        </section> 
  
-    {# <div class="youtube_player" videoID="video_id" width="width" height="height" theme="theme (dark | light)" rel="rel (1 | 0)" controls="controls (1 | 0)" showinfo="showinfo (1 | 0)" autoplay="autoplay (0 | 1)" mute="mute (0 | 1)" srcdoc="srcdoc" loop="loop (0 | 1)" loading="loading (0 | 1)"></div>#}
-</div> 
 {% endblock %}

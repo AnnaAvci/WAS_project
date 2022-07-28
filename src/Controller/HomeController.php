@@ -29,12 +29,6 @@ class HomeController extends AbstractController
         $data = $lr->findSearch($dataSearch);
         shuffle($data); 
         $locations = $paginator->paginate($data, $request->query->getInt("page", 1), 8); 
-
-      
-
-       /*  $users = $doctrine->getRepository(User::class)->findAll();
-        $locations = $doctrine->getRepository(Location::class)->findAll(); */
-
         
         return $this->render('home/index.html.twig', [
             

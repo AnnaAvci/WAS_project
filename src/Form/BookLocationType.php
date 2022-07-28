@@ -18,7 +18,6 @@ class BookLocationType extends AbstractType
         $builder
             ->add('message', TextareaType::class, [
                 'label' => 'Your message to the host',
-                'rows' => 10,
                 'required' => true,
                 ])
             ->add('dateStart', DateType::class,[

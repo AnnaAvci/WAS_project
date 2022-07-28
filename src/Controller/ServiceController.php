@@ -135,7 +135,7 @@ class ServiceController extends AbstractController
               $entityManager = $doctrine->getManager(); 
               $bookService = new BookService(); 
 
-              $form1 = $this->createForm(BookServiceType::class, $bookService, ['id' => $service->getId()]);
+              $form1 = $this->createForm(BookServiceType::class, $bookService);
               $form1->handleRequest($request);
   
           
@@ -145,7 +145,7 @@ class ServiceController extends AbstractController
                   $bookService->setServiceClient($this->getUser()); ; 
                   $bookService->setService($service);
                   $bookService->setDateCreated(new \DateTime());
-                  $bookService->isAccepted(0); 
+                  $bookService->isIsAccepted(0); 
                 
                   $entityManager->persist($bookService);
                   // inserts data in database

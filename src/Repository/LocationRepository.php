@@ -60,32 +60,14 @@ class LocationRepository extends ServiceEntityRepository
             $query = $query
             ->andWhere('s.price_location <= :max')
             ->setParameter('max', $search->max);
+        }
+        if(!empty($search->countryLocation) || $search->countryLocation !== null){
+            $query = $query
+            ->andWhere('s.country_location = :country')
+            ->setParameter('country', $search->countryLocation);
         } 
 
         return $query->getQuery()->getResult();
     }
-//    /**
-// //     * @return Location[] Returns an array of Location objects
-// //     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Location
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

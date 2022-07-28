@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 
@@ -18,7 +19,7 @@ class SearchForm extends AbstractType
             ->add('q', TextType::class, [
                 'label' => false,
                 'required' => false,
-                'attr' => ['placeholder' => 'Search...']
+                'attr' => ['placeholder' => 'Enter a location or a photoshoot...']
             ])
             ->add('min', NumberType::class, [
                 'html5' => true,
@@ -35,8 +36,13 @@ class SearchForm extends AbstractType
             ->add('countryLocation', CountryType::class, [
                 'label' => false,
                 'alpha3' => true,
-                'data' => 'FRA'
+                'required' => false,
+                'placeholder' => 'Country',
+               /*  'data' => 'FRA' */
             ])
+          /*   ->add('save', ResetType::class, [
+                'attr' => ['class' => 'save'],
+            ]) */
             ;
     }
 
