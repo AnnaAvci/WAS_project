@@ -83,11 +83,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender")
-     */
-    private $messages;
-
-    /**
      * @ORM\OneToMany(targetEntity=Service::class, mappedBy="provider_service")
      */
     private $services;
@@ -117,16 +112,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $bookLocations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=InstantMessage::class, mappedBy="sender", orphanRemoval=true)
+     */
+    private $sent;
+
+    /**
+     * @ORM\OneToMany(targetEntity=InstantMessage::class, mappedBy="recipient", orphanRemoval=true)
+     */
+    private $received;
+
+
 
     public function __construct()
     {
-        $this->messages = new ArrayCollection();
         $this->services = new ArrayCollection();
         $this->locations = new ArrayCollection();
         $this->commentUserLocations = new ArrayCollection();
         $this->commentUserServices = new ArrayCollection();
         $this->bookServices = new ArrayCollection();
         $this->bookLocations = new ArrayCollection();
+        $this->sent = new ArrayCollection();
+        $this->received = new ArrayCollection();
     
     }
 
@@ -328,36 +335,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->isVerified;
     }
 
-    /**
-     * @return Collection<int, Message>
-     */
-    public function getMessages(): Collection
-    {
-        return $this->messages;
-    }
-
-    public function addMessage(Message $message): self
-    {
-        if (!$this->messages->contains($message)) {
-            $this->messages[] = $message;
-            $message->setSender($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessage(Message $message): self
-    {
-        if ($this->messages->removeElement($message)) {
-            // set the owning side to null (unless already changed)
-            if ($message->getSender() === $this) {
-                $message->setSender(null);
-            }
-        }
-
-        return $this;
-    }
-
+    
     /**
      * @return Collection<int, Service>
      */
@@ -542,6 +520,68 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, InstantMessage>
+     */
+    public function getSent(): Collection
+    {
+        return $this->sent;
+    }
+
+    public function addSent(InstantMessage $sent): self
+    {
+        if (!$this->sent->contains($sent)) {
+            $this->sent[] = $sent;
+            $sent->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSent(InstantMessage $sent): self
+    {
+        if ($this->sent->removeElement($sent)) {
+            // set the owning side to null (unless already changed)
+            if ($sent->getSender() === $this) {
+                $sent->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, InstantMessage>
+     */
+    public function getReceived(): Collection
+    {
+        return $this->received;
+    }
+
+    public function addReceived(InstantMessage $received): self
+    {
+        if (!$this->received->contains($received)) {
+            $this->received[] = $received;
+            $received->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceived(InstantMessage $received): self
+    {
+        if ($this->received->removeElement($received)) {
+            // set the owning side to null (unless already changed)
+            if ($received->getRecipient() === $this) {
+                $received->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+ 
 
     
 

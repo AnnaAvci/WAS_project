@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Service;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Data\SearchServiceData;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Service>
@@ -37,6 +38,35 @@ class ServiceRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findSearch(SearchServiceData $search): array {
+
+        $query = $this->createQueryBuilder('s');
+        
+        if(!empty($search->q) || $search->q !== null){
+            $query = $query
+            ->andWhere('s.name_service LIKE :q')
+            ->setParameter('q', "%{$search->q}%");
+        } 
+        if(!empty($search->min) || $search->min !== null){
+            $query = $query
+            ->andWhere('s.price_service >= :min')
+            ->setParameter('min', $search->min);
+        } 
+        if(!empty($search->max) || $search->max !== null){
+            $query = $query
+            ->andWhere('s.price_service <= :max')
+            ->setParameter('max', $search->max);
+        }
+        if(!empty($search->countryService) || $search->countryService !== null){
+            $query = $query
+            ->andWhere('s.country_service = :country')
+            ->setParameter('country', $search->countryService);
+        } 
+
+
+        return $query->getQuery()->getResult();
     }
 
 //    /**

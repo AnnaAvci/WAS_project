@@ -86,8 +86,8 @@ input, textarea, select {
     justify-content:center;
     /* background-image: url("../img/corkboard.jpg") */
 
-    background: rgb(128, 64, 27);
-    background: linear-gradient(0deg, rgba(128, 64, 27) 0%, rgb(255, 255, 255) 100%); 
+    background: rgb(211, 208, 214); 
+    /* background: linear-gradient(0deg, rgba(128, 64, 27) 0%, rgb(255, 255, 255) 100%);  */
 }
 
 #price-search{
@@ -98,7 +98,7 @@ input, textarea, select {
 }
 
 #q{
-    min-width: 30em;
+    min-width: 20em;
 }
 
 .price-search-row-country{
@@ -108,16 +108,9 @@ input, textarea, select {
 #countryLocation{
     max-width: 10em;
 }
-/* .search-items{ */
-    /* display:flex; */
-    /* flex-direction:row; */
-    /* justify-content: space-evenly; */
-    /* align-items:center; */
-    /* width:100%; */
-/* } */
 
 .btn-search{
-    width: 10em;
+    width: 8em;
     height: 3em;
     background-color: white;
     border-radius:20px;

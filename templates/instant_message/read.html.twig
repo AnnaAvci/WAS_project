@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie{% endblock %}
+
+{% block body %}
+
+                <a href="{{path("app_messages")}}" class="btn btn-primary">Inbox</a>
+                <a href="{{path("sent")}}" class="btn btn-primary">Sent</a>
+                <p>From {{ message.sender.email }}</p>
+                <p>{{ message.createdAt|date }}</p>
+                <div>{{ message.text }}</div>
+			
+                
+{% endblock %}

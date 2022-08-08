@@ -29,9 +29,10 @@ class RegistrationFormType extends AbstractType
             ->add('country_user', CountryType::class, ['label' => 'Country: '])
             ->add('city_user', TextType::class, ['label' => 'City: '])
             ->add('postcode_user', TextType::class, ['label' => 'Postcode: '])
-            ->add('picture_user', FileType::class,[
+            ->add('picture_user', FileType::class,array('data_class' => null),[
                 'label' => 'Profile picture',
                 'required' => false,
+                
             ])
             ->add('plainPassword',RepeatedType::class, [
                     'mapped' => false,

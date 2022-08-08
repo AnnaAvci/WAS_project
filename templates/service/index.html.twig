@@ -3,12 +3,29 @@
 {% block title %}Photoshoots{% endblock %}
 
 {% block body %}
-<h1>Available photoshoots</h1>
+<h1>Our photoshoots</h1>
 
     
-  {%for service in services %}
-     <a href="{{path('show_service', {'id':service.id}) }}"> {{service.nameService}} </a>  <br>
-  {%endfor%}
+ <section class="all-cards"> 
+           {% for service in services  %}
+        
+            <div class="card">
+                <a class="" href="{{ path('show_service', {'id': service.id }) }}"><img src={{ asset("img/" ~ service.photoServices[0].namePhoto )}} width="250" height="270" alt>{{ service}}</a>
+                <div class="owner-edit">
+                    By {{ service.providerService.nameUser}}    
+                    {% if app.user %}
+                                {# Edit if you are the admin or the owner#}
+                        {% if service.providerService.id == app.user.id or is_granted("ROLE_ADMIN") %}
+                            <a href="{{ path('update_service', {'id': service.id}) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <p>{{ service.priceService}} € / hour </p>
+            
+            </div>
+       
+{% endfor %}
+        </section> 
 
 {% if is_granted('ROLE_PHOTOGRAPHER') %}
   <a class="btn btn-success" href="{{path('add_service')}}">Add a photoshoot</a>

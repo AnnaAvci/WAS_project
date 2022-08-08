@@ -3,6 +3,12 @@
 {% block title %}Profile info{% endblock %}
 
 {% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class = "alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+
     <h1><img src={{ asset("img/" ~ user.pictureUser )}} width="30" height="30" alt> {{user}}</h1>
     <p>
         {% if user.locations | length != 0 %}
@@ -23,16 +29,26 @@
 
             {% for service in user.services %}
             <p>  <a href="{{path('show_service', {'id':service.id}) }}">{{service.nameService}} </a><br></p>
-
                 <a href="{{path('show_service', {'id':service.id}) }}"> <img src={{ asset("img/" ~ service.photoServices[0].namePhoto)}} width="300" height="400" alt> </a>
             {% endfor %}
         {% endif %}
     </p>
   
- 
-{# Owner/photographer can see reservation requests in their profile #}
+
+    {#redirects to page with messages #}
     {% if user.id == app.user.id %}
-        <h2>Reservation requests from other users</h2>
+    <button><a href="{{path('app_messages')}}">My messages</a></button>
+
+    {# link to edit user profile #}
+    <button><a href="{{ path('edit_user', {id: app.user.id} )}}">
+    <i class="fas fa-pencil-alt"></i>Edit my profile</a></button>
+
+
+    {#redirects to page with reservations #}
+   {#  <button><a href="{{path('reservations')}}">My reservations</a></button>
+{% endif %} #}
+
+     <h2>Reservation requests from other users</h2>
     
         {% if is_granted('ROLE_HOST') %}
         <strong>Locations</strong>
@@ -46,8 +62,8 @@
 
             <th colspan="2">Actions:</th>
         </thead>
-        <tbody>
-            {% for location in user.locations %}
+        <tbody> 
+          {% for location in user.locations %}
                 {% for bookLocation in location.bookLocations %}
                     <tr>
                         <td>{{bookLocation.location}} </td> 
@@ -70,9 +86,9 @@
         </table>
      {% endif %}
     {% if is_granted('ROLE_PHOTOGRAPHER') %}
-        <strong>Photoshoots</strong>
+        <strong>Photoshoots</strong> #}
 
-        <table class="table">
+       <table class="table">
             <thead>
                 <th>Photoshoot:</th>
                 <th>Booked by:</th>
@@ -105,7 +121,7 @@
             </tbody>
             </table>
         {% endif %}
-    {% endif %}
+    {% endif %} 
 
  {# User can see their own reservation requests #}
         {% if is_granted('ROLE_USER') %}
@@ -171,5 +187,5 @@
             </tbody>
             </table> <br>
 
-        {% endif %}
+        {% endif %} 
     {% endblock %} 

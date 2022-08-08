@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Send a message{% endblock %}
+
+{% block body %}
+                <h1>Send a message</h1>
+                     <a href="{{path("app_messages")}}" class="btn">Inbox</a>
+                     <a href="{{path("sent")}}" class="btn">Sent messages</a>
+              {{form(messageForm)}}
+{% endblock %}

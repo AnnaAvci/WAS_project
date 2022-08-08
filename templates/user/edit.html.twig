@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit my profile{% endblock %}
+
+{% block body %}
+
+			<h1>Profile info</h1>
+    {{ form_start(registrationForm) }}  
+			 {{ form_row(registrationForm.phone_user, {
+            label: 'Phone number'
+            }) }}
+            {{ form_row(registrationForm.name_user,{
+                label: 'Name'
+            }) }}
+            {{ form_row(registrationForm.email) }}
+        
+            {{ form_row(registrationForm.country_user,{
+                label: 'Country'
+            }) }}
+            {{ form_row(registrationForm.city_user,{
+                label: 'City'
+            }) }}
+            {{ form_row(registrationForm.postcode_user,{
+                label: 'Postcode'
+            }) }}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Password'
+            }) }}
+            {{ form_row(registrationForm.picture_user, { attr: {novalidate: 'novalidate'}}, {
+                label: 'Upload profile picture'
+            }) }}
+
+			
+			<button type="submit" class="btn btn-primary mt-20">Save changes</button>
+			
+
+		    {{ form_end(registrationForm) }}
+
+		
+
+{% endblock %}

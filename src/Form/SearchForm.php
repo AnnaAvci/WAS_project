@@ -19,7 +19,7 @@ class SearchForm extends AbstractType
             ->add('q', TextType::class, [
                 'label' => false,
                 'required' => false,
-                'attr' => ['placeholder' => 'Enter a location or a photoshoot...']
+                'attr' => ['placeholder' => 'Find a location for your photoshoot...']
             ])
             ->add('min', NumberType::class, [
                 'html5' => true,
@@ -38,11 +38,8 @@ class SearchForm extends AbstractType
                 'alpha3' => true,
                 'required' => false,
                 'placeholder' => 'Country',
-               /*  'data' => 'FRA' */
             ])
-          /*   ->add('save', ResetType::class, [
-                'attr' => ['class' => 'save'],
-            ]) */
+        
             ;
     }
 

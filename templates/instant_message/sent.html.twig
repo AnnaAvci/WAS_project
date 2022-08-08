@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messages{% endblock %}
+
+{% block body %}
+				<h1>Sent ({{ app.user.sent|length }}) </h1>	
+                <a href="{{path("app_messages")}}" class="btn">Inbox</a>
+                <a href="{{path("send")}}" class="btn">Send a message</a>
+                
+        <table class="table table-striped">
+            <thead>
+               <tr>
+                  <th>To</th>
+                  <th>Date</th>
+                  <th>Message</th>
+                  <th>Actions</th>
+               </tr>
+            </thead>
+            <tbody>
+                <tr>
+                   	{% for message in app.user.sent %}
+				{% set bold = "" %}
+				{% if message.isRead == 0 %}
+					{% set bold = "fw-bold" %}
+				{% endif %}
+
+				<td>{{ message.recipient.email }}</td>
+				<td>{{ message.createdAt|date }}</td>
+				<td><a href="{{ path("read", {id: message.id}) }}">{{ message.text }}</a></td>
+				<td><a href="{{ path("delete", {id: message.id}) }}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                 </tr>
+			{% endfor %}
+               
+            </tbody>
+        </table>
+
+{% endblock %}

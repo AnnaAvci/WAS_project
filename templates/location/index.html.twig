@@ -4,13 +4,27 @@
 
 {% block body %}
 <div class="location-container">
-<h1>Available locations</h1>
+<h1>Our locations</h1>
 
-    
-        {%for location in locations %}
-           <a href="{{path('show_location', {'id':location.id}) }}"> {{location}} </a> <br>
-        {%endfor%}
-
+     <section class="all-cards"> 
+        {% for location in locations %}
+                
+                <div class="card">
+                        <a class="" href="{{ path('show_location', {'id': location.id }) }}"><img src={{ asset("img/" ~ location.photoLocations[0].namePhoto )}} width="250" height="270" alt>{{ location}}</a>
+                        <div class="owner-edit">
+                        By {{ location.ownerLocation.nameUser}}
+                        {% if app.user %}            {# Edit if you are the admin or the owner#}
+                                {% if location.ownerLocation.id == app.user.id or is_granted("ROLE_ADMIN") %}
+                                <a href="{{ path('update_location', {'id': location.id}) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                {% endif %}
+                        {% endif %}
+                        </div>
+                        <p>{{ location.priceLocation}} € / hour </p>
+                
+                </div>
+        
+        {% endfor %}
+</section> 
 
 
 {% if is_granted('ROLE_HOST') %}

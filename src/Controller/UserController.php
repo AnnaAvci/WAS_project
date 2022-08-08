@@ -9,7 +9,9 @@ use App\Entity\BookService;
 use App\Entity\BookLocation;
 use App\Entity\PhotoService;
 use App\Entity\PhotoLocation;
+use App\Form\RegistrationFormType;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -90,10 +92,46 @@ class UserController extends AbstractController
     public function show(ManagerRegistry $doctrine, User $user):Response
     {
         $location = $doctrine->getRepository(Location::class)->findBy(["owner_location" => $this->getUser()]);
+        $service = $doctrine->getRepository(Service::class)->findBy(["provider_service" => $this->getUser()]);
         return $this->render ('user/show.html.twig', [
             'user' => $user,
-            'location'=>$location
+            'location'=>$location,
+            'service'=>$service,
         ]);
     }
+
+
+
+    /**
+     * @Route("/user/edit/{id}", name="edit_user")
+     */
+    public function editAccount(Request $request, ManagerRegistry $doctrine, User $user = null): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+         if ($this->getUser()->getId() === $user->getId()) {
+
+            $form = $this->createForm(RegistrationFormType::class, $user);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $user = $form->getData();
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+                $this->addFlash('success', 'Profile information updated');
+
+                return $this->redirectToRoute('show_user',["id"=>$user->getId()]);
+            }
+
+            return $this->render('user/edit.html.twig', [
+                'registrationForm' => $form->createView(),
+            ]);
+        } else {
+            return $this->redirectToRoute('app_home');
+        } 
+    }
+
 
 }

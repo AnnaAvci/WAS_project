@@ -1,0 +1,140 @@
+ <h2>Reservation requests from other users</h2>
+    
+        {% if is_granted('ROLE_HOST') %}
+        <strong>Locations</strong>
+        <table class="table">
+        <thead>
+            <th>Property:</th>
+            <th>Booked by:</th>
+            <th>From:</th>
+            <th>To:</th>
+            <th>Message:</th>
+
+            <th colspan="2">Actions:</th>
+        </thead>
+        <tbody>
+            {% for location in user.locations %}
+                {% for bookLocation in location.bookLocations %}
+                    <tr>
+                        <td>{{bookLocation.location}} </td> 
+                        <td><a href="{{path('show_user', {'id':bookLocation.locationClient.id}) }}">{{bookLocation.locationClient}} </a></td> 
+                        <td>{{bookLocation.dateStart | date('d-m-Y')}}</td> 
+                        <td>{{bookLocation.dateEnd | date('d-m-Y')}}</td> 
+                        <td>{{bookLocation.message}}</td> 
+                        {% if bookLocation.isAccepted == 0 %}
+                            <td><a href="{{path('accept_book_location', {'id':bookLocation.id}) }}">Accept</a></td> 
+                            <td><a href="{{path('decline_book_location', {'id':bookLocation.id}) }}">Decline</a></td>
+                        {% elseif bookLocation.isAccepted == 1 %}
+                            <td>You accepted the request</td>
+                        {% else %}
+                            <td>You declined the request</td>
+                        {% endif %}
+                    </tr>   
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+        </table>
+     {% endif %}
+    {% if is_granted('ROLE_PHOTOGRAPHER') %}
+        <strong>Photoshoots</strong>
+
+        <table class="table">
+            <thead>
+                <th>Photoshoot:</th>
+                <th>Booked by:</th>
+                <th>From:</th>
+                <th>To:</th>
+                <th>Message:</th>
+
+                <th colspan="2">Actions:</th>
+            </thead>
+            <tbody>
+                {% for service in user.services %}
+                    {% for bookService in service.bookServices %}
+                        <tr>
+                            <td>{{bookService.service}} </td> 
+                            <td><a href="{{path('show_user', {'id':bookService.serviceClient.id}) }}">{{bookService.serviceClient}} </a></td> 
+                            <td>{{bookService.dateStart | date('d-m-Y')}}</td> 
+                            <td>{{bookService.dateEnd | date('d-m-Y')}}</td> 
+                            <td>{{bookService.message}}</td> 
+                             {% if bookService.isAccepted == 0 %}
+                            <td><a href="{{path('accept_book_service', {'id':bookService.id}) }}">Accept</a></td> 
+                            <td><a href="{{path('decline_book_service', {'id':bookService.id}) }}">Decline</a></td>
+                        {% elseif bookService.isAccepted == 1 %}
+                            <td>You accepted the request</td>
+                        {% else %}
+                            <td>You declined the request</td>
+                        {% endif %}
+                        </tr>   
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+            </table>
+        {% endif %}
+    {% endif %}
+
+ {# User can see their own reservation requests #}
+        {% if is_granted('ROLE_USER') %}
+            <h2>My reservations</h2>
+    <strong>Locations</strong>
+        <table class="table">
+            <thead>
+                <th>Location:</th>
+                <th>Hosted by:</th>
+                <th>From:</th>
+                <th>To:</th>
+                <th>Message:</th>
+                <th>Status:</th>
+            </thead>
+            <tbody>
+                {% for bookLocation in user.bookLocations %}
+                        <tr>
+                            <td>{{bookLocation.location}} </td> 
+                            <td><a href="{{path('show_user', {'id':bookLocation.location.ownerLocation.id}) }}">{{bookLocation.location.ownerLocation}} </a></td> 
+                            <td>{{bookLocation.dateStart | date('d-m-Y')}}</td> 
+                            <td>{{bookLocation.dateEnd | date('d-m-Y')}}</td> 
+                            <td>{{bookLocation.message}}</td>  
+                            {% if bookLocation.isAccepted == 0 %}
+                                 <td> Request pending </td> 
+                            {% elseif bookLocation.isAccepted == 1 %}
+                                 <td> Request accepted </td>
+                            {% else %}
+                                 <td> Request declined </td>
+                            {% endif %}
+                        </tr>   
+                    {% endfor %}
+            </tbody>
+            </table>
+
+
+            <strong>Photoshoots</strong>
+        <table class="table">
+            <thead>
+                <th>Photoshoot:</th>
+                <th>Offered by:</th>
+                <th>From:</th>
+                <th>To:</th>
+                <th>Message:</th>
+                <th>Status:</th>
+            </thead>
+            <tbody>
+                {% for bookService in user.bookServices %}
+                        <tr>
+                            <td>{{bookService.service}} </td> 
+                            <td><a href="{{path('show_user', {'id':bookService.service.providerService.id}) }}">{{bookService.service.providerService}} </a></td> 
+                            <td>{{bookService.dateStart | date('d-m-Y')}}</td> 
+                            <td>{{bookService.dateEnd | date('d-m-Y')}}</td> 
+                            <td>{{bookService.message}}</td> 
+                            {% if bookService.isAccepted == 0 %}
+                                 <td> Request pending </td> 
+                            {% elseif bookService.isAccepted == 1 %}
+                                 <td> Request accepted </td>
+                            {% else %}
+                                 <td> Request declined </td>
+                            {% endif %}
+                        </tr>   
+                {% endfor %}
+            </tbody>
+            </table> <br>
+
+        {% endif %}
