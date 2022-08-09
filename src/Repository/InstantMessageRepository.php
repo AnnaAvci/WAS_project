@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\InstantMessage;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<InstantMessage>
@@ -63,4 +64,25 @@ class InstantMessageRepository extends ServiceEntityRepository
            ->getOneOrNullResult()
        ;
    }
+
+
+   public function findMessageRecipient(User $user)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT u.name_user
+            FROM user u
+            WHERE u.id IN (SELECT owner_location_id
+            FROM book_location bl
+            INNER JOIN location l ON bl.location_id = l.id
+            WHERE bl.location_client_id = 2)
+            ';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(['user' => $user]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
 }

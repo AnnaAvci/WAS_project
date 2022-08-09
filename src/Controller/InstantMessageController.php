@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Location;
 use App\Form\MessageType;
 use App\Entity\InstantMessage;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\InstantMessageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +28,7 @@ class InstantMessageController extends AbstractController
     /**
      * @Route("/send", name="send")
      */
-    public function send(ManagerRegistry $doctrine,Request $request): Response
+    public function send(ManagerRegistry $doctrine,Request $request, Location $location): Response
     {
         // creating a new message with the help of the form
         $message = new InstantMessage;
@@ -39,6 +41,8 @@ class InstantMessageController extends AbstractController
 
             // the sender is the current user
             $message->setSender($this->getUser());
+            $recipient = $doctrine->getRepository(InstantMessage::class)->findMessageRecipient();
+            $message->setRecipient($recipient);
             $em = $doctrine->getManager();
             $em->persist($message);
             $em->flush();
