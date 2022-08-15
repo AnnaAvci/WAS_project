@@ -66,9 +66,28 @@ class InstantMessageRepository extends ServiceEntityRepository
    }
 
 
-   public function findMessageRecipient(User $user)
+   public function findMessageRecipient(User $user, $locationId)
     {
-        $conn = $this->getEntityManager()->getConnection();
+
+        $entityManager = $this->getEntityManager();
+
+        $userId = $user->getId();
+
+        $query = $entityManager->createQuery(
+            "
+            SELECT u.$user->getNameUser()
+            FROM user u
+            WHERE u.$userId IN (SELECT owner_location_id
+            FROM book_location bl
+            INNER JOIN location l ON bl.location_id = l.id
+            WHERE bl.location_client_id = $userId)
+            "
+        )->setParameter('user', $user);
+
+        // returns an array of Product objects
+        return $query->getResult();
+
+        /*$conn = $this->getEntityManager()->getConnection();
 
         $sql = '
             SELECT u.name_user
@@ -82,7 +101,7 @@ class InstantMessageRepository extends ServiceEntityRepository
         $resultSet = $stmt->executeQuery(['user' => $user]);
 
         // returns an array of arrays (i.e. a raw data set)
-        return $resultSet->fetchAllAssociative();
+        return $resultSet->fetchAllAssociative();*/
     }
 
 }

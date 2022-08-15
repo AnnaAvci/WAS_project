@@ -13,14 +13,15 @@ img {
 
 #navbar{
     width: 100%;
-    height: 10vh;
-    margin-top: 2rem;
+    /* height: 10vh; */
+    /* margin-top: 2rem; */
     display: flex;
     flex-direction: row;
     align-items: center;
-   
 }
 .navbar-ul{
+    display: flex;
+    align-items: center;
     justify-content: space-evenly;
     list-style: none;
 }

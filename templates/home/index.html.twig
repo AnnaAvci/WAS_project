@@ -1,12 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Welcome to WAS!{% endblock %}
+{% block title %}WAS: Worth A Shot {% endblock %}
 
 {% block body %}
-
-        
+    
+    <div class="tabs">
+        {# <div class="tabs__head">
+            <div class="tabs__toggle is-active">
+                <span class="tabs__name">Find a location</span>
+            </div>  
+            <div class="tabs__toggle">
+                <span class="tabs__name">Find a photoshoot</span>
+            </div>
+        </div> #}
+        <div class="tabs__body">
+            <div class="tabs__content is-active">
                 {{ form_start(formSearch) }}
-
                     <div class="searchField">
                         <button class="btn-search" href="path('app_home')}}"><i class="fa-solid fa-arrows-rotate"></i></button>
                         <div class="search-row-q">{{ form_row(formSearch.q, {'value': ''}) }}</div>
@@ -19,38 +28,30 @@
                         <button type="submit" class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </div>
                 {{ form_end(formSearch) }}
+            </div>
 
-            
+            <div class="tabs__content">
                 {{ form_start(formSearchService) }}
-
                     <div class="searchField">
-                    <button class="btn-search" href="path('app_home')}}"><i class="fa-solid fa-arrows-rotate"></i></button>
-                            <div class="search-row-q">{{ form_row(formSearchService.q, {'value': ''}) }}</div>
-                            <div id="price-search">
-                                <div class="price-search-row">{{ form_row(formSearchService.min, {'value': ''}) }}</div>
-                                <div class="price-search-row"> {{ form_row(formSearchService.max, {'value': ''}) }}</div>
-                            </div>
-                            <div class="search-row-country">{{ form_row(formSearchService.countryService, {'value': ''}) }}</div>
-                        
-                            <button type="submit" class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <button class="btn-search" href="path('app_home')}}"><i class="fa-solid fa-arrows-rotate"></i></button>
+                        <div class="search-row-q">{{ form_row(formSearchService.q, {'value': ''}) }}</div>
+                        <div id="price-search">
+                            <div class="price-search-row">{{ form_row(formSearchService.min, {'value': ''}) }}</div>
+                            <div class="price-search-row"> {{ form_row(formSearchService.max, {'value': ''}) }}</div>
                         </div>
-                        {{ form_end(formSearchService) }}
+                        <div class="search-row-country">{{ form_row(formSearchService.countryService, {'value': ''}) }}</div>
+                    
+                        <button type="submit" class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                {{ form_end(formSearchService) }}
+            </div>
+        </div>
+    </div>
 
-                  
-                    <section class="all-cards"> 
-                        {% include "home/_locations.html.twig" %}
-                        {% include "home/_services.html.twig" %}
-                    </section> 
-                
-     
- 
-   
-
-
-
-    
-
-
+    <section class="all-cards"> 
+        {% include "home/_locations.html.twig" %}
+        {% include "home/_services.html.twig" %}
+    </section> 
 
 {# {% else %}
     Hi there!  <p> Please <a href="{{ path('app_login')}}"> log in </a></p> #}
