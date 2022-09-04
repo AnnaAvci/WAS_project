@@ -76,6 +76,11 @@ class Location
      */
     private $bookLocations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="location")
+     */
+    private $likes;
+
    
 
     public function __construct()
@@ -84,6 +89,7 @@ class Location
         $this->users = new ArrayCollection();
         $this->commentUserLocations = new ArrayCollection();
         $this->bookLocations = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -268,6 +274,49 @@ class Location
         return $this;
     }
 
+    /**
+     * @return Collection<int, PostLike>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(PostLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(PostLike $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getLocation() === $this) {
+                $like->setLocation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Shows if location is liked by user
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function isLikedByUser(User $user) : bool
+    {
+        foreach($this->likes as $like){
+            if ($like->getUser() === $user) return true;
+        }
+        return false;
+    }
   
 
 }

@@ -1,21 +1,70 @@
 {% for location in locations %}
-        
-            <div class="card">
-                <a class="" href="{{ path('show_location', {'id': location.id }) }}"><img src={{ asset("img/" ~ location.photoLocations[0].namePhoto )}} width="250" height="270" alt>{{ location}}</a>
-                <div class="owner-edit">
-                    By {{ location.ownerLocation.nameUser}}
-                     {% if app.user %}            {# Edit if you are the admin or the owner#}
-                        {% if location.ownerLocation.id == app.user.id or is_granted("ROLE_ADMIN") %}
-                            <a href="{{ path('update_location', {'id': location.id}) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                        {% endif %}
-                    {% endif %}
-                </div>
-                <p>{{ location.priceLocation}} € / hour </p>
-            </div>
-        
-      
+	<div class="card">
+		<a class="" href="{{ path('show_location', {'id': location.id }) }}"><img src={{ asset("img/" ~ location.photoLocations[0].namePhoto )}} width="250" height="270" alt>{{ location}}</a>
+
+
+		{# like button #}
+		<a href="{{path("post_like", {'id': location.id})}}" class="btn btn-link js-like">
+			<span class="js-likes">{{location.likes | length }}</span>
+
+			{% if app.user and location.isLikedByUser(app.user) %}
+				<i class="fa-solid fa-heart"></i>
+			{% else %}
+				<i class="fa-regular fa-heart"></i>
+			{% endif %}
+		</a>
+		<div class="owner-edit">
+			By
+			{{ location.ownerLocation.nameUser}}
+			{% if app.user %}
+				{# Edit if you are the admin or the owner#}
+				{% if location.ownerLocation.id == app.user.id or is_granted("ROLE_ADMIN") %}
+					<a href="{{ path('update_location', {'id': location.id}) }}">
+						<i class="fa fa-pencil" aria-hidden="true"></i>
+					</a>
+				{% endif %}
+			{% endif %}
+		</div>
+		<p>{{ location.priceLocation}}
+			€ / hour
+		</p>
+	</div>
+
+
 {% endfor %}
 
-<div class="pagination">
-    {{ knp_pagination_render(locations) }}
-</div>
+{# <div class="pagination">
+	{{ knp_pagination_render(locations) }}
+</div> #}
+
+{% block javascripts %}
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script>
+
+                function onClickBtnLike(event) {
+        event.preventDefault();
+
+        const url = this.href;
+        const spanCount = this.querySelector('span.js-likes');
+        const icone = this.querySelector('i');
+
+        axios.get(url).then(function (response) {
+        spanCount.textContent = response.data.likes;
+
+        if (icone.classList.contains('fa-solid')) {
+        icone.classList.replace('fa-solid', 'fa-regular')
+        } else {
+        icone.classList.replace('fa-regular', 'fa-solid');
+        }
+        }).catch(function (error) {
+        if (error.response.status === 403) {
+        window.alert("Please log in to like a post")
+        }
+        });
+        }
+
+        document.querySelectorAll('a.js-like').forEach(function (link) {
+        link.addEventListener('click', onClickBtnLike);
+        })
+	</script>
+{% endblock %}

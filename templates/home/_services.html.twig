@@ -1,22 +1,70 @@
-{% for service in services  %}
-        
-            <div class="card">
-                <a class="" href="{{ path('show_service', {'id': service.id }) }}"><img src={{ asset("img/" ~ service.photoServices[0].namePhoto )}} width="250" height="270" alt>{{ service}}</a>
-                <div class="owner-edit">
-                    By {{ service.providerService.nameUser}}    
-                    {% if app.user %}
-                                {# Edit if you are the admin or the owner#}
-                        {% if service.providerService.id == app.user.id or is_granted("ROLE_ADMIN") %}
-                            <a href="{{ path('update_service', {'id': service.id}) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                        {% endif %}
-                    {% endif %}
-                </div>
-                <p>{{ service.priceService}} € / hour </p>
-            
-            </div>
-       
+{% for service in services %}
+	<div class="card">
+		<a class="" href="{{ path('show_service', {'id': service.id }) }}"><img src={{ asset("img/" ~ service.photoservices[0].namePhoto )}} width="250" height="270" alt>{{ service}}</a>
+
+
+		{# like button #}
+		<a href="{{path("service_like", {'id': service.id})}}" class="btn btn-link js-like">
+			<span class="js-likes">{{service.likes | length }}</span>
+
+			{% if app.user and service.isLikedByUser(app.user) %}
+				<i class="fa-solid fa-heart"></i>
+			{% else %}
+				<i class="fa-regular fa-heart"></i>
+			{% endif %}
+		</a>
+		<div class="owner-edit">
+			By
+			{{ service.providerService.nameUser}}
+			{% if app.user %}
+				{# Edit if you are the admin or the owner#}
+				{% if service.providerService.id == app.user.id or is_granted("ROLE_ADMIN") %}
+					<a href="{{ path('update_service', {'id': service.id}) }}">
+						<i class="fa fa-pencil" aria-hidden="true"></i>
+					</a>
+				{% endif %}
+			{% endif %}
+		</div>
+		<p>{{ service.priceService}}
+			€ / hour
+		</p>
+	</div>
+
+
 {% endfor %}
 
 <div class="pagination">
-    {{ knp_pagination_render(services) }}
+	{{ knp_pagination_render(services) }}
 </div>
+
+{% block javascripts %}
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script>
+
+        function onClickBtnLike(event) {
+            event.preventDefault();
+
+            const url = this.href;
+            const spanCount = this.querySelector('span.js-likes');
+            const icone = this.querySelector('i');
+
+            axios.get(url).then(function (response) {
+            spanCount.textContent = response.data.likes;
+
+            if (icone.classList.contains('fa-solid')) {
+                icone.classList.replace('fa-solid', 'fa-regular')
+            } else {
+                icone.classList.replace('fa-regular', 'fa-solid');
+            }
+            }).catch(function (error) {
+            if (error.response.status === 403) {
+                window.alert("Please log in to like a post")
+            }
+            });
+            }
+
+            document.querySelectorAll('a.js-like').forEach(function (link) {
+            link.addEventListener('click', onClickBtnLike);
+        })
+	</script>
+{% endblock %}

@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ServiceRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\PostLike;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ServiceRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=ServiceRepository::class)
@@ -67,6 +68,11 @@ class Service
      */
     private $bookServices;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="service")
+     */
+    private $likes;
+
 
 
    
@@ -77,6 +83,7 @@ class Service
         $this->users = new ArrayCollection();
         $this->commentUserServices = new ArrayCollection();
         $this->bookServices = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -259,6 +266,51 @@ class Service
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, PostLike>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(PostLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(PostLike $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getService() === $this) {
+                $like->setService(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Shows if service is liked by user
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function isLikedByUser(User $user): bool
+    {
+        foreach ($this->likes as $like) {
+            if ($like->getUser() === $user) return true;
+        }
+        return false;
     }
 
 }

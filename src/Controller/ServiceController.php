@@ -3,18 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Service;
+use App\Entity\PostLike;
 use App\Form\ServiceType;
 use App\Entity\BookService;
+use App\Entity\PhotoService;
 use App\Form\BookServiceType;
 use App\Entity\CommentUserService;
 use App\Form\CommentUserServiceType;
+use App\Repository\PostLikeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use App\Entity\PhotoService;
 
 class ServiceController extends AbstractController
 {
@@ -176,4 +178,57 @@ class ServiceController extends AbstractController
         $entityManager->flush();
         return $this->redirectToRoute('app_service');
     }
+
+
+    /**
+     * Allows to like/unlike a service
+     * @Route("/service/{id}/like", name="service_like")
+     * @param Service $service
+     * @param ManagerRegistry $doctrine
+     * @param PostLikeRepository $repo
+     * @return Response
+     */
+    public function like(Service $service, ManagerRegistry $doctrine, PostLikeRepository $repo): Response
+    {
+        $user = $this->getUser();
+        $entityManager = $doctrine->getManager();
+
+        // if user is not connected, error 403
+        if (!$user) {
+            return $this->json([
+                'code' => 403,
+                'message' => "Please log in to like a post"
+            ], 403);
+        }
+
+        // unlike service if already liked and count new nb of likes, success code 200 = an http status
+        if ($service->isLikedByUser($user)) {
+            $like = $repo->findOneBy([
+                'service' => $service,
+                'user' => $user
+            ]);
+            $entityManager->remove($like);
+            $entityManager->flush();
+            return $this->json([
+                'code' => 200,
+                'message' => "You no longer like this photoshoot",
+                'likes' => $repo->count(['service' => $service])
+
+            ], 200);
+        }
+
+        $like = new PostLike();
+        $like->setService($service)
+             ->setUser($user);
+        $entityManager->persist($like);
+        $entityManager->flush();
+
+        return $this->json([
+            'code' => 200,
+            'message' => "You like this photoshoot",
+            'likes' => $repo->count(['service' => $service])
+
+        ], 200);
+    }
+
 }

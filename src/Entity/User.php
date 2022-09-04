@@ -9,10 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"name_user"}, message="Username is already taken")
  * (picture_user=Images::class, mappedBy="user", cascade={"persist"})
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -42,11 +44,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Length(min=5, max=15, minMessage="Username must be at least 5 characters", maxMessage="Username can't exceed 15 characters")
      */
     private $name_user;
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * 
      */
     private $picture_user;
     
@@ -122,6 +126,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $received;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="user")
+     */
+    private $likes;
+
 
 
     public function __construct()
@@ -134,6 +143,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->bookLocations = new ArrayCollection();
         $this->sent = new ArrayCollection();
         $this->received = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     
     }
 
@@ -575,6 +585,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($received->getRecipient() === $this) {
                 $received->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PostLike>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(PostLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(PostLike $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getUser() === $this) {
+                $like->setUser(null);
             }
         }
 
