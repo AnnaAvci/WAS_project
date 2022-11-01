@@ -1,41 +1,32 @@
+
 {% for service in services %}
-	<div class="card">
-		<a class="" href="{{ path('show_service', {'id': service.id }) }}"><img src={{ asset("img/" ~ service.photoservices[0].namePhoto )}} width="250" height="270" alt>{{ service}}</a>
 
+	<a class="" href="{{ path('show_service', {'id': service.id }) }}">
 
-		{# like button #}
-		<a href="{{path("service_like", {'id': service.id})}}" class="btn btn-link js-like">
-			<span class="js-likes">{{service.likes | length }}</span>
-
-			{% if app.user and service.isLikedByUser(app.user) %}
-				<i class="fa-solid fa-heart"></i>
-			{% else %}
-				<i class="fa-regular fa-heart"></i>
-			{% endif %}
-		</a>
-		<div class="owner-edit">
-			By
-			{{ service.providerService.nameUser}}
-			{% if app.user %}
-				{# Edit if you are the admin or the owner#}
-				{% if service.providerService.id == app.user.id or is_granted("ROLE_ADMIN") %}
-					<a href="{{ path('update_service', {'id': service.id}) }}">
-						<i class="fa fa-pencil" aria-hidden="true"></i>
-					</a>
-				{% endif %}
-			{% endif %}
+	<div class="card-and-desc">
+		<div class="card">
+			<img src={{ asset("img/" ~ service.photoServices[0].namePhoto )}} alt="service" />
 		</div>
-		<p>{{ service.priceService}}
-			€ / hour
-		</p>
-	</div>
+		<h3 class="h3">
+			{{service.nameService}}
+			<br />
+		{{service.priceservice}} $ per hour
+		<a href="{{path("service_like", {'id': service.id})}}" class="btn btn-link js-like">
+				<span class="js-likes">{{service.likes | length }}</span>
 
+				{% if app.user and service.isLikedByUser(app.user) %}
+					<i class="fa-solid fa-heart"></i>
+				{% else %}
+					<i class="fa-regular fa-heart"></i>
+				{% endif %}
+			</a>
+		</h3>
+	</div>
+	</a> 
 
 {% endfor %}
 
-<div class="pagination">
-	{{ knp_pagination_render(services) }}
-</div>
+
 
 {% block javascripts %}
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -51,7 +42,8 @@
             axios.get(url).then(function (response) {
             spanCount.textContent = response.data.likes;
 
-            if (icone.classList.contains('fa-solid')) {
+            if (icone.classList.contains('fa-solid')) 
+			{
                 icone.classList.replace('fa-solid', 'fa-regular')
             } else {
                 icone.classList.replace('fa-regular', 'fa-solid');

@@ -3,16 +3,10 @@
 {% block title %}WAS: Worth A Shot {% endblock %}
 
 {% block body %}
-    
+    <div class="banner">
+        {# <img src="src={{ asset("img/cappadoce.webp" )}}" alt="cappadocia photoshoot"> #}
+    </div>
     <div class="tabs">
-        {# <div class="tabs__head">
-            <div class="tabs__toggle is-active">
-                <span class="tabs__name">Find a location</span>
-            </div>  
-            <div class="tabs__toggle">
-                <span class="tabs__name">Find a photoshoot</span>
-            </div>
-        </div> #}
         <div class="tabs__body">
             <div class="tabs__content is-active">
                 {{ form_start(formSearch) }}
@@ -47,16 +41,10 @@
             </div>
         </div>
     </div>
-
     <section class="all-cards"> 
         {% include "home/_locations.html.twig" %}
         {% include "home/_services.html.twig" %}
     </section> 
-
-{# {% else %}
-    Hi there!  <p> Please <a href="{{ path('app_login')}}"> log in </a></p> #}
-
-{# {% endif %} #}
         
  
 {% endblock %}

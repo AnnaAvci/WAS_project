@@ -10,8 +10,10 @@ use App\Entity\PhotoService;
 use App\Form\BookServiceType;
 use App\Entity\CommentUserService;
 use App\Form\CommentUserServiceType;
+use App\Repository\ServiceRepository;
 use App\Repository\PostLikeRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,11 +25,14 @@ class ServiceController extends AbstractController
     /**
      * @Route("/service", name="app_service")
      */
-    public function index(ManagerRegistry $doctrine): Response
+    public function index(ManagerRegistry $doctrine, ServiceRepository $repo, PaginatorInterface $paginatorInterface, Request $request): Response
     {
-        $services = $doctrine->getRepository(Service::class)->findAll();
-
-            return $this->render('service/index.html.twig', [
+        $services = $paginatorInterface->paginate(
+            $repo->findAllWithPagination(), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            6 /*limit per page*/
+        );    
+        return $this->render('service/index.html.twig', [
                 'services' => $services,
             
             ]);
@@ -194,10 +199,11 @@ class ServiceController extends AbstractController
         $entityManager = $doctrine->getManager();
 
         // if user is not connected, error 403
-        if (!$user) {
+        if (!$user) 
+        {
             return $this->json([
-                'code' => 403,
-                'message' => "Please log in to like a post"
+            'code' => 403,
+            'message' => "Please log in to like a post"
             ], 403);
         }
 

@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Available locations{% endblock %}
+{% block title %}Locations{% endblock %}
 
 {% block body %}
 <div class="location-container">
-<h1>Our locations</h1>
+<h1 class="page-title">Locations</h1>
 
      <section class="all-cards"> 
         {% for location in locations %}
@@ -31,4 +31,9 @@
 <a class="btn btn-success" href="{{path('add_location')}}">Add a location</a>
 {% endif %}
 </div>
+
+
+<div class="pagination">
+	{{ knp_pagination_render(locations) }}
+</div> 
 {% endblock %}

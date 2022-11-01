@@ -32,7 +32,7 @@ class HomeController extends AbstractController
         $data = $lr->findSearch($dataSearch);
        
         shuffle($data); 
-        $locations = $paginator->paginate($data, $request->query->getInt("page", 1), 8); 
+        $locations = $paginator->paginate($data, $request->query->getInt("page", 1), 3); 
        
 
 
@@ -44,7 +44,7 @@ class HomeController extends AbstractController
         $dataService = $sr->findSearch($dataSearchService);
        
         shuffle($dataService); 
-        $services = $paginator->paginate($dataService, $request->query->getInt("page", 1), 8); 
+        $services = $paginator->paginate($dataService, $request->query->getInt("page", 1), 3); 
        
         
         return $this->render('home/index.html.twig', [
@@ -54,5 +54,15 @@ class HomeController extends AbstractController
             'formSearch' => $formSearch->createView(), 
             'formSearchService' => $formSearchService->createView() 
         ]);
+    }
+
+    /**
+     * @Route("/test", name="testpage")
+     * 
+     */
+    public function testpage(){
+
+        
+        return $this->render('home/test.html.twig');
     }
 }

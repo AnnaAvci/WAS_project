@@ -3,47 +3,57 @@
 {% block title %}Location info{% endblock %}
 
 {% block body %}
-    <h1>{{location}}</h1>
-    <p>
-       <strong>{{location.priceLocation}} $ / hour</strong> 
-    </p>
-    {# only the owner can edit/delete a location #}
-     {% if app.user.id == location.ownerLocation.id %}
-        <a href="{{path('update_location', {'id':location.id}) }}">Edit</a> <br>
-        <a href="{{path('delete_location', {'id':location.id}) }}">Delete this location</a> 
-    {% endif %} 
+    <div class="wrapper">
+            <h1 class="page-title">{{location}}
+                {# only the owner can edit/delete a location #}
+                <div class="edit-delete">
+                    {% if app.user.id == location.ownerLocation.id %}
+                        <a href="{{path('update_location', {'id':location.id}) }}"><i class="fa-solid fa-pencil"></i></a> <br>
+                        <a href="{{path('delete_location', {'id':location.id}) }}"><i class="fa-solid fa-trash"></i></a> 
+                    {% endif %}
+                </div> 
+            </h1>
 
-    <p>
-        {% for photoLocation in location.photoLocations %}
-        {# <pre>
-            {{ dump(photoLocation) }}
-        </pre> #}
-            <img src={{ asset("img/" ~ photoLocation.namePhoto )}} width="300" height="400" alt>
-        {% endfor %}
-    </p>
-         <img src={{ asset("img/" ~ location.ownerLocation.pictureUser )}} width="30" height="30" alt>
+
+            <div class="all-cards">
+                    {% for photoLocation in location.photoLocations %}
+                        <div class="card">
+                            <img src={{ asset("img/" ~ photoLocation.namePhoto )}} width="300" height="400" alt>
+                        </div>
+                    {% endfor %}
+                </div>
         
-        Hosted by <strong>{{location.ownerLocation}}</strong> <br>
-    <p> 
-    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus corporis enim, magni asperiores, possimus dolores recusandae earum iste laboriosam aperiam dolore fugit, veniam blanditiis a eveniet odit quidem alias saepe.
-    Eaque, quisquam. Eligendi, similique corrupti ex quia soluta libero voluptate consequuntur nihil tempore itaque aliquam est dicta voluptates ipsum quo rem officiis quos. Pariatur non asperiores quae animi, possimus minus.
-    Aliquam, eius deserunt sint cum non aliquid, illum voluptatum temporibus repellat recusandae beatae blanditiis odio, laborum unde voluptates placeat ea? Aperiam sit expedita vitae quibusdam, quis nisi quas impedit fuga.
-    </p>
-      
-    <div>
-    <h2>Reviews:</h2>
-    {% for commentUserLocation in location.commentUserLocations %}
-        <img src={{ asset("img/" ~ commentUserLocation.commenter.pictureUser )}} width="30" height="30" alt>
-        <strong>{{commentUserLocation.commenter.nameUser}}</strong>
-        {{commentUserLocation.dateComment | date('d-m-Y H:i')}} <br>
-        {{commentUserLocation.textComment}} <br>
-    {% endfor %}
-       <strong>Add comment:</strong>
-      {{form(formCommentUserLocation)}} <br>
+
+                {# All information including comments #}
+                <div class="post-info">
+                <p>
+                <strong>{{location.priceLocation}} $ / hour</strong> 
+                </p>
+                <p>
+                    <img src={{ asset("img/" ~ location.ownerLocation.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                    <strong>{{location.ownerLocation}}</strong> <br>
+                </p>
+                <p> 
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus corporis enim, magni asperiores, possimus dolores recusandae earum iste laboriosam aperiam dolore fugit, veniam blanditiis a eveniet odit quidem alias saepe.
+                Eaque, quisquam. Eligendi, similique corrupti ex quia soluta libero voluptate consequuntur nihil tempore itaque aliquam est dicta voluptates ipsum quo rem officiis quos. Pariatur non asperiores quae animi, possimus minus.
+                Aliquam, eius deserunt sint cum non aliquid, illum voluptatum temporibus repellat recusandae beatae blanditiis odio, laborum unde voluptates placeat ea? Aperiam sit expedita vitae quibusdam, quis nisi quas impedit fuga.
+                </p>
+                
+                <div>
+                <h2>Reviews:</h2>
+                {% for commentUserLocation in location.commentUserLocations %}
+                    <img src={{ asset("img/" ~ commentUserLocation.commenter.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                    <strong>{{commentUserLocation.commenter.nameUser}}</strong>
+                    {{commentUserLocation.dateComment | date('d-m-Y H:i')}} <br>
+                    {{commentUserLocation.textComment}} <br>
+                {% endfor %}
+                <strong>Add comment:</strong>
+                {{form(formCommentUserLocation)}} <br>
 
 
-       <strong>Book this location:</strong>
-      {{form(formBookLocation)}} 
-     
+                <strong>Book this location:</strong>
+                {{form(formBookLocation)}} 
+                </div>
+            </div>
     </div>
 {% endblock %}

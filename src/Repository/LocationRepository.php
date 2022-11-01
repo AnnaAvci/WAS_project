@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use Doctrine\ORM\Query;
 use App\Data\SearchData;
 use App\Entity\Location;
 use Doctrine\Persistence\ManagerRegistry;
@@ -69,6 +70,12 @@ class LocationRepository extends ServiceEntityRepository
 
 
         return $query->getQuery()->getResult();
+    }
+
+    public function findAllWithPagination(): Query
+    {
+        return $this->createQueryBuilder('v')
+            ->getQuery();
     }
 
 }

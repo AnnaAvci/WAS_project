@@ -11,8 +11,10 @@ use App\Entity\PhotoLocation;
 use App\Form\BookLocationType;
 use App\Entity\CommentUserLocation;
 use App\Form\CommentUserLocationType;
+use App\Repository\LocationRepository;
 use App\Repository\PostLikeRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,10 +26,13 @@ class LocationController extends AbstractController
     /**
      * @Route("/location", name="app_location")
      */
-    public function index(ManagerRegistry $doctrine): Response
+    public function index(ManagerRegistry $doctrine, LocationRepository $repo, PaginatorInterface $paginatorInterface, Request $request): Response
     {
-        $locations = $doctrine->getRepository(Location::class)->findAll();
-
+        $locations = $paginatorInterface->paginate(
+            $repo->findAllWithPagination(), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            6 /*limit per page*/
+        );
         return $this->render('location/index.html.twig', [
             'locations' => $locations,
 
@@ -190,9 +195,10 @@ class LocationController extends AbstractController
         ]);
     }
 
+
     /**
      * Allows to like/unlike a location
-     * @Route("/location/{id}/like", name="post_like")
+     * @Route("/location/{id}/like", name="location_like")
      * @param Location $location
      * @param ManagerRegistry $doctrine
      * @param PostLikeRepository $repo
@@ -204,13 +210,12 @@ class LocationController extends AbstractController
         $entityManager = $doctrine->getManager();
 
         // if user is not connected, error 403
-        if (!$user)
-        {
+        if (!$user) {
             return $this->json([
                 'code' => 403,
                 'message' => "Please log in to like a post"
             ], 403);
-        } 
+        }
 
         // unlike location if already liked and count new nb of likes, success code 200 = an http status
         if ($location->isLikedByUser($user)) {
@@ -230,7 +235,7 @@ class LocationController extends AbstractController
 
         $like = new PostLike();
         $like->setLocation($location)
-             ->setUser($user);
+            ->setUser($user);
         $entityManager->persist($like);
         $entityManager->flush();
 
@@ -241,4 +246,5 @@ class LocationController extends AbstractController
 
         ], 200);
     }
+
 }

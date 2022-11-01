@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Service;
+use Doctrine\ORM\Query;
 use App\Data\SearchServiceData;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -69,6 +70,11 @@ class ServiceRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+
+    public function findAllWithPagination() : Query{
+        return $this->createQueryBuilder('v')
+        ->getQuery();
+    }
 //    /**
 //     * @return Service[] Returns an array of Service objects
 //     */

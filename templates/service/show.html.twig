@@ -3,53 +3,64 @@
 {% block title %}Photoshoot info{% endblock %}
 
 {% block body %}
-    <h1>{{service}}</h1>
-    <p>
-       <strong>{{service.priceService}} $ / hour</strong> 
-    </p>
- {# only the service provider can edit/delete a service #}
-     {% if app.user.id == service.providerService.id %}
-        <a href="{{path('update_service', {'id':service.id}) }}">Edit</a> <br>
-        <a href="{{path('delete_service', {'id':service.id}) }}">Delete this service</a> 
-     {% endif %} 
+    <div class="wrapper">
+        <h1 class="page-title">{{service}}   
+            {# only the owner can edit/delete a service #}
+            <div class="edit-delete">
+                {% if app.user.id == service.providerService.id %}
+                    <a href="{{path('update_service', {'id':service.id}) }}"><i class="fa-solid fa-pencil"></i></a> <br>
+                    <a href="{{path('delete_service', {'id':service.id}) }}"><i class="fa-solid fa-trash"></i></a> 
+                {% endif %}
+            </div> 
+        </h1>
 
 
-   {#  Display the name of the shoot and the picture gallery #}
-    <p>
-        {% for photoService in service.photoServices %}
-            <img src={{ asset("img/" ~ photoService.namePhoto )}} width="300" height="400" alt>
-        {% endfor %}
-    </p>
-         <img src={{ asset("img/" ~ service.providerService.pictureUser )}} width="30" height="30" alt>
+    {#  Display the name of the shoot and the picture gallery #}
+        <div class="all-cards">
+            {% for photoService in service.photoServices %}
+                <div class="card">
+                    <img src={{ asset("img/" ~ photoService.namePhoto )}} width="300" height="400" alt >
+                </div>
+            {% endfor %}
+        </div>
+
         
-    
-   {#  Service provider and bio #}
-        Offered by <strong>{{service.providerService}}</strong> <br>
-    <p> 
-    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus corporis enim, magni asperiores, possimus dolores recusandae earum iste laboriosam aperiam dolore fugit, veniam blanditiis a eveniet odit quidem alias saepe.
-    Eaque, quisquam. Eligendi, similique corrupti ex quia soluta libero voluptate consequuntur nihil tempore itaque aliquam est dicta voluptates ipsum quo rem officiis quos. Pariatur non asperiores quae animi, possimus minus.
-    Aliquam, eius deserunt sint cum non aliquid, illum voluptatum temporibus repellat recusandae beatae blanditiis odio, laborum unde voluptates placeat ea? Aperiam sit expedita vitae quibusdam, quis nisi quas impedit fuga.
-    </p>
-      
-    {# Comments #}
-    <div>
-    <h2>Reviews:</h2>
-    {# {{dump(service.commentUserServices)}} #}
-    {% for commentUserService in service.commentUserServices %}
-        <img src={{ asset("img/" ~ commentUserService.commenter.pictureUser )}} width="30" height="30" alt>
-        <strong>{{commentUserService.commenter.nameUser}}</strong>
-        {{commentUserService.dateComment | date('d-m-Y H:i')}} <br>
-        {{commentUserService.textComment}} <br>
-    {% endfor %} 
+        {# All information including comments #}
+        <div class="post-info">
+                <p>
+                    <strong>{{service.priceService}} $ / hour</strong> 
+                </p>
+                <p>
+                    <img src={{ asset("img/" ~ service.providerService.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                    {#  Service provider and bio #}
+                    <strong>{{service.providerService}}</strong>
+                </p>
+            
+                <p> 
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus corporis enim, magni asperiores, possimus dolores recusandae earum iste laboriosam aperiam dolore fugit, veniam blanditiis a eveniet odit quidem alias saepe.
+                Eaque, quisquam. Eligendi, similique corrupti ex quia soluta libero voluptate consequuntur nihil tempore itaque aliquam est dicta voluptates ipsum quo rem officiis quos. Pariatur non asperiores quae animi, possimus minus.
+                Aliquam, eius deserunt sint cum non aliquid, illum voluptatum temporibus repellat recusandae beatae blanditiis odio, laborum unde voluptates placeat ea? Aperiam sit expedita vitae quibusdam, quis nisi quas impedit fuga.
+                </p>
+        
+            {# Comments #}
+            <div class="post-comments">
+            <h2>Reviews:</h2>
+            {% for commentUserService in service.commentUserServices %}
+                <img src={{ asset("img/" ~ commentUserService.commenter.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                <strong>{{commentUserService.commenter.nameUser}}</strong>
+                {{commentUserService.dateComment | date('d-m-Y H:i')}} <br>
+                {{commentUserService.textComment}} <br>
+            {% endfor %} 
 
-   {#  only authenticated users can leave comments / make a reservation #}
-    {# {% if is_granted("IS_AUTHENTICATED_FULLY") %} #}
-        <strong>Add comment:</strong>
-      {{form(formCommentUserService)}} <br>
+        {#  only authenticated users can leave comments / make a reservation #}
+            {# {% if is_granted("IS_AUTHENTICATED_FULLY") %} #}
+            <strong>Add comment:</strong>
+            {{form(formCommentUserService)}} <br>
 
-        <strong>Book this shoot:</strong>
-      {{form(formBookService)}} 
-   {#  {% endif %} #}
+                <strong>Book this shoot:</strong>
+            {{form(formBookService)}} 
+        {#  {% endif %} #}
+            </div>
+    </div> 
     </div>
-
 {% endblock %}

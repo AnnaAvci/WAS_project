@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profile info{% endblock %}
+{% block title %}My Profile{% endblock %}
 
 {% block body %}
 
@@ -9,92 +9,136 @@
     {% endfor %}
 
 
-    <h1><img src={{ asset("img/" ~ user.pictureUser )}} width="30" height="30" alt> {{user}}</h1>
-    <p>
+   <div class="profile-basic-info">
+        <h1><img src={{ asset("img/" ~ user.pictureUser )}} class="profile-picture"> {{user}}</h1>
+            {% if user.id == app.user.id %}
+                {# link to edit user profile #}
+                <a href="{{ path('edit_user', {id: app.user.id} )}}">
+                <i class="fas fa-pencil-alt"></i></a>
+            {% endif %}
+    </div>
+   
+    {#********** My Locations ******************#}
+
         {% if user.locations | length != 0 %}
-            <h2>{{user}} hosts: </h2>
-        
+            <h2>My locations: </h2>
+
+        <div class="all-cards">
             {% for location in user.locations %}
-            <a href="{{path('show_location', {'id':location.id}) }}">  {{location.nameLocation}} </a><br>
-                {% for photo in location.photoLocations %}
-                    <a href="{{path('show_location', {'id':location.id}) }}"> <img src={{ asset("img/" ~ photo.namePhoto )}} width="300" height="400" alt> </a> 
-                {% endfor %} <br>
-            {% endfor %} <br> <br>
-        {% endif %}
-    </p>
+                <div class="card-and-desc">
+                    <div class="card">
+                        <img src={{ asset("img/" ~ location.photoLocations[0].namePhoto )}} alt="location" />
+                    </div>
+                        <h3 class="h3">
+                            {{location.nameLocation}}
+                            {% if location.ownerLocation.id == app.user.id or is_granted("ROLE_ADMIN") %}
+                                <a href="{{ path('update_location', {'id': location.id}) }}">
+                                <i class="fa fa-pencil" aria-hidden="true"></i></a>
+				            {% endif %}
+                            <br />
+                            {{location.priceLocation}} $ per hour
+                            <a href="{{path("location_like", {'id': location.id})}}" class="btn btn-link js-like">
+                                <span class="js-likes">{{location.likes | length }}</span>
 
-    <p>
-        {% if user.services | length != 0 %}
-            <h2>{{user}} offers: </h2> 
-
-            {% for service in user.services %}
-            <p>  <a href="{{path('show_service', {'id':service.id}) }}">{{service.nameService}} </a><br></p>
-                <a href="{{path('show_service', {'id':service.id}) }}"> <img src={{ asset("img/" ~ service.photoServices[0].namePhoto)}} width="300" height="400" alt> </a>
-            {% endfor %}
-        {% endif %}
-    </p>
-  
-
-    {#redirects to page with messages #}
-    {% if user.id == app.user.id %}
-    <button><a href="{{path('app_messages')}}">My messages</a></button>
-
-    {# link to edit user profile #}
-    <button><a href="{{ path('edit_user', {id: app.user.id} )}}">
-    <i class="fas fa-pencil-alt"></i>Edit my profile</a></button>
-
-
-    {#redirects to page with reservations #}
-   {#  <button><a href="{{path('reservations')}}">My reservations</a></button>
-{% endif %} #}
-
-     <h2>Reservation requests from other users</h2>
-    
-        {% if is_granted('ROLE_HOST') %}
-        <strong>Locations</strong>
-        <table class="table">
-        <thead>
-            <th>Property:</th>
-            <th>Booked by:</th>
-            <th>From:</th>
-            <th>To:</th>
-            <th>Message:</th>
-
-            <th colspan="2">Actions:</th>
-        </thead>
-        <tbody> 
-          {% for location in user.locations %}
-                {% for bookLocation in location.bookLocations %}
-                    <tr>
-                        <td>{{bookLocation.location}} </td> 
-                        <td><a href="{{path('show_user', {'id':bookLocation.locationClient.id}) }}">{{bookLocation.locationClient}} </a></td> 
-                        <td>{{bookLocation.dateStart | date('d-m-Y')}}</td> 
-                        <td>{{bookLocation.dateEnd | date('d-m-Y')}}</td> 
-                        <td>{{bookLocation.message}}</td> 
-                        {% if bookLocation.isAccepted == 0 %}
-                            <td><a href="{{path('accept_book_location', {'id':bookLocation.id}) }}">Accept</a></td> 
-                            <td><a href="{{path('decline_book_location', {'id':bookLocation.id}) }}">Decline</a></td>
-                        {% elseif bookLocation.isAccepted == 1 %}
-                            <td>You accepted the request</td>
-                        {% else %}
-                            <td>You declined the request</td>
-                        {% endif %}
-                    </tr>   
+                                {% if app.user and location.isLikedByUser(app.user) %}
+                                    <i class="fa-solid fa-heart"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-heart"></i>
+                                {% endif %}
+                            </a>
+		                </h3>    
+                  </div>  
                 {% endfor %}
-            {% endfor %}
-        </tbody>
-        </table>
-     {% endif %}
-    {% if is_granted('ROLE_PHOTOGRAPHER') %}
-        <strong>Photoshoots</strong> #}
+            </div>
+        {% endif %}
+   
+ {#********** My Photoshoots ******************#}
 
-       <table class="table">
+        {% if user.services | length != 0 %}
+            <h2>My photoshoots </h2>
+
+        <div class="all-cards">
+            {% for service in user.services %}
+                <div class="card-and-desc">
+                    <div class="card">
+                        <img src={{ asset("img/" ~ service.photoServices[0].namePhoto )}} alt="photoshoot" />
+                    </div>
+                        <h3 class="h3">
+                            {{service.nameService}}
+                            {% if service.providerService.id == app.user.id or is_granted("ROLE_ADMIN") %}
+                                <a href="{{ path('update_service', {'id': service.id}) }}">
+                                <i class="fa fa-pencil" aria-hidden="true"></i></a>
+				            {% endif %}
+                            <br />
+                            {{service.priceService}} $ per hour
+                            <a href="{{path("service_like", {'id': service.id})}}" class="btn btn-link js-like">
+                                <span class="js-likes">{{service.likes | length }}</span>
+
+                                {% if app.user and service.isLikedByUser(app.user) %}
+                                    <i class="fa-solid fa-heart"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-heart"></i>
+                                {% endif %}
+                            </a>
+		                </h3>    
+                  </div>  
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+
+ {#********** Reservation requests ******************#}
+
+    {% if user.id == app.user.id %}
+  
+     <h2>Reservation requests:</h2>
+    
+        {% if user.locations | length != 0 %}
+            <strong>Locations</strong>
+            <table class="reservation-table">
             <thead>
-                <th>Photoshoot:</th>
-                <th>Booked by:</th>
-                <th>From:</th>
-                <th>To:</th>
-                <th>Message:</th>
+                <th>User</th>
+                <th>Booking</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Message</th>
+
+                <th colspan="2">Actions:</th>
+            </thead>
+            <tbody> 
+            {% for location in user.locations %}
+                    {% for bookLocation in location.bookLocations %}
+                        <tr>
+                            <td><a href="{{path('show_user', {'id':bookLocation.locationClient.id}) }}">{{bookLocation.locationClient}} </a></td>
+                            <td>{{bookLocation.location}} </td> 
+                            <td>{{bookLocation.dateStart | date('d-m-Y')}}</td> 
+                            <td>{{bookLocation.dateEnd | date('d-m-Y')}}</td> 
+                            <td>{{bookLocation.message}}</td> 
+                            {% if bookLocation.isAccepted == 0 %}
+                                <td><a href="{{path('accept_book_location', {'id':bookLocation.id}) }}">Accept</a></td> 
+                                <td><a href="{{path('decline_book_location', {'id':bookLocation.id}) }}">Decline</a></td>
+                            {% elseif bookLocation.isAccepted == 1 %}
+                                <td>You accepted the request</td>
+                            {% else %}
+                                <td>You declined the request</td>
+                            {% endif %}
+                        </tr>   
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+            </table>
+     {% endif %}
+    {% if user.services | length != 0 %}
+    
+        <strong>Photoshoots</strong>
+
+       <table class="reservation-table">
+            <thead>
+                <th>User</th>
+                <th>Booking</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Message</th>
 
                 <th colspan="2">Actions:</th>
             </thead>
@@ -102,8 +146,8 @@
                 {% for service in user.services %}
                     {% for bookService in service.bookServices %}
                         <tr>
-                            <td>{{bookService.service}} </td> 
-                            <td><a href="{{path('show_user', {'id':bookService.serviceClient.id}) }}">{{bookService.serviceClient}} </a></td> 
+                            <td><a href="{{path('show_user', {'id':bookService.serviceClient.id}) }}">{{bookService.serviceClient}} </a></td>
+                            <td>{{bookService.service}} </td>  
                             <td>{{bookService.dateStart | date('d-m-Y')}}</td> 
                             <td>{{bookService.dateEnd | date('d-m-Y')}}</td> 
                             <td>{{bookService.message}}</td> 
@@ -117,55 +161,56 @@
                         {% endif %}
                         </tr>   
                     {% endfor %}
+                    {% if service.bookServices | length == 0 %}
+                        <p>No reservation requests yet</p>
+                    {% endif %}
                 {% endfor %}
             </tbody>
             </table>
         {% endif %}
     {% endif %} 
 
- {# User can see their own reservation requests #}
+ {# ******************** User's own reservation requests ****************** #}
+
         {% if is_granted('ROLE_USER') %}
             <h2>My reservations</h2>
-    <strong>Locations</strong>
-        <table class="table">
-            <thead>
-                <th>Location:</th>
-                <th>Hosted by:</th>
-                <th>From:</th>
-                <th>To:</th>
-                <th>Message:</th>
-                <th>Status:</th>
-            </thead>
-            <tbody>
-                {% for bookLocation in user.bookLocations %}
-                        <tr>
-                            <td>{{bookLocation.location}} </td> 
-                            <td><a href="{{path('show_user', {'id':bookLocation.location.ownerLocation.id}) }}">{{bookLocation.location.ownerLocation}} </a></td> 
-                            <td>{{bookLocation.dateStart | date('d-m-Y')}}</td> 
-                            <td>{{bookLocation.dateEnd | date('d-m-Y')}}</td> 
-                            <td>{{bookLocation.message}}</td>  
-                            {% if bookLocation.isAccepted == 0 %}
-                                 <td> Request pending </td> 
-                            {% elseif bookLocation.isAccepted == 1 %}
-                                 <td> Request accepted </td>
-                            {% else %}
-                                 <td> Request declined </td>
-                            {% endif %}
-                        </tr>   
-                    {% endfor %}
-            </tbody>
+            <table class="reservation-table">
+                <thead>
+                    <th>Location</th>
+                    <th>Host</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                </thead>
+                <tbody>
+                    {% for bookLocation in user.bookLocations %}
+                            <tr>
+                                <td>{{bookLocation.location}} </td> 
+                                <td><a href="{{path('show_user', {'id':bookLocation.location.ownerLocation.id}) }}">{{bookLocation.location.ownerLocation}} </a></td> 
+                                <td>{{bookLocation.dateStart | date('d-m-Y')}}</td> 
+                                <td>{{bookLocation.dateEnd | date('d-m-Y')}}</td> 
+                                <td>{{bookLocation.message}}</td>  
+                                {% if bookLocation.isAccepted == 0 %}
+                                    <td> Request pending </td> 
+                                {% elseif bookLocation.isAccepted == 1 %}
+                                    <td> Request accepted </td>
+                                {% else %}
+                                    <td> Request declined </td>
+                                {% endif %}
+                            </tr>   
+                        {% endfor %}
+                </tbody>
             </table>
 
-
-            <strong>Photoshoots</strong>
-        <table class="table">
+        <table class="reservation-table">
             <thead>
-                <th>Photoshoot:</th>
-                <th>Offered by:</th>
-                <th>From:</th>
-                <th>To:</th>
-                <th>Message:</th>
-                <th>Status:</th>
+                <th>Photoshoot</th>
+                <th>Photographer</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Message</th>
+                <th>Status</th>
             </thead>
             <tbody>
                 {% for bookService in user.bookServices %}

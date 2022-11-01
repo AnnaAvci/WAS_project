@@ -28,9 +28,8 @@ class InstantMessageController extends AbstractController
 
     
     /**
-     * @Route("/send/{idUs}/{idLo}", name="send")
-     * @ParamConverter("user", options = {"mapping":{"idUs":"id"}})
-     * @ParamConverter("location", options = {"mapping":{"idLo":"id"}})
+     * @Route("/send", name="send")
+     * 
      */
     public function send(ManagerRegistry $doctrine, InstantMessageRepository $repository, Request $request, Location $location, User $user): Response
     {
@@ -45,7 +44,7 @@ class InstantMessageController extends AbstractController
 
             // the sender is the current user
             $message->setSender($this->getUser());
-            /**$recipient = $doctrine->getRepository(InstantMessage::class)->findMessageRecipient();*/
+            // $recipient = $doctrine->getRepository(InstantMessage::class)->findMessageRecipient();
             $recipient = $repository->findMessageRecipient($user, $location->getId());
             $message->setRecipient($recipient);
             $em = $doctrine->getManager();
