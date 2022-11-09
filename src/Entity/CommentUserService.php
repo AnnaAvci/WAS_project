@@ -29,13 +29,15 @@ class CommentUserService
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commentUserServices")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $commenter;
 
     /**
      * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="commentUserServices")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
+     * 
      */
     private $service;
 

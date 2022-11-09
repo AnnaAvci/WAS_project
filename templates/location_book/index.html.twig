@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My reservations{% endblock %}
+
+{% block body %}
+
+{% if app.user %}
+    {% if is_granted('ROLE_USER') %}
+            <h1>My reservations</h1>
+            
+            <strong>Locations</strong>
+             {% if user.locationBooks | length == 0 %}
+                    <p>No reservations yet</p>
+                {% else %}
+            <table class="table">
+                <thead>
+                    <th>Location</th>
+                    <th>Host</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                </thead>
+                <tbody>
+                    {% for locationBook in user.locationBooks %}
+                            <tr>
+                                <td>{{locationBook.location}} </td> 
+                                <td><a href="{{path('show_user', {'id':locationBook.location.owner.id}) }}">{{locationBook.location.owner}} </a></td> 
+                                <td>{{locationBook.dateStart | date('d-m-Y')}}</td> 
+                                <td>{{locationBook.dateEnd | date('d-m-Y')}}</td> 
+                                <td>{{locationBook.message}}</td>  
+                                {% if locationBook.isAccepted == 0 %}
+                                    <td> Request pending </td> 
+                                {% elseif locationBook.isAccepted == 1 %}
+                                    <td> Request accepted </td>
+                                {% else %}
+                                    <td> Request declined </td>
+                                {% endif %}
+                            </tr>   
+                        {% endfor %}
+                       {% endif %}
+                </tbody>
+            </table>
+
+
+            <strong>Photoshoots</strong>
+             {% if user.serviceBooks | length == 0 %}
+                    <p>No reservations yet</p>
+                {% else %}
+        <table class="table">
+            <thead>
+                <th>Photoshoot</th>
+                <th>Photographer</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Message</th>
+                <th>Status</th>
+            </thead>
+            <tbody>
+                {% for serviceBook in user.serviceBooks %}
+                        <tr>
+                            <td>{{serviceBook.service}} </td> 
+                            <td><a href="{{path('show_user', {'id':serviceBook.service.owner.id}) }}">{{serviceBook.service.owner}} </a></td> 
+                            <td>{{serviceBook.dateStart | date('d-m-Y')}}</td> 
+                            <td>{{serviceBook.dateEnd | date('d-m-Y')}}</td> 
+                            <td>{{serviceBook.message}}</td> 
+                            {% if serviceBook.isAccepted == 0 %}
+                                 <td> Request pending </td> 
+                            {% elseif serviceBook.isAccepted == 1 %}  
+                                 <td> Request accepted </td> 
+                                 <a href="{{path('send-message', {'id':serviceBook.service.owner.id}) }}"> <i class="fa-regular fa-envelope"></i> </a>
+                            {% else %}
+                                 <td> Request declined </td>
+                            {% endif %}
+                        </tr>   
+                {% endfor %}
+            </tbody>
+            {% endif %}
+            </table> <br>
+
+        {% endif %} 
+
+{% endif %}
+
+{% endblock %}

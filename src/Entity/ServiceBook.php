@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\BookLocationRepository;
+use App\Repository\ServiceBookRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=BookLocationRepository::class)
+ * @ORM\Entity(repositoryClass=ServiceBookRepository::class)
  */
-class BookLocation
+class ServiceBook
 {
     /**
      * @ORM\Id
@@ -38,16 +38,17 @@ class BookLocation
     private $dateEnd;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookLocations")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ServiceBooks")
      * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $locationClient;
+    private $serviceClient;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="bookLocations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="ServiceBooks")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $location;
+    private $service;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -107,26 +108,26 @@ class BookLocation
         return $this;
     }
 
-    public function getLocationClient(): ?User
+    public function getServiceClient(): ?User
     {
-        return $this->locationClient;
+        return $this->serviceClient;
     }
 
-    public function setLocationClient(?User $locationClient): self
+    public function setServiceClient(?User $serviceClient): self
     {
-        $this->locationClient = $locationClient;
+        $this->serviceClient = $serviceClient;
 
         return $this;
     }
 
-    public function getLocation(): ?Location
+    public function getService(): ?Service
     {
-        return $this->location;
+        return $this->service;
     }
 
-    public function setLocation(?Location $location): self
+    public function setService(?Service $service): self
     {
-        $this->location = $location;
+        $this->service = $service;
 
         return $this;
     }

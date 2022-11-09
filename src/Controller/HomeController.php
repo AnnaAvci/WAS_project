@@ -56,13 +56,5 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/test", name="testpage")
-     * 
-     */
-    public function testpage(){
 
-        
-        return $this->render('home/test.html.twig');
-    }
 }

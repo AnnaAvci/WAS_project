@@ -20,6 +20,10 @@
    
     {#********** My Locations ******************#}
 
+         {% if is_granted('ROLE_HOST') %}
+                <a class="button-long" href="{{path('add_location')}}">Add a new location</a>
+            {%endif%}
+
         {% if user.locations | length != 0 %}
             <h2>My locations: </h2>
 
@@ -31,9 +35,9 @@
                     </div>
                         <h3 class="h3">
                             {{location.nameLocation}}
-                            {% if location.ownerLocation.id == app.user.id or is_granted("ROLE_ADMIN") %}
-                                <a href="{{ path('update_location', {'id': location.id}) }}">
-                                <i class="fa fa-pencil" aria-hidden="true"></i></a>
+                            {% if location.owner.id == app.user.id or is_granted("ROLE_ADMIN") %}
+                                <a href="{{ path('update_location', {'id': location.id}) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                <a href="{{path('delete_location', {'id':location.id}) }}"><i class="fa-solid fa-trash"></i></a>
 				            {% endif %}
                             <br />
                             {{location.priceLocation}} $ per hour
@@ -54,8 +58,13 @@
    
  {#********** My Photoshoots ******************#}
 
+
         {% if user.services | length != 0 %}
             <h2>My photoshoots </h2>
+
+            {% if is_granted('ROLE_PHOTOGRAPHER') %}
+                <a class="button-long" href="{{path('add_service')}}">Add a new photoshoot</a>
+            {%endif%}
 
         <div class="all-cards">
             {% for service in user.services %}
@@ -65,9 +74,9 @@
                     </div>
                         <h3 class="h3">
                             {{service.nameService}}
-                            {% if service.providerService.id == app.user.id or is_granted("ROLE_ADMIN") %}
-                                <a href="{{ path('update_service', {'id': service.id}) }}">
-                                <i class="fa fa-pencil" aria-hidden="true"></i></a>
+                            {% if service.owner.id == app.user.id or is_granted("ROLE_ADMIN") %}
+                                <a href="{{ path('update_service', {'id': service.id}) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                <a href="{{path('delete_service', {'id':service.id}) }}"><i class="fa-solid fa-trash"></i></a>
 				            {% endif %}
                             <br />
                             {{service.priceService}} $ per hour
@@ -107,27 +116,33 @@
             </thead>
             <tbody> 
             {% for location in user.locations %}
-                    {% for bookLocation in location.bookLocations %}
+                    {% for locationBook in location.locationBooks %}
                         <tr>
-                            <td><a href="{{path('show_user', {'id':bookLocation.locationClient.id}) }}">{{bookLocation.locationClient}} </a></td>
-                            <td>{{bookLocation.location}} </td> 
-                            <td>{{bookLocation.dateStart | date('d-m-Y')}}</td> 
-                            <td>{{bookLocation.dateEnd | date('d-m-Y')}}</td> 
-                            <td>{{bookLocation.message}}</td> 
-                            {% if bookLocation.isAccepted == 0 %}
-                                <td><a href="{{path('accept_book_location', {'id':bookLocation.id}) }}">Accept</a></td> 
-                                <td><a href="{{path('decline_book_location', {'id':bookLocation.id}) }}">Decline</a></td>
-                            {% elseif bookLocation.isAccepted == 1 %}
+                            <td><a href="{{path('show_user', {'id':locationBook.locationClient.id}) }}">{{locationBook.locationClient}} </a></td>
+                            <td>{{locationBook.location}} </td> 
+                            <td>{{locationBook.dateStart | date('d-m-Y')}}</td> 
+                            <td>{{locationBook.dateEnd | date('d-m-Y')}}</td> 
+                            <td>{{locationBook.message}}</td> 
+                            {% if locationBook.isAccepted == 0 %}
+                                <td><a href="{{path('accept_location_book', {'id':locationBook.id}) }}">Accept</a></td> 
+                                <td><a href="{{path('decline_location_book', {'id':locationBook.id}) }}">Decline</a></td>
+                            {% elseif locationBook.isAccepted == 1 %}
                                 <td>You accepted the request</td>
                             {% else %}
                                 <td>You declined the request</td>
                             {% endif %}
                         </tr>   
                     {% endfor %}
+                      
+                       
+                     
                 {% endfor %}
             </tbody>
             </table>
+    {% else %}
+         <p>No reservation requests yet</p>
      {% endif %}
+
     {% if user.services | length != 0 %}
     
         <strong>Photoshoots</strong>
@@ -144,93 +159,32 @@
             </thead>
             <tbody>
                 {% for service in user.services %}
-                    {% for bookService in service.bookServices %}
+                    {% for serviceBook in service.serviceBooks %}
                         <tr>
-                            <td><a href="{{path('show_user', {'id':bookService.serviceClient.id}) }}">{{bookService.serviceClient}} </a></td>
-                            <td>{{bookService.service}} </td>  
-                            <td>{{bookService.dateStart | date('d-m-Y')}}</td> 
-                            <td>{{bookService.dateEnd | date('d-m-Y')}}</td> 
-                            <td>{{bookService.message}}</td> 
-                             {% if bookService.isAccepted == 0 %}
-                            <td><a href="{{path('accept_book_service', {'id':bookService.id}) }}">Accept</a></td> 
-                            <td><a href="{{path('decline_book_service', {'id':bookService.id}) }}">Decline</a></td>
-                        {% elseif bookService.isAccepted == 1 %}
+                            <td><a href="{{path('show_user', {'id':serviceBook.serviceClient.id}) }}">{{serviceBook.serviceClient}} </a></td>
+                            <td>{{serviceBook.service}} </td>  
+                            <td>{{serviceBook.dateStart | date('d-m-Y')}}</td> 
+                            <td>{{serviceBook.dateEnd | date('d-m-Y')}}</td> 
+                            <td>{{serviceBook.message}}</td> 
+                             {% if serviceBook.isAccepted == 0 %}
+                            <td><a href="{{path('accept_service_book', {'id':serviceBook.id}) }}">Accept</a></td> 
+                            <td><a href="{{path('decline_service_book', {'id':serviceBook.id}) }}">Decline</a></td>
+                        {% elseif serviceBook.isAccepted == 1 %}
                             <td>You accepted the request</td>
                         {% else %}
                             <td>You declined the request</td>
                         {% endif %}
                         </tr>   
                     {% endfor %}
-                    {% if service.bookServices | length == 0 %}
-                        <p>No reservation requests yet</p>
-                    {% endif %}
+                  
                 {% endfor %}
             </tbody>
             </table>
         {% endif %}
+        {% else %}
+             <p>No reservation requests yet</p>
     {% endif %} 
 
- {# ******************** User's own reservation requests ****************** #}
 
-        {% if is_granted('ROLE_USER') %}
-            <h2>My reservations</h2>
-            <table class="reservation-table">
-                <thead>
-                    <th>Location</th>
-                    <th>Host</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Message</th>
-                    <th>Status</th>
-                </thead>
-                <tbody>
-                    {% for bookLocation in user.bookLocations %}
-                            <tr>
-                                <td>{{bookLocation.location}} </td> 
-                                <td><a href="{{path('show_user', {'id':bookLocation.location.ownerLocation.id}) }}">{{bookLocation.location.ownerLocation}} </a></td> 
-                                <td>{{bookLocation.dateStart | date('d-m-Y')}}</td> 
-                                <td>{{bookLocation.dateEnd | date('d-m-Y')}}</td> 
-                                <td>{{bookLocation.message}}</td>  
-                                {% if bookLocation.isAccepted == 0 %}
-                                    <td> Request pending </td> 
-                                {% elseif bookLocation.isAccepted == 1 %}
-                                    <td> Request accepted </td>
-                                {% else %}
-                                    <td> Request declined </td>
-                                {% endif %}
-                            </tr>   
-                        {% endfor %}
-                </tbody>
-            </table>
 
-        <table class="reservation-table">
-            <thead>
-                <th>Photoshoot</th>
-                <th>Photographer</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Message</th>
-                <th>Status</th>
-            </thead>
-            <tbody>
-                {% for bookService in user.bookServices %}
-                        <tr>
-                            <td>{{bookService.service}} </td> 
-                            <td><a href="{{path('show_user', {'id':bookService.service.providerService.id}) }}">{{bookService.service.providerService}} </a></td> 
-                            <td>{{bookService.dateStart | date('d-m-Y')}}</td> 
-                            <td>{{bookService.dateEnd | date('d-m-Y')}}</td> 
-                            <td>{{bookService.message}}</td> 
-                            {% if bookService.isAccepted == 0 %}
-                                 <td> Request pending </td> 
-                            {% elseif bookService.isAccepted == 1 %}
-                                 <td> Request accepted </td>
-                            {% else %}
-                                 <td> Request declined </td>
-                            {% endif %}
-                        </tr>   
-                {% endfor %}
-            </tbody>
-            </table> <br>
-
-        {% endif %} 
     {% endblock %} 

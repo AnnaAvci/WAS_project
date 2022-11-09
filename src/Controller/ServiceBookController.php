@@ -6,15 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class BookServiceController extends AbstractController
+class ServiceBookController extends AbstractController
 {
     /**
-     * @Route("/book/service", name="app_book_service")
+     * @Route("/book/service", name="app_service_book")
      */
     public function index(): Response
     {
-        return $this->render('book_service/index.html.twig', [
-            'controller_name' => 'BookServiceController',
+        return $this->render('service_book/index.html.twig', [
+            'controller_name' => 'ServiceBookController',
         ]);
     }
 }

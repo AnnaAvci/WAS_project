@@ -5,37 +5,28 @@
 {% block body %}
 
 			<h1>Profile info</h1>
-    {{ form_start(registrationForm) }}  
-			 {{ form_row(registrationForm.phone_user, {
-            label: 'Phone number'
-            }) }}
-            {{ form_row(registrationForm.name_user,{
+
+            {{ form_start(registrationForm) }}  
+			
+            {{ form_row(registrationForm.first_name,{
                 label: 'Name'
             }) }}
             {{ form_row(registrationForm.email) }}
         
-            {{ form_row(registrationForm.country_user,{
-                label: 'Country'
-            }) }}
-            {{ form_row(registrationForm.city_user,{
-                label: 'City'
-            }) }}
-            {{ form_row(registrationForm.postcode_user,{
-                label: 'Postcode'
-            }) }}
             {{ form_row(registrationForm.plainPassword, {
                 label: 'Password'
             }) }}
-            {{ form_row(registrationForm.picture_user, { attr: {novalidate: 'novalidate'}}, {
+           {#  {{ form_row(registrationForm.picture_user, { attr: {novalidate: 'novalidate'}}, {
                 label: 'Upload profile picture'
-            }) }}
+            }) }} #}
 
 			
-			<button type="submit" class="btn btn-primary mt-20">Save changes</button>
+			<button type="submit" class="button">Save changes</button>
+
 			
 
 		    {{ form_end(registrationForm) }}
 
-		
+             <a href="{{path('delete_user', {'id':user.id}) }}">Delete account</a> 
 
 {% endblock %}

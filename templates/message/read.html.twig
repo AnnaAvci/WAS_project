@@ -4,8 +4,8 @@
 
 {% block body %}
 
-                <a href="{{path("app_messages")}}" class="btn btn-primary">Inbox</a>
-                <a href="{{path("sent")}}" class="btn btn-primary">Sent</a>
+                 <a href="{{path("app_message",{id: message.sender.id})}}" class="btn">Inbox</a>
+                <a href="{{path("sent",{id: message.sender.id})}}" >Sent</a>
                 <p>From {{ message.sender.email }}</p>
                 <p>{{ message.createdAt|date }}</p>
                 <div>{{ message.text }}</div>

@@ -14,17 +14,17 @@
         </thead>
         <tbody>
             {% for location in user.locations %}
-                {% for bookLocation in location.bookLocations %}
+                {% for locationBook in location.locationBooks %}
                     <tr>
-                        <td>{{bookLocation.location}} </td> 
-                        <td><a href="{{path('show_user', {'id':bookLocation.locationClient.id}) }}">{{bookLocation.locationClient}} </a></td> 
-                        <td>{{bookLocation.dateStart | date('d-m-Y')}}</td> 
-                        <td>{{bookLocation.dateEnd | date('d-m-Y')}}</td> 
-                        <td>{{bookLocation.message}}</td> 
-                        {% if bookLocation.isAccepted == 0 %}
-                            <td><a href="{{path('accept_book_location', {'id':bookLocation.id}) }}">Accept</a></td> 
-                            <td><a href="{{path('decline_book_location', {'id':bookLocation.id}) }}">Decline</a></td>
-                        {% elseif bookLocation.isAccepted == 1 %}
+                        <td>{{locationBook.location}} </td> 
+                        <td><a href="{{path('show_user', {'id':locationBook.locationClient.id}) }}">{{locationBook.locationClient}} </a></td> 
+                        <td>{{locationBook.dateStart | date('d-m-Y')}}</td> 
+                        <td>{{locationBook.dateEnd | date('d-m-Y')}}</td> 
+                        <td>{{locationBook.message}}</td> 
+                        {% if locationBook.isAccepted == 0 %}
+                            <td><a href="{{path('accept_location_book', {'id':locationBook.id}) }}">Accept</a></td> 
+                            <td><a href="{{path('decline_location_book', {'id':locationBook.id}) }}">Decline</a></td>
+                        {% elseif locationBook.isAccepted == 1 %}
                             <td>You accepted the request</td>
                         {% else %}
                             <td>You declined the request</td>
@@ -50,17 +50,17 @@
             </thead>
             <tbody>
                 {% for service in user.services %}
-                    {% for bookService in service.bookServices %}
+                    {% for serviceBook in service.serviceBooks %}
                         <tr>
-                            <td>{{bookService.service}} </td> 
-                            <td><a href="{{path('show_user', {'id':bookService.serviceClient.id}) }}">{{bookService.serviceClient}} </a></td> 
-                            <td>{{bookService.dateStart | date('d-m-Y')}}</td> 
-                            <td>{{bookService.dateEnd | date('d-m-Y')}}</td> 
-                            <td>{{bookService.message}}</td> 
-                             {% if bookService.isAccepted == 0 %}
-                            <td><a href="{{path('accept_book_service', {'id':bookService.id}) }}">Accept</a></td> 
-                            <td><a href="{{path('decline_book_service', {'id':bookService.id}) }}">Decline</a></td>
-                        {% elseif bookService.isAccepted == 1 %}
+                            <td>{{serviceBook.service}} </td> 
+                            <td><a href="{{path('show_user', {'id':serviceBook.serviceClient.id}) }}">{{serviceBook.serviceClient}} </a></td> 
+                            <td>{{serviceBook.dateStart | date('d-m-Y')}}</td> 
+                            <td>{{serviceBook.dateEnd | date('d-m-Y')}}</td> 
+                            <td>{{serviceBook.message}}</td> 
+                             {% if serviceBook.isAccepted == 0 %}
+                            <td><a href="{{path('accept_service_book', {'id':serviceBook.id}) }}">Accept</a></td> 
+                            <td><a href="{{path('decline_service_book', {'id':serviceBook.id}) }}">Decline</a></td>
+                        {% elseif serviceBook.isAccepted == 1 %}
                             <td>You accepted the request</td>
                         {% else %}
                             <td>You declined the request</td>
@@ -87,16 +87,16 @@
                 <th>Status:</th>
             </thead>
             <tbody>
-                {% for bookLocation in user.bookLocations %}
+                {% for locationBook in user.locationBooks %}
                         <tr>
-                            <td>{{bookLocation.location}} </td> 
-                            <td><a href="{{path('show_user', {'id':bookLocation.location.ownerLocation.id}) }}">{{bookLocation.location.ownerLocation}} </a></td> 
-                            <td>{{bookLocation.dateStart | date('d-m-Y')}}</td> 
-                            <td>{{bookLocation.dateEnd | date('d-m-Y')}}</td> 
-                            <td>{{bookLocation.message}}</td>  
-                            {% if bookLocation.isAccepted == 0 %}
+                            <td>{{locationBook.location}} </td> 
+                            <td><a href="{{path('show_user', {'id':locationBook.location.ownerLocation.id}) }}">{{locationBook.location.ownerLocation}} </a></td> 
+                            <td>{{locationBook.dateStart | date('d-m-Y')}}</td> 
+                            <td>{{locationBook.dateEnd | date('d-m-Y')}}</td> 
+                            <td>{{locationBook.message}}</td>  
+                            {% if locationBook.isAccepted == 0 %}
                                  <td> Request pending </td> 
-                            {% elseif bookLocation.isAccepted == 1 %}
+                            {% elseif locationBook.isAccepted == 1 %}
                                  <td> Request accepted </td>
                             {% else %}
                                  <td> Request declined </td>
@@ -118,16 +118,16 @@
                 <th>Status:</th>
             </thead>
             <tbody>
-                {% for bookService in user.bookServices %}
+                {% for serviceBook in user.serviceBooks %}
                         <tr>
-                            <td>{{bookService.service}} </td> 
-                            <td><a href="{{path('show_user', {'id':bookService.service.providerService.id}) }}">{{bookService.service.providerService}} </a></td> 
-                            <td>{{bookService.dateStart | date('d-m-Y')}}</td> 
-                            <td>{{bookService.dateEnd | date('d-m-Y')}}</td> 
-                            <td>{{bookService.message}}</td> 
-                            {% if bookService.isAccepted == 0 %}
+                            <td>{{serviceBook.service}} </td> 
+                            <td><a href="{{path('show_user', {'id':serviceBook.service.providerService.id}) }}">{{serviceBook.service.providerService}} </a></td> 
+                            <td>{{serviceBook.dateStart | date('d-m-Y')}}</td> 
+                            <td>{{serviceBook.dateEnd | date('d-m-Y')}}</td> 
+                            <td>{{serviceBook.message}}</td> 
+                            {% if serviceBook.isAccepted == 0 %}
                                  <td> Request pending </td> 
-                            {% elseif bookService.isAccepted == 1 %}
+                            {% elseif serviceBook.isAccepted == 1 %}
                                  <td> Request accepted </td>
                             {% else %}
                                  <td> Request declined </td>

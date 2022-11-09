@@ -52,7 +52,7 @@ class Location
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="locations")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $owner_location;
+    private $owner;
 
 
     /**
@@ -72,14 +72,19 @@ class Location
     private $commentUserLocations;
 
     /**
-     * @ORM\OneToMany(targetEntity=BookLocation::class, mappedBy="location")
+     * @ORM\OneToMany(targetEntity=LocationBook::class, mappedBy="location")
      */
-    private $bookLocations;
+    private $locationBooks;
 
     /**
      * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="location")
      */
     private $likes;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
 
    
 
@@ -88,7 +93,7 @@ class Location
         $this->photoLocations = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->commentUserLocations = new ArrayCollection();
-        $this->bookLocations = new ArrayCollection();
+        $this->locationBooks = new ArrayCollection();
         $this->likes = new ArrayCollection();
     }
 
@@ -158,14 +163,14 @@ class Location
         return $this;
     }
 
-    public function getOwnerLocation(): ?User
+    public function getOwner(): ?User
     {
-        return $this->owner_location;
+        return $this->owner;
     }
 
-    public function setOwnerLocation(?User $owner_location): self
+    public function setOwner(?User $owner): self
     {
-        $this->owner_location = $owner_location;
+        $this->owner = $owner;
 
         return $this;
     }
@@ -245,29 +250,29 @@ class Location
     }
 
     /**
-     * @return Collection<int, BookLocation>
+     * @return Collection<int, LocationBook>
      */
-    public function getBookLocations(): Collection
+    public function getLocationBooks(): Collection
     {
-        return $this->bookLocations;
+        return $this->locationBooks;
     }
 
-    public function addBookLocation(BookLocation $bookLocation): self
+    public function addLocationBook(LocationBook $locationBook): self
     {
-        if (!$this->bookLocations->contains($bookLocation)) {
-            $this->bookLocations[] = $bookLocation;
-            $bookLocation->setLocation($this);
+        if (!$this->locationBooks->contains($locationBook)) {
+            $this->locationBooks[] = $locationBook;
+            $locationBook->setLocation($this);
         }
 
         return $this;
     }
 
-    public function removeBookLocation(BookLocation $bookLocation): self
+    public function removeLocationBook(LocationBook $locationBook): self
     {
-        if ($this->bookLocations->removeElement($bookLocation)) {
+        if ($this->locationBooks->removeElement($locationBook)) {
             // set the owning side to null (unless already changed)
-            if ($bookLocation->getLocation() === $this) {
-                $bookLocation->setLocation(null);
+            if ($locationBook->getLocation() === $this) {
+                $locationBook->setLocation(null);
             }
         }
 
@@ -316,6 +321,18 @@ class Location
             if ($like->getUser() === $user) return true;
         }
         return false;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
   
 

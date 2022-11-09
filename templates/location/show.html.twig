@@ -4,15 +4,8 @@
 
 {% block body %}
     <div class="wrapper">
-            <h1 class="page-title">{{location}}
-                {# only the owner can edit/delete a location #}
-                <div class="edit-delete">
-                    {% if app.user.id == location.ownerLocation.id %}
-                        <a href="{{path('update_location', {'id':location.id}) }}"><i class="fa-solid fa-pencil"></i></a> <br>
-                        <a href="{{path('delete_location', {'id':location.id}) }}"><i class="fa-solid fa-trash"></i></a> 
-                    {% endif %}
-                </div> 
-            </h1>
+            <h1 class="page-title">{{location}}</h1>
+             {# <a href="{{path('message-to-location', {'id':location.id}) }}"> Send a message to the owner </a> #}
 
 
             <div class="all-cards">
@@ -30,29 +23,40 @@
                 <strong>{{location.priceLocation}} $ / hour</strong> 
                 </p>
                 <p>
-                    <img src={{ asset("img/" ~ location.ownerLocation.pictureUser )}} width="30" height="30" alt class="profile-picture">
-                    <strong>{{location.ownerLocation}}</strong> <br>
+                    <img src={{ asset("img/" ~ location.owner.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                    <strong>{{location.owner}}</strong> <br>
                 </p>
                 <p> 
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus corporis enim, magni asperiores, possimus dolores recusandae earum iste laboriosam aperiam dolore fugit, veniam blanditiis a eveniet odit quidem alias saepe.
-                Eaque, quisquam. Eligendi, similique corrupti ex quia soluta libero voluptate consequuntur nihil tempore itaque aliquam est dicta voluptates ipsum quo rem officiis quos. Pariatur non asperiores quae animi, possimus minus.
-                Aliquam, eius deserunt sint cum non aliquid, illum voluptatum temporibus repellat recusandae beatae blanditiis odio, laborum unde voluptates placeat ea? Aperiam sit expedita vitae quibusdam, quis nisi quas impedit fuga.
+                {{location.description}}
                 </p>
                 
-                <div>
+                <div class="post-comments">
                 <h2>Reviews:</h2>
                 {% for commentUserLocation in location.commentUserLocations %}
-                    <img src={{ asset("img/" ~ commentUserLocation.commenter.pictureUser )}} width="30" height="30" alt class="profile-picture">
-                    <strong>{{commentUserLocation.commenter.nameUser}}</strong>
+                   
+                    {% if not commentUserLocation.commenter %}
+                        <strong>Deleted account</strong>
+                    {% else %}
+                         <img src={{ asset("img/" ~ commentUserLocation.commenter.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                         <strong>{{commentUserLocation.commenter.firstName}}</strong>
+                    {% endif %}
+                    
                     {{commentUserLocation.dateComment | date('d-m-Y H:i')}} <br>
-                    {{commentUserLocation.textComment}} <br>
+                    <div class="flex">
+                        {{commentUserLocation.textComment}} <br>
+                        {% if app.user and app.user.id == commentUserLocation.commenter.id %}
+                            <a href="{{path('delete_comment', {'id':commentUserLocation.id}) }}"><i class="fa-solid fa-xmark"></i> </a>
+                        {% endif %}
+                    </div>
                 {% endfor %}
-                <strong>Add comment:</strong>
-                {{form(formCommentUserLocation)}} <br>
+                {% if app.user %}
+                    <strong>Add comment:</strong>
+                        {{form(formCommentUserLocation)}} <br>
+                    <strong>Book this location:</strong>
+                        {{form(formLocationBook)}} 
+                {% endif %}
 
-
-                <strong>Book this location:</strong>
-                {{form(formBookLocation)}} 
+                
                 </div>
             </div>
     </div>

@@ -45,7 +45,7 @@ class Service
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="services")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $provider_service;
+    private $owner;
 
 
     /**
@@ -64,14 +64,19 @@ class Service
     private $commentUserServices;
 
     /**
-     * @ORM\OneToMany(targetEntity=BookService::class, mappedBy="service")
+     * @ORM\OneToMany(targetEntity=ServiceBook::class, mappedBy="service")
      */
-    private $bookServices;
+    private $serviceBooks;
 
     /**
      * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="service")
      */
     private $likes;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
 
 
 
@@ -82,7 +87,7 @@ class Service
         $this->photoServices = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->commentUserServices = new ArrayCollection();
-        $this->bookServices = new ArrayCollection();
+        $this->serviceBooks = new ArrayCollection();
         $this->likes = new ArrayCollection();
     }
 
@@ -140,14 +145,14 @@ class Service
         return $this;
     }
 
-    public function getProviderService(): ?User
+    public function getOwner(): ?User
     {
-        return $this->provider_service;
+        return $this->owner;
     }
 
-    public function setProviderService(?User $provider_service): self
+    public function setOwner(?User $owner): self
     {
-        $this->provider_service = $provider_service;
+        $this->owner = $owner;
 
         return $this;
     }
@@ -239,29 +244,29 @@ class Service
     }
 
     /**
-     * @return Collection<int, BookService>
+     * @return Collection<int, ServiceBook>
      */
-    public function getBookServices(): Collection
+    public function getServiceBooks(): Collection
     {
-        return $this->bookServices;
+        return $this->serviceBooks;
     }
 
-    public function addBookService(BookService $bookService): self
+    public function addServiceBook(ServiceBook $serviceBook): self
     {
-        if (!$this->bookServices->contains($bookService)) {
-            $this->bookServices[] = $bookService;
-            $bookService->setService($this);
+        if (!$this->serviceBooks->contains($serviceBook)) {
+            $this->serviceBooks[] = $serviceBook;
+            $serviceBook->setService($this);
         }
 
         return $this;
     }
 
-    public function removeBookService(BookService $bookService): self
+    public function removeServiceBook(ServiceBook $serviceBook): self
     {
-        if ($this->bookServices->removeElement($bookService)) {
+        if ($this->serviceBooks->removeElement($serviceBook)) {
             // set the owning side to null (unless already changed)
-            if ($bookService->getService() === $this) {
-                $bookService->setService(null);
+            if ($serviceBook->getService() === $this) {
+                $serviceBook->setService(null);
             }
         }
 
@@ -311,6 +316,18 @@ class Service
             if ($like->getUser() === $user) return true;
         }
         return false;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
 }

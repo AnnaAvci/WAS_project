@@ -1,3 +1,5 @@
+{% block body %}
+	
 
 {% for service in services %}
 
@@ -10,7 +12,7 @@
 		<h3 class="h3">
 			{{service.nameService}}
 			<br />
-		{{service.priceservice}} $ per hour
+		{{service.priceService}} $ per hour
 		<a href="{{path("service_like", {'id': service.id})}}" class="btn btn-link js-like">
 				<span class="js-likes">{{service.likes | length }}</span>
 
@@ -26,20 +28,20 @@
 
 {% endfor %}
 
-
+{% endblock %}
 
 {% block javascripts %}
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script>
 
-        function onClickBtnLike(event) {
+        /*function onClickBtnLike(event) {
             event.preventDefault();
 
             const url = this.href;
             const spanCount = this.querySelector('span.js-likes');
             const icone = this.querySelector('i');
 
-            axios.get(url).then(function (response) {
+            axios.get(url).then(function(response) {
             spanCount.textContent = response.data.likes;
 
             if (icone.classList.contains('fa-solid')) 
@@ -53,10 +55,10 @@
                 window.alert("Please log in to like a post")
             }
             });
-            }
+		}
 
-            document.querySelectorAll('a.js-like').forEach(function (link) {
+            document.querySelectorAll('a.js-like').forEach(function(link) {
             link.addEventListener('click', onClickBtnLike);
-        })
+        })*/
 	</script>
 {% endblock %}

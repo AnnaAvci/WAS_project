@@ -47,20 +47,6 @@ class RegistrationController extends AbstractController
                 )
             );
 
-         // getting uploaded photos
-         $pictureUser = $form->get('picture_user')->getData();
-        
-             // generating a unique name for each photo to avoid mix-ups
-             $file = md5(uniqid()).'.'.$pictureUser->guessExtension();
-             //copying the photos to the uploads folder; first we put the destination, then the file
-             $pictureUser->move(
-                 $this->getParameter('img_directory'),
-                 $file
-             );
-        
-             $user->setPictureUser($file);
-             $user->setRegisterDate(new \DateTime());
-
              if($form->get('rolePhotographer')->getData()) {
                  $user->addRole("ROLE_PHOTOGRAPHER");
              }
@@ -69,25 +55,49 @@ class RegistrationController extends AbstractController
                  $user->addRole("ROLE_HOST");
              }
 
+
+
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                // getting uploaded photos
+                    $pictureUser = $form->get('picture_user')->getData();
+               
+                    // generating a unique name for each photo to avoid mix-ups
+                    $file = md5(uniqid()) . '.' . $pictureUser->guessExtension();
+                    //copying the photos to the uploads folder; first we put the destination, then the file
+                    $pictureUser->move(
+                        $this->getParameter('images_directory'),
+                        $file
+                    );
+                    $nom = $user->getPictureUser();
+                    // On supprime le fichier
+                    unlink($this->getParameter('images_directory') . '/' . $nom);
+                    // On créer on stock dans la bdd son nom et l'img stocké dans le disque 
+                    $user->setPictureUser($file); 
+                        //} 
+        
+
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+            
 
+        } 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
                 (new TemplatedEmail())
-                    ->from(new Address('admin@example.com', 'Admin Site'))
+                    ->from(new Address('avci.anne@gmail.com', 'WAS'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
-            return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request
-            );
-        }
+
+            return $this->redirectToRoute('app_login');
+        
+            }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
@@ -118,6 +128,30 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('show_user');
+    }
+
+
+    /**
+     * @Route("/verifyEmailLink/{id}", name="verify_email_link")
+     */
+    public function verifyUserEmailLink(User $user)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // send email validation link
+        // generate a signed url and email it to the user
+        $this->emailVerifier->sendEmailConfirmation(
+            'app_verify_email',
+            $user,
+            (new TemplatedEmail())
+                ->from(new Address('empuntemonponey@gmail.com', 'EmprunteMonPoney'))
+                ->to($user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+        );
+        // flash message
+        $this->addFlash('message', 'You will receive an email');
+        return $this->redirectToRoute('show_user');
     }
 }

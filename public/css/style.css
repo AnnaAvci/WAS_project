@@ -3,19 +3,115 @@
 *{
     font-family: 'Poppins', sans-serif;
     padding: 0;
+    margin:0;
     box-sizing: border-box;
 }
 
+body, .navbar-ul, .footer{
+    width: 100%;
+}
 
 img {
     object-fit: cover;
 }
 
-.flex-row{
+.flex{
     display:flex;
+}
+
+.flex-row{
+    display: flex;
     flex-direction: row;
 }
-/************** HOMAPAGE *************/
+/************** register *************/
+
+
+
+
+/************** sign-in *************/
+.signIn{
+    width:100%;
+    display: flex;
+    flex-direction: row;
+}
+.imgBx{
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
+
+.imgBx img{
+    width: 100%;
+    height:100%;
+    object-fit: cover;
+}
+
+.formBx{
+    width:50%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.formBx form h1, #signUph1
+{
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.formBx form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.inputBx input:valid,
+.inputBx input:focus
+{
+    border: 1px solid #ff5a26;
+}
+
+.signInBtn
+{
+    width: 80%;
+    font-size: 1.2em;
+    color: #fff;
+    padding: 0.5em;
+    margin: 1em 0 1em 0;
+    cursor: pointer;
+    border: none;
+    background: #ff5a26;
+    border-radius: 10px;
+}
+
+
+/*  */
+#inputEmail, #inputPassword, #registration_form_first_name, #registration_form_email, #registration_form_plainPassword_first, #registration_form_plainPassword_second,
+#registration_form_picture_user 
+{
+    width: 100%;
+    margin: 0;
+}
+
+.regFormInputs{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5em;
+}
+
+
+
+
+/************** HOMEPAGE *************/
 
 .logo
 {
@@ -26,6 +122,28 @@ img {
     font-weight: 700;
     font-family: 'Ubuntu', serif;
     font-weight: bold;
+}
+
+.banner{
+    position: relative;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.banner img{
+     position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.slogan{
+    position: relative;
+    color: #fff;
+    font-size: 6em;
+    text-align: center;
+    top: 100px;
 }
 
 
@@ -74,72 +192,6 @@ img {
 
 /************** SEARCHBAR *************/
 
-.search-items{
-    width:100%;
-}
-
-input, textarea, select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid black;
-  }
-
-.searchField{
-    display: flex;
-    width: 100%;
-    flex-direction:row;
-    justify-content: flex-start;
-    align-items:center;
-    width:100%;
-}
-
-.searchField input, .searchField select{
-    height: 3em;
-    margin: 0.5em;
-    background-color:white;
-}
-
-.searchField input::-webkit-outer-spin-button,
-.searchField input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.searchField input[type=number] {
-    -moz-appearance: textfield;
-  }
-
-.searchField input::placeholder{
-    text-align: center;
-    
-  }
-
-#price-search{
-    display:flex;
-    justify-content: space-between;
-    margin: 0 0.5em;
-    
-}
-
-#q{
-    min-width: 20em;
-}
-
-.price-search-row-country{
-    max-width: 6em;
-}
-
-.form-select{
-    text-align: center;
-}
-
-.btn-search{
-    width: 8em;
-    height: 3em;
-    background-color: white;
-    border-radius:20px;
-    border:1px solid black;
-}
 
 
 /************** CARDS *************/  
@@ -222,13 +274,10 @@ input, textarea, select {
     display: flex;
     flex-direction: column;
     justify-content:center;
+    align-items: center;
+    margin-bottom: 5em;
 }
 
-
-
-#countryLocation{
-    max-width: 10em;
-}
 
 .owner-edit{
     display:flex;
@@ -247,7 +296,7 @@ input, textarea, select {
 }
 
 .button{
-    background: #f6ba3a;
+    background: rgba(255,90,38);
     color: #fff;
     padding: 20px 40px;
     text-decoration: none;
@@ -257,6 +306,23 @@ input, textarea, select {
     letter-spacing: 2px;
     border-radius: 10px;
     width: 10em;
+    border: none;
+}
+
+.button-long{
+    background: rgba(255,90,38, 0.8);
+    color: #fff;
+    padding: 20px 40px;
+    text-decoration: none;
+    font-size: 1.1em;
+    margin-top: 5px;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+    border-radius: 10px;
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    border: none;
 }
 
 .button a {
@@ -288,6 +354,9 @@ input, textarea, select {
     color:black;
 }
 
+.socials{
+    gap: 10px;
+}
 /************** COMMENTS *************/
 
 
@@ -295,6 +364,65 @@ input, textarea, select {
 .reservation-table{
     width:80%;
     margin-top:2em;
-    margin-bottom: 3em;
+    margin-bottom: 5em;
     text-align: center;
 }
+
+
+.form{
+    padding-bottom:5em;
+}
+
+/************** MESSAGES *************/
+.messages{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width: 90%;
+}
+
+.message-table{
+    width:100%;
+    margin-top:2em;
+    margin-bottom: 5em;
+    text-align: center;
+}
+
+/************** Media Queries *************/
+
+@media (max-width: 480px) {
+  .all-cards{
+    flex-direction: column;
+    width:100%;
+  }
+
+  .card{
+    width: 80%;
+  }
+
+  .card-and-desc{
+    width: 80%;
+  }
+  .slogan{
+    font-size: 3em;
+    top:50px;
+  }
+
+  
+ 
+    .tabs__body{
+        flex-direction: column;
+        width:100%;
+    }
+
+    #q, #min, #max, #countryLocation, #countryService{
+        width: 100%;
+    }
+}
+
+
+
+
+
+

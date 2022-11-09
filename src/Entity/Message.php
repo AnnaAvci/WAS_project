@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\InstantMessageRepository;
+use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=InstantMessageRepository::class)
+ * @ORM\Entity(repositoryClass=MessageRepository::class)
  */
-class InstantMessage
+class Message
 {
     /**
      * @ORM\Id
@@ -34,13 +34,15 @@ class InstantMessage
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="sent")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $sender;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="received")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $recipient;
 
@@ -107,6 +109,10 @@ class InstantMessage
         $this->recipient = $recipient;
 
         return $this;
+    }
+
+    public function findRecipient(?User $recipient){
+        
     }
 
     public function __construct(){

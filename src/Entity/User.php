@@ -2,19 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use App\Entity\CommentUserLocation;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
- * @UniqueEntity(fields={"name_user"}, message="Username is already taken")
  * (picture_user=Images::class, mappedBy="user", cascade={"persist"})
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -39,6 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     *
      */
     private $password;
 
@@ -46,40 +47,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=50)
      * @Assert\Length(min=5, max=15, minMessage="Username must be at least 5 characters", maxMessage="Username can't exceed 15 characters")
      */
-    private $name_user;
+    private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * 
      */
-    private $picture_user;
+   private $picture_user;
     
 
-
     /**
-     * @ORM\Column(type="string", length=50) 
-     */
-    private $phone_user;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=false)
      */
     private $registerDate;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $country_user;
-
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $city_user;
-
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    private $postcode_user;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -87,60 +69,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified;
 
     /**
-     * @ORM\OneToMany(targetEntity=Service::class, mappedBy="provider_service")
+     * @ORM\OneToMany(targetEntity=Service::class, mappedBy="owner")
      */
     private $services;
 
     /**
-     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="owner_location")
+     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="owner")
      */
     private $locations;
 
     /**
-     * @ORM\OneToMany(targetEntity=CommentUserLocation::class, mappedBy="commenter")
+     * @ORM\OneToMany(targetEntity=CommentUserLocation::class, mappedBy="commenter",orphanRemoval=false)
      */
     private $commentUserLocations;
 
     /**
-     * @ORM\OneToMany(targetEntity=CommentUserService::class, mappedBy="commenter")
+     * @ORM\OneToMany(targetEntity=CommentUserService::class, mappedBy="commenter", orphanRemoval=false)
      */
     private $commentUserServices;
 
     /**
-     * @ORM\OneToMany(targetEntity=BookService::class, mappedBy="serviceClient")
+     * @ORM\OneToMany(targetEntity=ServiceBook::class, mappedBy="serviceClient", orphanRemoval=false)
      */
-    private $bookServices;
+    private $serviceBooks;
 
     /**
-     * @ORM\OneToMany(targetEntity=BookLocation::class, mappedBy="locationClient")
+     * @ORM\OneToMany(targetEntity=LocationBook::class, mappedBy="locationClient", orphanRemoval=false)
      */
-    private $bookLocations;
+    private $locationBooks;
 
     /**
-     * @ORM\OneToMany(targetEntity=InstantMessage::class, mappedBy="sender", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="sender", orphanRemoval=false)
      */
     private $sent;
 
     /**
-     * @ORM\OneToMany(targetEntity=InstantMessage::class, mappedBy="recipient", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="recipient", orphanRemoval=true)
      */
     private $received;
 
     /**
-     * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="user",orphanRemoval=true)
      */
     private $likes;
 
-
-
+ 
     public function __construct()
     {
         $this->services = new ArrayCollection();
         $this->locations = new ArrayCollection();
         $this->commentUserLocations = new ArrayCollection();
         $this->commentUserServices = new ArrayCollection();
-        $this->bookServices = new ArrayCollection();
-        $this->bookLocations = new ArrayCollection();
+        $this->serviceBooks = new ArrayCollection();
+        $this->locationBooks = new ArrayCollection();
         $this->sent = new ArrayCollection();
         $this->received = new ArrayCollection();
         $this->likes = new ArrayCollection();
@@ -183,7 +164,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->name_user;
+        return (string) $this->firstName;
     }
 
     /**
@@ -244,19 +225,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getNameUser(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->name_user;
+        return $this->firstName;
     }
 
-    public function setNameUser(string $name_user): self
+    public function setFirstName(string $firstName): self
     {
-        $this->name_user = $name_user;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getPictureUser(): ?string
+   public function getPictureUser(): ?string
     {
         return $this->picture_user;
     }
@@ -268,17 +249,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPhoneUser(): ?string
-    {
-        return $this->phone_user;
-    }
-
-    public function setPhoneUser(?string $phone_user): self
-    {
-        $this->phone_user = $phone_user;
-
-        return $this;
-    }
 
     public function getRegisterDate(): ?\DateTimeInterface
     {
@@ -292,41 +262,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCountryUser(): ?string
-    {
-        return $this->country_user;
-    }
-
-    public function setCountryUser(string $country_user): self
-    {
-        $this->country_user = $country_user;
-
-        return $this;
-    }
-
-    public function getCityUser(): ?string
-    {
-        return $this->city_user;
-    }
-
-    public function setCityUser(string $city_user): self
-    {
-        $this->city_user = $city_user;
-
-        return $this;
-    }
-
-    public function getPostcodeUser(): ?string
-    {
-        return $this->postcode_user;
-    }
-
-    public function setPostcodeUser(string $postcode_user): self
-    {
-        $this->postcode_user = $postcode_user;
-
-        return $this;
-    }
 
     public function isIsVerified(): ?bool
     {
@@ -358,7 +293,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->services->contains($service)) {
             $this->services[] = $service;
-            $service->setProviderService($this);
+            $service->setOwner($this);
         }
 
         return $this;
@@ -368,8 +303,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->services->removeElement($service)) {
             // set the owning side to null (unless already changed)
-            if ($service->getProviderService() === $this) {
-                $service->setProviderService(null);
+            if ($service->getOwner() === $this) {
+                $service->setOwner(null);
             }
         }
 
@@ -388,7 +323,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->locations->contains($location)) {
             $this->locations[] = $location;
-            $location->setOwnerLocation($this);
+            $location->setOwner($this);
         }
 
         return $this;
@@ -398,8 +333,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->locations->removeElement($location)) {
             // set the owning side to null (unless already changed)
-            if ($location->getOwnerLocation() === $this) {
-                $location->setOwnerLocation(null);
+            if ($location->getOwner() === $this) {
+                $location->setOwner(null);
             }
         }
 
@@ -468,33 +403,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     public function __toString(){
-        return $this->name_user;
+        return $this->firstName;
     }
 
     /**
-     * @return Collection<int, BookService>
+     * @return Collection<int, ServiceBook>
      */
-    public function getBookServices(): Collection
+    public function getServiceBooks(): Collection
     {
-        return $this->bookServices;
+        return $this->serviceBooks;
     }
 
-    public function addBookService(BookService $bookService): self
+    public function addServiceBook(ServiceBook $serviceBook): self
     {
-        if (!$this->bookServices->contains($bookService)) {
-            $this->bookServices[] = $bookService;
-            $bookService->setServiceClient($this);
+        if (!$this->serviceBooks->contains($serviceBook)) {
+            $this->serviceBooks[] = $serviceBook;
+            $serviceBook->setServiceClient($this);
         }
 
         return $this;
     }
 
-    public function removeBookService(BookService $bookService): self
+    public function removeServiceBook(ServiceBook $serviceBook): self
     {
-        if ($this->bookServices->removeElement($bookService)) {
+        if ($this->serviceBooks->removeElement($serviceBook)) {
             // set the owning side to null (unless already changed)
-            if ($bookService->getServiceClient() === $this) {
-                $bookService->setServiceClient(null);
+            if ($serviceBook->getServiceClient() === $this) {
+                $serviceBook->setServiceClient(null);
             }
         }
 
@@ -502,29 +437,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, BookLocation>
+     * @return Collection<int, LocationBook>
      */
-    public function getBookLocations(): Collection
+    public function getLocationBooks(): Collection
     {
-        return $this->bookLocations;
+        return $this->locationBooks;
     }
 
-    public function addBookLocation(BookLocation $bookLocation): self
+    public function addLocationBook(LocationBook $locationBook): self
     {
-        if (!$this->bookLocations->contains($bookLocation)) {
-            $this->bookLocations[] = $bookLocation;
-            $bookLocation->setLocationClient($this);
+        if (!$this->locationBooks->contains($locationBook)) {
+            $this->locationBooks[] = $locationBook;
+            $locationBook->setLocationClient($this);
         }
 
         return $this;
     }
 
-    public function removeBookLocation(BookLocation $bookLocation): self
+    public function removeLocationBook(LocationBook $locationBook): self
     {
-        if ($this->bookLocations->removeElement($bookLocation)) {
+        if ($this->locationBooks->removeElement($locationBook)) {
             // set the owning side to null (unless already changed)
-            if ($bookLocation->getLocationClient() === $this) {
-                $bookLocation->setLocationClient(null);
+            if ($locationBook->getLocationClient() === $this) {
+                $locationBook->setLocationClient(null);
             }
         }
 
@@ -532,14 +467,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, InstantMessage>
+     * @return Collection<int, Message>
      */
     public function getSent(): Collection
     {
         return $this->sent;
     }
 
-    public function addSent(InstantMessage $sent): self
+    public function addSent(Message $sent): self
     {
         if (!$this->sent->contains($sent)) {
             $this->sent[] = $sent;
@@ -549,7 +484,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeSent(InstantMessage $sent): self
+    public function removeSent(Message $sent): self
     {
         if ($this->sent->removeElement($sent)) {
             // set the owning side to null (unless already changed)
@@ -562,14 +497,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, InstantMessage>
+     * @return Collection<int, Message>
      */
     public function getReceived(): Collection
     {
         return $this->received;
     }
 
-    public function addReceived(InstantMessage $received): self
+    public function addReceived(Message $received): self
     {
         if (!$this->received->contains($received)) {
             $this->received[] = $received;
@@ -579,7 +514,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeReceived(InstantMessage $received): self
+    public function removeReceived(Message $received): self
     {
         if ($this->received->removeElement($received)) {
             // set the owning side to null (unless already changed)
@@ -620,6 +555,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
 
  
 

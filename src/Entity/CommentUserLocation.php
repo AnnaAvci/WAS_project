@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ORM\JoinColumn;
 use App\Entity\User;
 use DateTimeInterface;
 use App\Entity\Location;
@@ -32,7 +33,8 @@ class CommentUserLocation
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commentUserLocations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $commenter;
 

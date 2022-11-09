@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Service;
 use App\Entity\Location;
-use App\Entity\BookService;
-use App\Entity\BookLocation;
+use App\Entity\ServiceBook;
+use App\Entity\LocationBook;
 use App\Entity\PhotoService;
 use App\Entity\PhotoLocation;
 use App\Form\RegistrationFormType;
@@ -18,71 +18,60 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/user", name="app_user")
-     */
-    public function index(ManagerRegistry $doctrine): Response
-    {
-        $users = $doctrine->getRepository(User::class)->findAll();
-        return $this->render('user/index.html.twig', [
-            'users' => $users,
-        ]);
-    }
-
-
-     /**
-     * @Route("/user/declineBookLocation/{id}", name="decline_book_location")
-     * 
-     */
-    public function declineBookLocation(ManagerRegistry $doctrine, BookLocation $bookLocation, User $user)
-    {
-    
-        $entityManager = $doctrine->getManager();
-        $bookLocation->setIsAccepted(2);
-        $entityManager->flush();
-        return $this->redirectToRoute('show_user',["id"=>$user->getId()]);
-    }
  
-
-     /**
-     * @Route("/user/declineBookService/{id}", name="decline_book_service")
+    /**
+     * @Route("/user/declineLocationBook/{id}", name="decline_locaion_book")
      * 
      */
-    public function declineBookService(ManagerRegistry $doctrine, BookService $bookService, User $user)
+    public function declineLocationBook(ManagerRegistry $doctrine, LocationBook $locationBook, User $user)
     {
     
         $entityManager = $doctrine->getManager();
-        $bookService->setIsAccepted(2);
+        $locationBook->setIsAccepted(2);
         $entityManager->flush();
         return $this->redirectToRoute('show_user',["id"=>$user->getId()]);
     }
 
 
     /**
-     * @Route("/user/acceptBookLocation/{id}", name="accept_book_location")
+     * @Route("/user/declineServiceBook/{id}", name="decline_service_book")
      * 
      */
-    public function acceptBookLocation(ManagerRegistry $doctrine, BookLocation $bookLocation)
+    public function declineServiceBook(ManagerRegistry $doctrine, ServiceBook $serviceBook, User $user)
     {
     
         $entityManager = $doctrine->getManager();
-        $bookLocation->setIsAccepted(1);
+        $serviceBook->setIsAccepted(2);
         $entityManager->flush();
-        return $this->redirectToRoute('show_user' ,["id"=>$bookLocation->getLocation()->getOwnerLocation()->getId()] );
+        return $this->redirectToRoute('show_user',["id"=>$user->getId()]);
+    }
+
+
+    /**
+     * @Route("/user/acceptLocationBook/{id}", name="accept_location_book")
+     * 
+     */
+    public function acceptLocationBook(ManagerRegistry $doctrine, LocationBook $locationBook)
+    {
+    
+        $entityManager = $doctrine->getManager();
+        $locationBook->setIsAccepted(1);
+        $entityManager->flush();
+        return $this->redirectToRoute('show_user' ,["id"=> $locationBook->getLocation()->getOwner()->getId()] );
      
     }
 
     /**
-     * @Route("/user/acceptBookService/{id}", name="accept_book_service")
+     * @Route("/user/acceptServiceBook/{id}", name="accept_service_book")
      * 
      */
-    public function acceptBookService(ManagerRegistry $doctrine, BookService $bookService)
+    public function acceptServiceBook(ManagerRegistry $doctrine, ServiceBook $serviceBook)
     {
     
         $entityManager = $doctrine->getManager();
-        $bookService->setIsAccepted(1);
+        $serviceBook->setIsAccepted(1);
         $entityManager->flush();
-        return $this->redirectToRoute('show_user' ,["id"=>$bookService->getService()->getProviderService()->getId()] );
+        return $this->redirectToRoute('show_user' ,["id"=> $serviceBook->getService()->getOwner()->getId()] );
      
     }
 
@@ -91,13 +80,46 @@ class UserController extends AbstractController
      */
     public function show(ManagerRegistry $doctrine, User $user):Response
     {
-        $location = $doctrine->getRepository(Location::class)->findBy(["owner_location" => $this->getUser()]);
-        $service = $doctrine->getRepository(Service::class)->findBy(["provider_service" => $this->getUser()]);
+        $location = $doctrine->getRepository(Location::class)->findBy(["owner" => $this->getUser()]);
+        $service = $doctrine->getRepository(Service::class)->findBy(["owner" => $this->getUser()]);
         return $this->render ('user/show.html.twig', [
             'user' => $user,
             'location'=>$location,
             'service'=>$service,
         ]);
+    }
+
+
+    /**
+     * @Route("/account/delete/{id}", name="delete_user")
+     */
+    public function deleteUserAccount(ManagerRegistry $doctrine, User $user): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // deny the access if the user is not completely authenticated
+
+        if ($this->getUser() === $user) {
+            // set token to null or it will throw an error 
+            //$user = $this->getUser();
+            $this->container->get('security.token_storage')->setToken(null);
+
+            $entityManager = $doctrine->getManager();
+          /*   $locationComments= $user->getCommentUserLocations();
+            
+            foreach($locationComments as $comment){
+                $comment->setCommenter('');
+            } */
+            $entityManager->remove($user);
+            $entityManager->flush();
+
+          
+
+            return $this->redirectToRoute('app_home');
+        } else {
+            return $this->redirectToRoute('app_home');
+        }
+
+      
     }
 
 
@@ -126,6 +148,7 @@ class UserController extends AbstractController
             }
 
             return $this->render('user/edit.html.twig', [
+                'user' => $user,
                 'registrationForm' => $form->createView(),
             ]);
         } else {

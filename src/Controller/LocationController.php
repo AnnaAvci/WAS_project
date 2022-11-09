@@ -6,9 +6,9 @@ use App\Entity\User;
 use App\Entity\Location;
 use App\Entity\PostLike;
 use App\Form\LocationType;
-use App\Entity\BookLocation;
+use App\Entity\LocationBook;
 use App\Entity\PhotoLocation;
-use App\Form\BookLocationType;
+use App\Form\LocationBookType;
 use App\Entity\CommentUserLocation;
 use App\Form\CommentUserLocationType;
 use App\Repository\LocationRepository;
@@ -82,7 +82,7 @@ class LocationController extends AbstractController
 
                 // "hydration"
                 $location = $form->getData();
-                $location->setOwnerLocation($this->getUser());
+                $location->setOwner($this->getUser());
                 // prepares data for being inserted into the database
                 $entityManager->persist($location);
                 // inserts data in database
@@ -108,7 +108,7 @@ class LocationController extends AbstractController
     {
 
         $name = $photoLocation->getNamePhoto();
-        unlink($this->getParameter('images_directory') . '/' . $name);
+        unlink($this->getParameter('img_directory') . '/' . $name);
         $entityManager = $doctrine->getManager();
         $entityManager->remove($photoLocation);
         $entityManager->flush();
@@ -132,10 +132,11 @@ class LocationController extends AbstractController
 
 
 
+
     /**
      * @Route("/location/{id}", name="show_location")
      */
-    public function show(Location $location, ManagerRegistry $doctrine, CommentUserLocation $commentUserLocation = null, BookLocation $bookLocation = null, Request $request): Response
+    public function show(Location $location, ManagerRegistry $doctrine, CommentUserLocation $commentUserLocation = null, LocationBook $locationBook = null, Request $request): Response
     {
         //adding comments to a location from a dedicated form type
         // Classes declared as null will get their data from a form that will be on that page
@@ -162,36 +163,33 @@ class LocationController extends AbstractController
 
         //booking a location 
         $entityManager = $doctrine->getManager();
-        $bookLocation = new BookLocation();
+        $locationBook = new LocationBook();
         // 
-        $form1 = $this->createForm(BookLocationType::class, $bookLocation);
+        $form1 = $this->createForm(locationBookType::class, $locationBook);
         $form1->handleRequest($request);
 
 
         if ($form1->isSubmitted() && $form1->isValid()) {
 
             // any data that is not taken from form
-            $bookLocation = $form1->getData();
-            $bookLocation->setLocationClient($this->getUser());
-            $bookLocation->setLocation($location);
-            $bookLocation->setDateCreated(new \DateTime());
-            $bookLocation->isIsAccepted(0);
+            $locationBook = $form1->getData();
+            $locationBook->setLocationClient($this->getUser());
+            $locationBook->setLocation($location);
+            $locationBook->setDateCreated(new \DateTime());
+            $locationBook->isIsAccepted(0);
 
-            $entityManager->persist($bookLocation);
+            $entityManager->persist($locationBook);
             // inserts data in database
             $entityManager->flush();
 
             return $this->redirectToRoute('show_location', ["id" => $location->getId()]);
         }
 
-
-
-
         // view for individual location
         return $this->render('Location/show.html.twig', [
             'location' => $location,
             'formCommentUserLocation' => $form->createView(),
-            'formBookLocation' => $form1->createView()
+            'formLocationBook' => $form1->createView()
         ]);
     }
 
@@ -246,5 +244,7 @@ class LocationController extends AbstractController
 
         ], 200);
     }
+
+ 
 
 }

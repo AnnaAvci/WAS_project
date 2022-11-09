@@ -1,3 +1,6 @@
+{% block body %}
+	
+
 {% for location in locations %}
 
 	<a class="" href="{{ path('show_location', {'id': location.id }) }}">
@@ -22,39 +25,44 @@
 		</h3>
 	</div>
 	</a> 
+
 {% endfor %}
 
-
+{% endblock %}
 
 {% block javascripts %}
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script>
 
-        function onClickBtnLike(event) {
-            event.preventDefault();
+        /*function onClickBtnLike() {
+            //event.preventDefault();
+
+			console?log("HELLO");
 
             const url = this.href;
             const spanCount = this.querySelector('span.js-likes');
             const icone = this.querySelector('i');
 
-            axios.get(url).then(function (response) {
-            spanCount.textContent = response.data.likes;
+            vraiKadir(url, spanCount, icone);
+        }
 
-            if (icone.classList.contains('fa-solid')) 
-			{
-                icone.classList.replace('fa-solid', 'fa-regular')
-            } else {
-                icone.classList.replace('fa-regular', 'fa-solid');
-            }
-            }).catch(function (error) {
-            if (error.response.status === 403) {
-                window.alert("Please log in to like a post")
-            }
+		async function vraiKadir(url, spanCount, icone){
+			await axios.get(url).then(function(response) {
+            	spanCount.textContent = response.data.likes;
+				if (icone.classList.contains('fa-solid')) {
+					icone.classList.replace('fa-solid', 'fa-regular')
+				} else {
+					icone.classList.replace('fa-regular', 'fa-solid');
+				}
+            }).catch(function(error) {
+				if (error.response.status === 403) {
+					window.alert("Please log in to like a post")
+            	}
             });
-            }
+		} 
 
-            document.querySelectorAll('a.js-like').forEach(function (link) {
-            link.addEventListener('click', onClickBtnLike);
-        })
+		document.querySelectorAll('a.js-like').forEach(function(link) {
+			link.addEventListener('click', onClickBtnLike);
+		})*/
 	</script>
 {% endblock %}

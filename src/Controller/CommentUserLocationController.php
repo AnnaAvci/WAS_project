@@ -24,36 +24,15 @@ class CommentUserLocationController extends AbstractController
 
 
     /**
-     * @Route("/location/show", name="add_comment_user_location")
+     * @Route("comment/delete_comment/{id}", name = "delete_comment")
      * 
      */
-    /* public function add(ManagerRegistry $doctrine, CommentUserLocation $commentUserLocation = null, Request $request):Response
+    public function deleteComment(ManagerRegistry $doctrine, CommentUserLocation $commentUserLocation)
     {
-        if(!$commentUserLocation){
-            $commentUserLocation = new CommentUserLocation();
-        }
-
-
-        $entityManager = $doctrine->getManager();    
-        $form = $this->createForm(CommentUserLocationType::class, $commentUserLocation);
-        $form->handleRequest($request);
-        
-
-        if($form->isSubmitted() && $form->isValid()){
-            // "hydration"
-            $commentUserLocation = $form->getData();
-            $commentUserLocation->setCommenter($this->getUser());
-          /*   $commentUserLocation->setLocation($this->getLocation()); */
-         /*    $entityManager->persist($commentUserLocation);
-            // inserts data in database
-            $entityManager->flush();
-
-            return $this->redirectToRoute('show_location');
-        }
-
-        return $this->render ('location/show.html.twig', [
-            'formCommentUserLocation' => $form->createView()
-        ]); */
-
-// }
+        $location = $commentUserLocation->getLocation();
+        $entityManager = $doctrine->getManager();
+        $entityManager->remove($commentUserLocation);
+        $entityManager->flush();
+        return $this->redirectToRoute('show_location', ["id" => $location->getId()]);
+    }
 }

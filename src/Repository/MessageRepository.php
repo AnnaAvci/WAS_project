@@ -3,26 +3,26 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\Entity\InstantMessage;
+use App\Entity\Message;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<InstantMessage>
+ * @extends ServiceEntityRepository<Message>
  *
- * @method InstantMessage|null find($id, $lockMode = null, $lockVersion = null)
- * @method InstantMessage|null findOneBy(array $criteria, array $orderBy = null)
- * @method InstantMessage[]    findAll()
- * @method InstantMessage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Message|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Message|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Message[]    findAll()
+ * @method Message[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class InstantMessageRepository extends ServiceEntityRepository
+class MessageRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, InstantMessage::class);
+        parent::__construct($registry, Message::class);
     }
 
-    public function add(InstantMessage $entity, bool $flush = false): void
+    public function add(Message $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -31,7 +31,7 @@ class InstantMessageRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(InstantMessage $entity, bool $flush = false): void
+    public function remove(Message $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -41,7 +41,7 @@ class InstantMessageRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return InstantMessage[] Returns an array of InstantMessage objects
+//     * @return Message[] Returns an array of Message objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -55,7 +55,7 @@ class InstantMessageRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-   public function findOneBySomeField($value): ?InstantMessage
+   public function findOneBySomeField($value): ?Message
    {
        return $this->createQueryBuilder('s')
            ->andWhere('s.user_id = :val')
@@ -75,10 +75,10 @@ class InstantMessageRepository extends ServiceEntityRepository
 
         $query = $entityManager->createQuery(
             "
-            SELECT u.$user->getNameUser()
+            SELECT u.$user->getFirstName()
             FROM user u
-            WHERE u.$userId IN (SELECT owner_location_id
-            FROM book_location bl
+            WHERE u.$userId IN (SELECT owner_id
+            FROM location_book bl
             INNER JOIN location l ON bl.location_id = l.id
             WHERE bl.location_client_id = $userId)
             "
@@ -90,10 +90,10 @@ class InstantMessageRepository extends ServiceEntityRepository
         /*$conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-            SELECT u.name_user
+            SELECT u.first_name
             FROM user u
             WHERE u.id IN (SELECT owner_location_id
-            FROM book_location bl
+            FROM location_book bl
             INNER JOIN location l ON bl.location_id = l.id
             WHERE bl.location_client_id = 2)
             ';

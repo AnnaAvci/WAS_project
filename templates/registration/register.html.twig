@@ -3,46 +3,57 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
 
-    <h1>Register</h1>
+<div class="signIn">
+    <div class="imgBx">
+                <img src="{{asset('../img/signupImg.webp')}}" alt="" srcset="">
+    </div>
+    <div class="formBx">
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
 
-    {{ form_start(registrationForm) }}
-        
-        {{ form_row(registrationForm.phone_user, {
-            label: 'Phone number'
-        }) }}
-        {{ form_row(registrationForm.name_user,{
-            label: 'Name'
-        }) }}
-        {{ form_row(registrationForm.email) }}
+
+         <h1 id="signUph1">Register</h1>
       
-        {{ form_row(registrationForm.country_user,{
-            label: 'Country'
-        }) }}
-        {{ form_row(registrationForm.city_user,{
-            label: 'City'
-        }) }}
-        {{ form_row(registrationForm.postcode_user,{
-            label: 'Postcode'
-        }) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.picture_user, {
-            label: 'Upload profile picture'
-        }) }}
-       {{ form_row(registrationForm.rolePhotographer, {
-            label: 'I am a photographer'
-        }) }}
-       {{ form_row(registrationForm.roleHost, {
-            label: 'I am a host'
-        }) }}  
-        
-        {{ form_row(registrationForm.agreeTerms) }}
+        <div class="regFormInputs">
+            {{ form_start(registrationForm) }}
+            
+                {{ form_row(registrationForm.first_name,{
+                    label: 'User Name'
+                }) }}
+                {{ form_row(registrationForm.email) }}
 
-        <button type="submit" class="btn btn-primary">Register</button>
-    {{ form_end(registrationForm) }}
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Password'
+                }) }}
+                {{ form_row(registrationForm.picture_user) }}
+        <div class="flex-row">
+            {{ form_row(registrationForm.rolePhotographer, {
+                    label: 'I am a photographer'
+                }) }}
+            {{ form_row(registrationForm.roleHost, {
+                    label: 'I am a host'
+                }) }}  
+                
+                {{ form_row(registrationForm.agreeTerms)}}
+        </div>
+                <button type="submit" class="signInBtn g-recaptcha"
+                    data-sitekey="reCAPTCHA_site_key" 
+                    data-callback='onSubmit' 
+                    data-action='submit'>Register
+                </button>
+            {{ form_end(registrationForm) }}
+        </div>
+       
+    </div>
+</div>
 {% endblock %}
+{% block javascripts %}
+     <script>
+   function onSubmit(token) {
+     document.getElementById("demo-form").submit();
+   }
+ </script>
+{% endblock %}
+

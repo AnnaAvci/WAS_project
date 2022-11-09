@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Entity\Service;
 use App\Entity\PostLike;
 use App\Form\ServiceType;
-use App\Entity\BookService;
+use App\Entity\ServiceBook;
 use App\Entity\PhotoService;
-use App\Form\BookServiceType;
+use App\Form\ServiceBookType;
 use App\Entity\CommentUserService;
 use App\Form\CommentUserServiceType;
 use App\Repository\ServiceRepository;
@@ -23,7 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class ServiceController extends AbstractController
 {
     /**
-     * @Route("/service", name="app_service")
+     * @Route("/photoshoots", name="app_service")
      */
     public function index(ManagerRegistry $doctrine, ServiceRepository $repo, PaginatorInterface $paginatorInterface, Request $request): Response
     {
@@ -40,8 +40,8 @@ class ServiceController extends AbstractController
 
 
     /**
-     * @Route("/photographer/service/add", name="add_service")
-     * @Route("/photographer/service/update/{id}", name = "update_service")
+     * @Route("/photographer/photoshoots/add", name="add_service")
+     * @Route("/photographer/photoshoots/update/{id}", name = "update_service")
      */
     public function add(ManagerRegistry $doctrine, service $service = null, Request $request):Response
     {
@@ -76,7 +76,7 @@ class ServiceController extends AbstractController
 
         // "hydration"
         $service = $form->getData();
-        $service->setProviderService($this->getUser()) ;
+        $service->setOwner($this->getUser()) ;
         $entityManager->persist($service);
         // inserts data in database
         $entityManager->flush();
@@ -109,11 +109,11 @@ class ServiceController extends AbstractController
 
 
 
-         /**
-         * @Route("/service/{id}", name="show_service")
-         * 
-         */
-        public function show(Service $service, ManagerRegistry $doctrine, CommentUserService $commentUserService = null, BookService $bookService = null, Request $request):Response
+    /**
+     * @Route("/photoshoot/{id}", name="show_service")
+     * 
+     */
+        public function show(Service $service, ManagerRegistry $doctrine, CommentUserService $commentUserService = null, ServiceBook $serviceBook = null, Request $request):Response
         {
             // adding comments from users
             $entityManager = $doctrine->getManager(); 
@@ -139,22 +139,22 @@ class ServiceController extends AbstractController
 
 
               //booking a service
-              $entityManager = $doctrine->getManager(); 
-              $bookService = new BookService(); 
+              $entityManager = $doctrine->getManager();
+              $serviceBook = new ServiceBook(); 
 
-              $form1 = $this->createForm(BookServiceType::class, $bookService);
+              $form1 = $this->createForm(ServiceBookType::class, $serviceBook);
               $form1->handleRequest($request);
   
           
               if($form1->isSubmitted() && $form1->isValid()){
-  
-                  $bookService = $form1->getData();
-                  $bookService->setServiceClient($this->getUser()); ; 
-                  $bookService->setService($service);
-                  $bookService->setDateCreated(new \DateTime());
-                  $bookService->isIsAccepted(0); 
+
+            $serviceBook = $form1->getData();
+            $serviceBook->setServiceClient($this->getUser()); ;
+            $serviceBook->setService($service);
+            $serviceBook->setDateCreated(new \DateTime());
+            $serviceBook->isIsAccepted(0); 
                 
-                  $entityManager->persist($bookService);
+                  $entityManager->persist($serviceBook);
                   // inserts data in database
                   $entityManager->flush();
       
@@ -166,15 +166,15 @@ class ServiceController extends AbstractController
             return $this->render ('service/show.html.twig', [
                 'service' => $service,
                 'formCommentUserService' => $form->createView(),
-                'formBookService' => $form1->createView()
+                'formServiceBook' => $form1->createView()
             ]);
 
         }
 
 
-        
+
     /**
-     * @Route("service/delete/{id}", name = "delete_service")
+     * @Route("photoshoot/delete/{id}", name = "delete_service")
      * 
      */
     public function delete(ManagerRegistry $doctrine, Service $service){
@@ -187,7 +187,7 @@ class ServiceController extends AbstractController
 
     /**
      * Allows to like/unlike a service
-     * @Route("/service/{id}/like", name="service_like")
+     * @Route("/photoshoot/{id}/like", name="service_like")
      * @param Service $service
      * @param ManagerRegistry $doctrine
      * @param PostLikeRepository $repo

@@ -7,7 +7,7 @@
         <h1 class="page-title">{{service}}   
             {# only the owner can edit/delete a service #}
             <div class="edit-delete">
-                {% if app.user.id == service.providerService.id %}
+                {% if app.user.id == service.owner.id %}
                     <a href="{{path('update_service', {'id':service.id}) }}"><i class="fa-solid fa-pencil"></i></a> <br>
                     <a href="{{path('delete_service', {'id':service.id}) }}"><i class="fa-solid fa-trash"></i></a> 
                 {% endif %}
@@ -31,9 +31,9 @@
                     <strong>{{service.priceService}} $ / hour</strong> 
                 </p>
                 <p>
-                    <img src={{ asset("img/" ~ service.providerService.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                    <img src={{ asset("img/" ~ service.owner.pictureUser )}} width="30" height="30" alt class="profile-picture">
                     {#  Service provider and bio #}
-                    <strong>{{service.providerService}}</strong>
+                    <strong>{{service.owner}}</strong>
                 </p>
             
                 <p> 
@@ -46,20 +46,31 @@
             <div class="post-comments">
             <h2>Reviews:</h2>
             {% for commentUserService in service.commentUserServices %}
-                <img src={{ asset("img/" ~ commentUserService.commenter.pictureUser )}} width="30" height="30" alt class="profile-picture">
-                <strong>{{commentUserService.commenter.nameUser}}</strong>
+                
+                   {% if not commentUserService.commenter %}
+                        <strong>Deleted account</strong>
+                    {% else %}
+                         <img src={{ asset("img/" ~ commentUserService.commenter.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                         <strong>{{commentUserService.commenter.firstName}}</strong>
+                        
+                    {% endif %}
                 {{commentUserService.dateComment | date('d-m-Y H:i')}} <br>
-                {{commentUserService.textComment}} <br>
-            {% endfor %} 
-
-        {#  only authenticated users can leave comments / make a reservation #}
-            {# {% if is_granted("IS_AUTHENTICATED_FULLY") %} #}
-            <strong>Add comment:</strong>
-            {{form(formCommentUserService)}} <br>
-
+                  <div class="flex">
+                        {{commentUserService.textComment}} <br>
+                        {% if app.user and app.user.id == commentUserService.commenter.id %}
+                            <a href="{{path('delete_comment', {'id':commentUserService.id}) }}"><i class="fa-solid fa-xmark"></i> </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                {% if app.user %}
+                <strong>Add comment:</strong>
+                    {{form(formCommentUserService)}} <br>
                 <strong>Book this shoot:</strong>
-            {{form(formBookService)}} 
-        {#  {% endif %} #}
+                    {{form(formServiceBook)}}
+                {% endif %}
+
+               
+      
             </div>
     </div> 
     </div>

@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\BookServiceRepository;
+use App\Repository\LocationBookRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=BookServiceRepository::class)
+ * @ORM\Entity(repositoryClass=LocationBookRepository::class)
  */
-class BookService
+class LocationBook
 {
     /**
      * @ORM\Id
@@ -38,16 +38,17 @@ class BookService
     private $dateEnd;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookServices")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="locationBooks")
+     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $serviceClient;
+    private $locationClient;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="bookServices")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="locationBooks")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $service;
+    private $location;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -107,26 +108,26 @@ class BookService
         return $this;
     }
 
-    public function getServiceClient(): ?User
+    public function getLocationClient(): ?User
     {
-        return $this->serviceClient;
+        return $this->locationClient;
     }
 
-    public function setServiceClient(?User $serviceClient): self
+    public function setLocationClient(?User $locationClient): self
     {
-        $this->serviceClient = $serviceClient;
+        $this->locationClient = $locationClient;
 
         return $this;
     }
 
-    public function getService(): ?Service
+    public function getLocation(): ?Location
     {
-        return $this->service;
+        return $this->location;
     }
 
-    public function setService(?Service $service): self
+    public function setLocation(?Location $location): self
     {
-        $this->service = $service;
+        $this->location = $location;
 
         return $this;
     }

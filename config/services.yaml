@@ -5,7 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
 # parameter allowing to stock photos in the uploads folder in Public
-    img_directory: '%kernel.project_dir%/public/img'
+    # images_directory: '%kernel.project_dir%/public/img'
+    images_directory: '%kernel.project_dir%/public/uploads'
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -3,17 +3,31 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22></text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
            
+
+            {# bootstrap #}
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+            {# font awesome #}
             <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
             <script src="https://kit.fontawesome.com/3f1f47ed70.js" crossorigin="anonymous"></script>
+
+            {# google fonts #}
             <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,300&family=Roboto+Slab:wght@300&display=swap" rel="stylesheet">
             <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
+            
+            {# CSS #}
             <link rel="stylesheet" href="{{asset('css/style.css')}}">
             <link rel="stylesheet" href="{{asset('css/tab.css')}}">
+
+            {#   favicon #}
+            <link rel="shortcut icon" href="{{asset('favicon/favicon.ico') }}" type="image/x-icon" />
+            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+            <link rel="manifest" href="/site.webmanifest">
 
         {% endblock %}
      </head>
@@ -40,12 +54,12 @@
                     <li>
 
                     <li class="nav-item"><a class="nav-link" href="{{path('app_location')}}">Locations</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{path('app_service')}}">Shoots</a></li> 
+                    <li class="nav-item"><a class="nav-link" href="{{path('app_service')}}">Photoshoots</a></li> 
                     
                    {% if app.user %} 
-                        <li class="nav-item"><a class="nav-link" href="{{path('app_messages')}}">Messages</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{path('app_book')}}">Reservations</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{path('show_user', {'id': app.user.id})}}"><i class="fa-regular fa-user"></i> {{app.user.nameUser}}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{path('app_message', {'id': app.user.id})}}">Messages</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{path('app_book', {'id': app.user.id})}}">Reservations</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{path('show_user', {'id': app.user.id})}}"><i class="fa-regular fa-user"></i> {{app.user.firstName}}</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{path('app_logout')}}"><i class="fa-solid fa-arrow-right-from-bracket"></i></a></li>
                         
                         {% if is_granted('ROLE_ADMIN') %}
@@ -61,7 +75,7 @@
                 </ul>
             </nav> 
         
-        <div class="wrapper">
+        {# <div class="wrapper"> #}
               {% for message in app.flashes("message") %}
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{message}}
@@ -75,70 +89,104 @@
             {% endblock %}
             
         </body>
-        </div>
-        <div class="footer">  
+        {# </div> #}
+        <div class="footer flex">  
             {% block footer %}  
-                    <a href="{{path('app_home')}}">Terms and Conditions</a>
+            <div>
+                <a href="{{path('app_home')}}">Terms and Conditions</a>
+            </div>
+            <div class="flex socials">
+                Follow us:
+                    <a href="https://instagram.com"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://pinterest.com"><i class="fa-brands fa-pinterest"></i></a>
+                    <a href="https://youtube.com"><i class="fa-brands fa-youtube"></i></a>
+            </div>
                     
-                        Follow us:
-                        <a href="https://instagram.com"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="https://pinterest.com"><i class="fa-brands fa-pinterest"></i></a>
-                        <a href="https://youtube.com"><i class="fa-brands fa-youtube"></i></a>
+                    
+                       
                 
             {% endblock %}
         </div> 
 
 
         {% block javascripts %}
+            <script src="https://www.google.com/recaptcha/api.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
             <script src="{{ asset('js/script.js')}}"></script>
-            <script src="/tarteaucitron/tarteaucitron.js"></script>
             <script src="{{ asset('js/tab.js') }}"></script>
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
             <script type="text/javascript">
-            tarteaucitron.init({
-            "privacyUrl": "", /* Privacy policy url */
-            "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
 
-            "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
-            "cookieName": "tarteaucitron", /* Cookie name */
-        
-            "orientation": "middle", /* Banner position (top - bottom) */
-        
-            "groupServices": false, /* Group services by category */
-            "serviceDefaultState": "wait", /* Default state (true - wait - false) */
-                            
-            "showAlertSmall": false, /* Show the small banner on bottom right */
-            "cookieslist": false, /* Show the cookie list */
-                            
-            "closePopup": false, /* Show a close X on the banner */
+                function onClickBtnLike(event) {
+                    event.preventDefault();
 
-            "showIcon": true, /* Show cookie icon to manage cookies */
-            //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
-            "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
+                    const url = this.href;
+                    const spanCount = this.querySelector('span.js-likes');
+                    const icone = this.querySelector('i');
 
-            "adblocker": false, /* Show a Warning if an adblocker is detected */
-                            
-            "DenyAllCta" : true, /* Show the deny all button */
-            "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
-            "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
-                            
-            "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+                    axios.get(url).then(function(response) {
+                        spanCount.textContent = response.data.likes;
 
-            "removeCredit": false, /* Remove credit link */
-            "moreInfoLink": true, /* Show more info link */
+                        if (icone.classList.contains('fa-solid')) 
+                        {
+                            icone.classList.replace('fa-solid', 'fa-regular')
+                        } else {
+                            icone.classList.replace('fa-regular', 'fa-solid');
+                        }
+                    }).catch(function (error) {
+                        if (error.response.status === 403) {
+                            window.alert("Please log in to like a post")
+                        }
+                    });
+                }
 
-            "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
-            "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
-
-            //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
-                            
-            "readmoreLink": "", /* Change the default readmore link */
-
-            "mandatory": true, /* Show a message about mandatory cookies */
-            "mandatoryCta": true /* Show the disabled accept button when mandatory on */
-            });
-
+                document.querySelectorAll('a.js-like').forEach(function(link) {
+                    link.addEventListener('click', onClickBtnLike);
+                })
           
+            </script>
+            <script src="/tarteaucitron/tarteaucitron.js"></script>
+
+            <script>
+            tarteaucitron.init({
+                "privacyUrl": "", /* Privacy policy url */
+                "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
+
+                "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
+                "cookieName": "tarteaucitron", /* Cookie name */
+
+                "orientation": "middle", /* Banner position (top - bottom - middle - popup) */
+
+                "groupServices": false, /* Group services by category */
+                "serviceDefaultState": "wait", /* Default state (true - wait - false) */
+
+                "showAlertSmall": false, /* Show the small banner on bottom right */
+                "cookieslist": false, /* Show the cookie list */
+                
+                "showIcon": true, /* Show cookie icon to manage cookies */
+                // "iconSrc": "", /* Optionnal: URL or base64 encoded image */
+                "iconPosition": "BottomRight", /* Position of the icon between BottomRight, BottomLeft, TopRight and TopLeft */
+
+                "adblocker": false, /* Show a Warning if an adblocker is detected */
+
+                "DenyAllCta" : true, /* Show the deny all button */
+                "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
+                "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
+
+                "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+
+                "removeCredit": false, /* Remove credit link */
+                "moreInfoLink": true, /* Show more info link */
+                "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
+                "useExternalJs": false, /* If false, the tarteaucitron.services.js file will be loaded */
+
+                //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for subdomain website */
+
+                "readmoreLink": "", /* Change the default readmore link pointing to tarteaucitron.io */
+                
+                "mandatory": true, /* Show a message about mandatory cookies */
+                "mandatoryCta": true /* Show the disabled accept button when mandatory on */
+            });
             </script>
 
 
