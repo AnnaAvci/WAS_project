@@ -20,12 +20,14 @@
    
     {#********** My Locations ******************#}
 
-         {% if is_granted('ROLE_HOST') %}
-                <a class="button-long" href="{{path('add_location')}}">Add a new location</a>
-            {%endif%}
+       
 
         {% if user.locations | length != 0 %}
-            <h2>My locations: </h2>
+            <h2>My locations: </h2> 
+            
+              {% if is_granted('ROLE_HOST') %}
+                <a class="button-small" href="{{path('add_location')}}">Add a new location</a>
+            {%endif%}
 
         <div class="all-cards">
             {% for location in user.locations %}
@@ -63,7 +65,7 @@
             <h2>My photoshoots </h2>
 
             {% if is_granted('ROLE_PHOTOGRAPHER') %}
-                <a class="button-long" href="{{path('add_service')}}">Add a new photoshoot</a>
+                <a class="button-small" href="{{path('add_service')}}">Add a new photoshoot</a>
             {%endif%}
 
         <div class="all-cards">

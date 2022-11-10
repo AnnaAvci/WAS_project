@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Page{% endblock %}
+
+{% block body %}
+    <div class="flex-column" style="font-size:20px; text-decoration:none">
+        <a href="{{path('admin_locations')}}">Locations</a>
+        <a href="{{path('admin_services')}}">Photoshoots</a>
+        <a href="{{path('admin_users')}}">Users</a>
+    </div>
+{% endblock %}

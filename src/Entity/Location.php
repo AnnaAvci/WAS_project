@@ -50,7 +50,7 @@ class Location
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="locations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $owner;
 

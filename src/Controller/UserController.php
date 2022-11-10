@@ -20,7 +20,7 @@ class UserController extends AbstractController
 {
  
     /**
-     * @Route("/user/declineLocationBook/{id}", name="decline_locaion_book")
+     * @Route("/user/declineLocationBook/{id}", name="decline_location_book")
      * 
      */
     public function declineLocationBook(ManagerRegistry $doctrine, LocationBook $locationBook, User $user)

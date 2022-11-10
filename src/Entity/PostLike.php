@@ -22,16 +22,19 @@ class PostLike
 
     /**
      * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="likes")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $location;
 
     /**
      * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="likes")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $service;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="likes")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $user;
 

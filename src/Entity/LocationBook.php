@@ -47,6 +47,7 @@ class LocationBook
     /**
      * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="locationBooks")
      * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $location;
 

@@ -45,15 +45,23 @@
                     <div class="flex">
                         {{commentUserLocation.textComment}} <br>
                         {% if app.user and app.user.id == commentUserLocation.commenter.id %}
-                            <a href="{{path('delete_comment', {'id':commentUserLocation.id}) }}"><i class="fa-solid fa-xmark"></i> </a>
+                            <a href="{{path('delete_comment', {'id':commentUserLocation.id}) }}"><i class="fa-solid fa-trash" style="margin-left:1em"></i> </a>
                         {% endif %}
                     </div>
                 {% endfor %}
                 {% if app.user %}
                     <strong>Add comment:</strong>
-                        {{form(formCommentUserLocation)}} <br>
+                        {{form_start(formCommentUserLocation)}}
+                        {{form_row(formCommentUserLocation.text_comment)}}
+                        {{form_row(formCommentUserLocation.Submit, {'attr': {'class': 'button-small'}})}}
+                        {{form_end(formCommentUserLocation)}} <br>
                     <strong>Book this location:</strong>
-                        {{form(formLocationBook)}} 
+                        {{form_start(formLocationBook)}}
+                        {{form_row(formLocationBook.message)}}
+                        {{form_row(formLocationBook.dateStart)}}
+                        {{form_row(formLocationBook.dateEnd)}}
+                        {{form_row(formLocationBook.Submit, {'attr': {'class': 'button-small'}})}}
+                        {{form_end(formLocationBook)}} <br>
                 {% endif %}
 
                 

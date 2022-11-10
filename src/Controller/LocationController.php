@@ -70,7 +70,7 @@ class LocationController extends AbstractController
                     $file = md5(uniqid()) . '.' . $photoLocation->guessExtension();
                     //copying the photos to the uploads folder; first we put the destination, then the file
                     $photoLocation->move(
-                        $this->getParameter('img_directory'),
+                        $this->getParameter('images_directory'),
                         $file
                     );
                     // storing the photos' names in the database

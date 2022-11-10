@@ -56,5 +56,13 @@ class HomeController extends AbstractController
         ]);
     }
 
+    /**
+     *@Route("/terms-and-conditions", name="terms")
+     *
+     * @return void
+     */
+    public function terms (){
+        return $this->render('home/terms.html.twig');
+    }
 
 }

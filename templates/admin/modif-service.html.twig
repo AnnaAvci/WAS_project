@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modify photoshoot{% endblock %}
+
+{% block body %}
+<h1>Modify phpotoshoot</h1>
+
+<div class="form">
+
+    {{form_start(formService)}}
+    <div style="display:none">{{ form_row(formService.photoService) }}</div>
+    {{form_end(formService)}}
+
+    {# check if the route is for modifying displays photos added previously #}
+    {% if app.request.attributes.get('_route') == 'admin_update_service' %}
+
+        <strong>Edit Photos</strong>
+
+        {% for photoService in service.photoServices %}
+            <div>
+                <img src="{{ asset('img/'~ photoService.namePhoto)}}" alt = "photo" width="300">
+                <a href="{{path('service_delete_photoService', {'id':photoService.id}) }}" class="btn btn-link" 
+                data-delete data-token="{{csrf_token('delete'~ photoService.id)}}"> Delete </a>
+            </div>
+
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/img.js') }}"></script>
+{% endblock %}

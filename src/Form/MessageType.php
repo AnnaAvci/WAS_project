@@ -19,9 +19,7 @@ class MessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('recipient', HiddenType::class, [
-                    "recipient"=>$location->getOwner(),
-                    "choice_label"=>"first_name",
-                    "label"=>"To: "
+        
                 ])
                 ->add('text', TextareaType::class, [
                     // allows not to use bootstrap form template
@@ -32,7 +30,7 @@ class MessageType extends AbstractType
                 ])
                 ->add('send', SubmitType::class, [
                     "attr"=>[
-                        "class"=>"button",
+                        "class"=>"button-small",
                     ],
                     "label"=>"Send"
                 ]);

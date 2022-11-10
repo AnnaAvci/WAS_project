@@ -65,7 +65,7 @@ class ServiceController extends AbstractController
             $file = md5(uniqid()).'.'.$photoService->guessExtension();
             //copying the photos to the uploads folder; first we put the destination, then the file
             $photoService->move(
-                $this->getParameter('img_directory'),
+                $this->getParameter('images_directory'),
                 $file
             );
             // storing the photos' names in the database
@@ -102,7 +102,7 @@ class ServiceController extends AbstractController
         $entityManager = $doctrine->getManager();
         $entityManager->remove($photoService);
         $entityManager->flush();
-        return $this->redirectToRoute('show_location',["id"=>$photoService->getService()->getId()]);
+        return $this->redirectToRoute('show_service',["id"=>$photoService->getService()->getId()]);
 
     }
 

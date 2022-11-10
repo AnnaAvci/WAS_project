@@ -7,6 +7,10 @@
     box-sizing: border-box;
 }
 
+a{
+    text-decoration: none;
+}
+
 body, .navbar-ul, .footer{
     width: 100%;
 }
@@ -22,6 +26,13 @@ img {
 .flex-row{
     display: flex;
     flex-direction: row;
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 /************** register *************/
 
@@ -146,8 +157,25 @@ img {
     top: 100px;
 }
 
+.home-section{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    margin-top: 5em;
+    margin-bottom: 5em;
+}
 
+.home-section p {
+    font-size: 20px;
+    text-align: center;
+}
 
+.home-page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 /************** NAVBAR *************/
 
 
@@ -177,22 +205,25 @@ img {
 }
 
 
-.profile-picture{
-    border-radius: 50%;
-    width: 30px;
-    height:30px;
-}
-
 .page-title{
     display: flex;
     justify-content: center;
 
 }
 
+.checkBtn{
+    font-size: 30px;
+    color:rgba(255,90,38, 0.8);
+    /* float: right; */
+    line-height: 80px;
+    margin-right: 40px;
+    cursor: pointer;
+    display: none;
+}
 
-/************** SEARCHBAR *************/
-
-
+#check{
+    display: none; 
+}
 
 /************** CARDS *************/  
 
@@ -325,7 +356,22 @@ img {
     border: none;
 }
 
-.button a {
+.button-small{
+    background: rgba(255,90,38, 0.8);
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    margin-top: 5px;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+    border-radius: 10px;
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    border: none;
+}
+
+.button a, .button-long a, .button-small a {
     text-decoration: none;
     color: White;
 }
@@ -333,6 +379,12 @@ img {
 .profile-basic-info{
     display: flex;
     flex-direction: row;
+}
+
+.profile-picture{
+    border-radius: 50%;
+    width: 30px;
+    height:30px;
 }
 
 /************** FOOTER *************/
@@ -357,6 +409,17 @@ img {
 .socials{
     gap: 10px;
 }
+
+.terms{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    justify-content: center;
+}
+
+.terms p{
+    text-align: justify;
+}
 /************** COMMENTS *************/
 
 
@@ -370,7 +433,7 @@ img {
 
 
 .form{
-    padding-bottom:5em;
+    margin-bottom:5em;
 }
 
 /************** MESSAGES *************/
@@ -390,8 +453,13 @@ img {
 }
 
 /************** Media Queries *************/
+@media (max-width: 952px) {
+    nav ul li a{
+        font-size: 16px;
+    }
+}
 
-@media (max-width: 480px) {
+@media (max-width: 858px) {
   .all-cards{
     flex-direction: column;
     width:100%;
@@ -409,9 +477,7 @@ img {
     top:50px;
   }
 
-  
- 
-    .tabs__body{
+ .tabs__body{
         flex-direction: column;
         width:100%;
     }
@@ -419,6 +485,52 @@ img {
     #q, #min, #max, #countryLocation, #countryService{
         width: 100%;
     }
+
+    #navbar ul li{
+        font-size: 16px;
+        display: block;
+        margin: 50px 0;
+        line-height: 30px;
+
+    }
+
+    .checkBtn{
+        display: block;
+    }
+
+   nav ul{
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        background: #fea68b;
+        top: 80px;
+        left: -100%;
+        text-align: center;
+        transition: all .5s;
+
+    }
+
+    nav ul li{
+        display: block;
+        margin: 50px 0;
+        line-height: 30px;
+    }
+
+    nav ul li a{
+        font-size: 20px;
+    }
+
+     nav ul li a:hover, nav ul li a.active{
+        background: none;
+        color:aqua;
+    }
+
+    #check:checked ~ ul{
+        left: 0;
+    }
+
+
+
 }
 
 

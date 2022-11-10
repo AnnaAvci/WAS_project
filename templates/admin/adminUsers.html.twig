@@ -1,0 +1,30 @@
+{% block title %}Admin: Locations {% endblock %}
+{% block body %}
+<table class="table table-striped">
+        <tr>
+            <td>User</td>
+            <td>Email</td>
+            <td>Registered at</td>
+            <td>Actions</td>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td style="width:10%">   
+                            <img src={{ asset("img/" ~ user.pictureUser )}} alt="user profile picture" style="width: 7rem; height:7rem;"/>
+                            {{user.firstName}}
+                </td>
+                <td style="width:10%">  
+                            {{user.email}}
+                </td>
+                <td style="width:10%">  
+                            {{user.registerDate | date("d/m/Y")}}
+                </td>
+                <td>
+                    <a href="{{path('admin_delete_user', {'id': user.id})}}">Delete account</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+

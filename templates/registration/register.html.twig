@@ -27,7 +27,7 @@
                 {{ form_row(registrationForm.plainPassword, {
                     label: 'Password'
                 }) }}
-                {{ form_row(registrationForm.picture_user) }}
+                {# {{ form_row(registrationForm.picture_user) }} #}
         <div class="flex-row">
             {{ form_row(registrationForm.rolePhotographer, {
                     label: 'I am a photographer'
@@ -36,7 +36,8 @@
                     label: 'I am a host'
                 }) }}  
                 
-                {{ form_row(registrationForm.agreeTerms)}}
+                {{ form_row(registrationForm.agreeTerms)}} </br>
+                <a href="{{path('terms')}}">Terms and Conditions</a>
         </div>
                 <button type="submit" class="signInBtn g-recaptcha"
                     data-sitekey="reCAPTCHA_site_key" 

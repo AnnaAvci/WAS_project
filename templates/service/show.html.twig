@@ -58,19 +58,24 @@
                   <div class="flex">
                         {{commentUserService.textComment}} <br>
                         {% if app.user and app.user.id == commentUserService.commenter.id %}
-                            <a href="{{path('delete_comment', {'id':commentUserService.id}) }}"><i class="fa-solid fa-xmark"></i> </a>
+                            <a href="{{path('delete_comment', {'id':commentUserService.id}) }}"><i class="fa-solid fa-trash" style="margin-left:1em"></i> </a>
                         {% endif %}
                     </div>
                 {% endfor %}
                 {% if app.user %}
-                <strong>Add comment:</strong>
-                    {{form(formCommentUserService)}} <br>
-                <strong>Book this shoot:</strong>
-                    {{form(formServiceBook)}}
+                    <strong>Add comment:</strong>
+                        {{form_start(formCommentUserService)}}
+                        {{form_row(formCommentUserService.text_comment)}}
+                        {{form_row(formCommentUserService.Submit, {'attr': {'class': 'button-small'}})}}
+                        {{form_end(formCommentUserService)}} <br>
+                    <strong>Book this photoshoot:</strong>
+                        {{form_start(formServiceBook)}}
+                        {{form_row(formServiceBook.message)}}
+                        {{form_row(formServiceBook.dateStart)}}
+                        {{form_row(formServiceBook.dateEnd)}}
+                        {{form_row(formServiceBook.Submit, {'attr': {'class': 'button-small'}})}}
+                        {{form_end(formServiceBook)}} <br>
                 {% endif %}
-
-               
-      
             </div>
     </div> 
     </div>

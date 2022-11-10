@@ -32,7 +32,9 @@
                                 {% if locationBook.isAccepted == 0 %}
                                     <td> Request pending </td> 
                                 {% elseif locationBook.isAccepted == 1 %}
-                                    <td> Request accepted </td>
+                                    <td> Request accepted 
+                                      <a href="{{path('send_message_location', {'id':locationBook.location.id}) }}"> <i class="fa-regular fa-envelope"></i> </a>
+                                    </td>
                                 {% else %}
                                     <td> Request declined </td>
                                 {% endif %}
@@ -67,8 +69,9 @@
                             {% if serviceBook.isAccepted == 0 %}
                                  <td> Request pending </td> 
                             {% elseif serviceBook.isAccepted == 1 %}  
-                                 <td> Request accepted </td> 
-                                 <a href="{{path('send-message', {'id':serviceBook.service.owner.id}) }}"> <i class="fa-regular fa-envelope"></i> </a>
+                                 <td> Request accepted 
+                                     <a href="{{path('send_message_service', {'id':serviceBook.service.id}) }}"> <i class="fa-regular fa-envelope"></i> </a>
+                                 </td> 
                             {% else %}
                                  <td> Request declined </td>
                             {% endif %}
