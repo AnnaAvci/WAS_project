@@ -4,12 +4,13 @@
 
 {% block body %}
 
-                <h1>Inbox({{ app.user.received|length }})</h1>
-        <div class="messages">  
+            <div class="messages">  
+                <h2>Inbox({{ app.user.received|length }})</h2>
+        
+            <div class="message-table">
+            <h3><a href="{{path("sent",{id: user.id})}}" class="btn">Sent messages</a></h3>
 
-            <a href="{{path("sent",{id: user.id})}}" class="btn">Sent messages</a>
-
-            <table class="table table-striped message-table">
+            <table class="table table-striped">
                 <thead>
                 <tr>
                     <th>From</th>
@@ -20,9 +21,9 @@
                 </thead>
                 <tbody>
                     <tr>
-                        {% for message in app.user.received %}
-                    {% set bold = "" %}
-                    {% if message.isRead == 0 %}
+                    {% for message in user.received %}
+                        {% set bold = "" %}
+                        {% if message.isRead == 0 %}
                         {% set bold = "fw-bold" %}
                     {% endif %}
 
@@ -32,12 +33,9 @@
                     <td><a href="{{ path("delete", {id: message.id}) }}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                     </tr>
                 {% endfor %}
-                
                 </tbody>
             </table>
-                <h2>New message</h2>
-                {{form(messageForm)}}
-
+            </div>
        </div>  
 {% endblock %}
 

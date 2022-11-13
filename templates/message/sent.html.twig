@@ -3,11 +3,12 @@
 {% block title %}Sent messages{% endblock %}
 
 {% block body %}
-				<h1>Sent ({{ app.user.sent|length }}) </h1>	
-         <div class="messages">     
-                <a href="{{path("app_message",{id: user.id})}}" class="btn">Inbox</a>
+                <div class="messages"> 
+				<h2>Sent ({{ app.user.sent|length }}) </h2>	
+             
+                <h3><a href="{{path("app_message",{id: user.id})}}" class="btn">Inbox</a></h3>
                         
-                <table class="table table-striped reservation-table">
+                <table class="table table-striped message-table">
                     <thead>
                     <tr>
                         <th>To</th>

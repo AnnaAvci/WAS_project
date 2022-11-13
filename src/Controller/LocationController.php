@@ -108,7 +108,7 @@ class LocationController extends AbstractController
     {
 
         $name = $photoLocation->getNamePhoto();
-        unlink($this->getParameter('img_directory') . '/' . $name);
+        unlink($this->getParameter('images_directory') . '/' . $name);
         $entityManager = $doctrine->getManager();
         $entityManager->remove($photoLocation);
         $entityManager->flush();

@@ -90,12 +90,12 @@ class AdminController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
   
             $this->container->get('security.token_storage')->setToken(null);
-
+            $this->addFlash("danger", "You are about to delete the user");
             $entityManager = $doctrine->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
-
-            return $this->redirectToRoute('admin/adminUsers.html.twig');
+       
+            return $this->redirectToRoute('admin_users');
     }
 
 
@@ -109,6 +109,7 @@ class AdminController extends AbstractController
      */
     public function delete(ManagerRegistry $doctrine, Service $service)
     {
+        $this->addFlash("danger", "You are about to delete the photoshoot");
         $entityManager = $doctrine->getManager();
         $entityManager->remove($service);
         $entityManager->flush();
@@ -151,8 +152,9 @@ class AdminController extends AbstractController
             $entityManager->persist($service);
             // inserts data in database
             $entityManager->flush();
-
+        
             return $this->redirectToRoute('show_service', ["id" => $service->getId()]);
+            $this->addFlash("success", "Photoshoot has been updated");
         }
 
         return $this->render('admin/modif-service.html.twig', [
@@ -196,7 +198,7 @@ class AdminController extends AbstractController
             $entityManager->persist($location);
             // inserts data in database
             $entityManager->flush();
-
+            $this->addFlash("success", "Location has been updated");
             return $this->redirectToRoute('show_location', ["id" => $location->getId()]);
         }
 

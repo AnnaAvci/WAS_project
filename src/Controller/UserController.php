@@ -133,14 +133,43 @@ class UserController extends AbstractController
 
          if ($this->getUser()->getId() === $user->getId()) {
 
+            $entityManager = $doctrine->getManager();
             $form = $this->createForm(RegistrationFormType::class, $user);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
 
-                $user = $form->getData();
-                $entityManager = $doctrine->getManager();
-                $entityManager->persist($user);
+                // getting uploaded photos
+                $pictureUser = $form->get('picture_user')->getData();
+    
+
+                if ($pictureUser) {
+                    // generating a unique name for each photo to avoid mix-ups
+                    $file = md5(uniqid()) . '.' . $pictureUser->guessExtension();
+                    //copying the photos to the uploads folder; first we put the destination, then the file
+                    $pictureUser->move(
+                        $this->getParameter('images_directory'),
+                        $file
+                    );
+
+                    //$nom = $user->getPictureUser();
+                    //  On supprime le fichier
+                    //unlink($this->getParameter('images_directory').'/'.$file);
+                    //  On créer on stock dans la bdd son nom et l'img stocké dans le disque 
+                    $user->setPictureUser($file);
+
+                    //$user = $form ->getData();
+                    $entityManager->persist($user);
+                    // $entityManager->flush();
+                } else {
+                    //$user = $form->getData();
+                    $entityManager->persist($user);
+                    // $entityManager->flush();
+                }
+
+                // $user = $form->getData();
+                // $entityManager = $doctrine->getManager();
+                // $entityManager->persist($user);
                 $entityManager->flush();
                 $this->addFlash('success', 'Profile information updated');
 

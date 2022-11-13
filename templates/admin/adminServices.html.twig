@@ -1,34 +1,25 @@
+{% extends 'base.html.twig' %}
 {% block title %}Admin: Photoshoots {% endblock %}
 
 {% block body %}
-<table class="table table-striped">
-        <tr>
-            <td>Service</td>
-            <td>Actions</td>
-        </tr>
-        {% for service in services %}
-            <tr>
-                <td style="width:10%">   
+    <h1>Photoshoots</h1>
+<div class="all-cards">       
+        {% for service in services %}   
                     <a href="{{ path('show_service', {'id': service.id }) }}">
-                    <div class="card-and-desc" style="width: 10rem">
-                        <div class="card" style="width: 10rem">
-                            <img src={{ asset("img/" ~ service.photoServices[0].namePhoto )}} alt="Service" style="width: 7rem; height:7rem;"/>
+                    <div class="card-and-desc-small">
+                        <div class="card-small">
+                            <img src={{ asset("img/" ~ service.photoServices[0].namePhoto )}} alt="service"/>
                         </div>
                         <h3 class="h3">
                             {{service.nameService}}
                             <br />
-                            {{service.priceService}} $ per hour
+                            {{service.priceService}} $ per hour 
+                            <a href="{{path('admin_update_service', {'id': service.id})}}"><i class="fa-solid fa-pencil"></i></a>
+                            <a href="{{path('admin_delete_service', {'id': service.id})}}"><i class="fa-solid fa-trash"></i></a>
                         </h3>
                     </div>
                     </a>
-                </td>
-                <td>
-                    <a href="{{path('admin_update_service', {'id': service.id})}}">Update</a>
-                    <a href="{{path('admin_delete_service', {'id': service.id})}}">Delete</i></a>
-                </td>
-            </tr>
         {% endfor %}
-    </table>
-
+    </div>
 {% endblock %}
 

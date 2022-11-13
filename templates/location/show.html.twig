@@ -4,14 +4,21 @@
 
 {% block body %}
     <div class="wrapper">
-            <h1 class="page-title">{{location}}</h1>
-             {# <a href="{{path('message-to-location', {'id':location.id}) }}"> Send a message to the owner </a> #}
+            <h1 class="page-title">{{location}}
+                <div class="edit-delete">
+                    {% if app.user.id == location.owner.id %}
+                        <a href="{{path('update_location', {'id':location.id}) }}"><i class="fa-solid fa-pencil"></i></a> <br>
+                        <a href="{{path('delete_location', {'id':location.id}) }}"><i class="fa-solid fa-trash"></i></a> 
+                    {% endif %}
+                </div> 
+            </h1>
+            
 
 
             <div class="all-cards">
                     {% for photoLocation in location.photoLocations %}
                         <div class="card">
-                            <img src={{ asset("img/" ~ photoLocation.namePhoto )}} width="300" height="400" alt>
+                            <img src={{ asset("uploads/" ~ photoLocation.namePhoto )}} width="300" height="400" alt>
                         </div>
                     {% endfor %}
                 </div>
@@ -23,7 +30,7 @@
                 <strong>{{location.priceLocation}} $ / hour</strong> 
                 </p>
                 <p>
-                    <img src={{ asset("img/" ~ location.owner.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                    <img src={{ asset("uploads/" ~ location.owner.pictureUser )}} width="30" height="30" alt class="profile-picture">
                     <strong>{{location.owner}}</strong> <br>
                 </p>
                 <p> 
@@ -37,14 +44,16 @@
                     {% if not commentUserLocation.commenter %}
                         <strong>Deleted account</strong>
                     {% else %}
-                         <img src={{ asset("img/" ~ commentUserLocation.commenter.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                         <img src={{ asset("uploads/" ~ commentUserLocation.commenter.pictureUser )}} width="30" height="30" alt class="profile-picture">
                          <strong>{{commentUserLocation.commenter.firstName}}</strong>
                     {% endif %}
                     
                     {{commentUserLocation.dateComment | date('d-m-Y H:i')}} <br>
                     <div class="flex">
                         {{commentUserLocation.textComment}} <br>
-                        {% if app.user and app.user.id == commentUserLocation.commenter.id %}
+                        {% if not commentUserLocation.commenter %}
+
+                        {% elseif app.user and app.user.id == commentUserLocation.commenter.id %}
                             <a href="{{path('delete_comment', {'id':commentUserLocation.id}) }}"><i class="fa-solid fa-trash" style="margin-left:1em"></i> </a>
                         {% endif %}
                     </div>

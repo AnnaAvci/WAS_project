@@ -1,3 +1,4 @@
+{% extends 'base.html.twig' %}
 {% block title %}Admin: Locations {% endblock %}
 {% block body %}
 <table class="table table-striped">
@@ -9,15 +10,17 @@
         </tr>
         {% for user in users %}
             <tr>
-                <td style="width:10%">   
-                            <img src={{ asset("img/" ~ user.pictureUser )}} alt="user profile picture" style="width: 7rem; height:7rem;"/>
+                <td>   
+                    <div class="card-small" style="text-align:center">
                             {{user.firstName}}
+                            <img src={{ asset("uploads/" ~ user.pictureUser )}} alt="user profile picture"/>
+                    </div>
                 </td>
-                <td style="width:10%">  
-                            {{user.email}}
+                <td>  
+                    {{user.email}}
                 </td>
-                <td style="width:10%">  
-                            {{user.registerDate | date("d/m/Y")}}
+                <td>  
+                    {{user.registerDate | date("d/m/Y")}}
                 </td>
                 <td>
                     <a href="{{path('admin_delete_user', {'id': user.id})}}">Delete account</a>

@@ -19,7 +19,7 @@
         <div class="all-cards">
             {% for photoService in service.photoServices %}
                 <div class="card">
-                    <img src={{ asset("img/" ~ photoService.namePhoto )}} width="300" height="400" alt >
+                    <img src={{ asset("uploads/" ~ photoService.namePhoto )}} width="300" height="400" alt >
                 </div>
             {% endfor %}
         </div>
@@ -31,7 +31,7 @@
                     <strong>{{service.priceService}} $ / hour</strong> 
                 </p>
                 <p>
-                    <img src={{ asset("img/" ~ service.owner.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                    <img src={{ asset("uploads/" ~ service.owner.pictureUser )}} width="30" height="30" alt class="profile-picture">
                     {#  Service provider and bio #}
                     <strong>{{service.owner}}</strong>
                 </p>
@@ -50,14 +50,17 @@
                    {% if not commentUserService.commenter %}
                         <strong>Deleted account</strong>
                     {% else %}
-                         <img src={{ asset("img/" ~ commentUserService.commenter.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                         <img src={{ asset("uploads/" ~ commentUserService.commenter.pictureUser )}} width="30" height="30" alt class="profile-picture">
                          <strong>{{commentUserService.commenter.firstName}}</strong>
                         
                     {% endif %}
                 {{commentUserService.dateComment | date('d-m-Y H:i')}} <br>
                   <div class="flex">
                         {{commentUserService.textComment}} <br>
-                        {% if app.user and app.user.id == commentUserService.commenter.id %}
+                         
+                        {% if not commentUserService.commenter %}
+
+                        {% elseif app.user and app.user.id == commentUserService.commenter.id %}
                             <a href="{{path('delete_comment', {'id':commentUserService.id}) }}"><i class="fa-solid fa-trash" style="margin-left:1em"></i> </a>
                         {% endif %}
                     </div>

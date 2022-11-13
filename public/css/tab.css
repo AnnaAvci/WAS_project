@@ -133,18 +133,53 @@ input, textarea, select {
     background-color: white;
     border-radius:20px;
     border:1px solid rgb(190, 186, 186);
-    margin: 0.5em;
+    margin-bottom: 0.5rem;
 }
 
-
-@media (max-width: 480px) {
- 
-    .tabs__body{
-        flex-direction: column;
-        width:100%;
+@media screen and (max-width: 780px){
+    .banner
+    {
+        height: 80vh;
     }
 
-    #q, #min, #max, #countryLocation, #countryService{
+    .tabs 
+    {
+        width: 90%;
+        margin-top: -25em;
+        background: rgba(255,255,255, 0.75);     
+    }
+
+    .slogan{
+        font-size: 3.5em;
+        top:20px;
+    }
+    
+    .tabs__body
+    {
+        background: rgba(255, 255, 255, 0.5)
+    }
+    
+    .searchField
+    {
+        flex-direction: column;
+    }
+
+    .search-row-q, .price-search-row, .search-row-country
+    {
         width: 100%;
+    }
+
+    #countryService, #countryLocation 
+    {
+        max-width: 100%;
+    }
+
+    .tabs__body, .tabs__content.is-active, .tabs__content.is-active form{
+        width: 100%;
+    }
+
+    .btn-search{
+        background-color:  rgba(255,90,38);
+        color: white;
     }
 }

@@ -18,9 +18,7 @@ class MessageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('recipient', HiddenType::class, [
-        
-                ])
+        $builder->add('recipient', HiddenType::class)
                 ->add('text', TextareaType::class, [
                     // allows not to use bootstrap form template
                     "attr"=>[

@@ -11,12 +11,22 @@ a{
     text-decoration: none;
 }
 
+
+
 body, .navbar-ul, .footer{
     width: 100%;
 }
 
 img {
     object-fit: cover;
+}
+
+.margin{
+    margin: 0 2em 2em 5em;
+}
+
+.margin-left{
+    margin-left: 2em;
 }
 
 .flex{
@@ -34,9 +44,95 @@ img {
     justify-content: center;
     align-items: center;
 }
+
+h1{
+    text-align: center;
+}
 /************** register *************/
+.signUp{
+    width:100%;
+    height:100%;
+    display: flex;
+    flex-direction: row;
+}
+.imgBx-signUp{
+    position: relative;
+    width: 50%;
+}
+
+.imgBx-signUp img{
+    width: 100%;
+    min-height:100%;
+    object-fit: cover;
+}
+
+.formBx-signUp{
+    width:50%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.formBx-signUp h1
+{
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.signUpInputs form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.mb-3{
+    width: 100%;
+}
+
+.signInBtn
+{
+    width: 80%;
+    font-size: 1.2em;
+    color: #fff;
+    padding: 0.5em;
+    margin: 1em 0 1em 0;
+    cursor: pointer;
+    border: none;
+    background: #ff5a26;
+    border-radius: 10px;
+}
 
 
+
+/* #inputEmail, #inputPassword, #registration_form_first_name, #registration_form_email, #registration_form_plainPassword_first, #registration_form_plainPassword_second, */
+/* #registration_form_picture_user  */
+/* { */
+    /* width: 100%; */
+    /* margin: 0; */
+/* } */
+
+.signUpInputs{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5em;
+    justify-content: center;
+    align-items:center;
+}
+
+.checkBoxes{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 
 
 /************** sign-in *************/
@@ -62,6 +158,7 @@ img {
     display: flex;
     flex-direction: column;
     text-align: center;
+    align-items: center;
 }
 
 .formBx form h1, #signUph1
@@ -77,7 +174,7 @@ img {
 }
 
 .formBx form {
-    width: 100%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -92,7 +189,7 @@ img {
 
 .signInBtn
 {
-    width: 80%;
+    width: 100%;
     font-size: 1.2em;
     color: #fff;
     padding: 0.5em;
@@ -104,13 +201,6 @@ img {
 }
 
 
-/*  */
-#inputEmail, #inputPassword, #registration_form_first_name, #registration_form_email, #registration_form_plainPassword_first, #registration_form_plainPassword_second,
-#registration_form_picture_user 
-{
-    width: 100%;
-    margin: 0;
-}
 
 .regFormInputs{
     width: 100%;
@@ -257,6 +347,22 @@ img {
     object-fit: cover;
 }
 
+.card-small
+{
+    width: 250px;
+    height: 250px;
+    margin: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border-radius: 15px;
+}
+
+.card-small img {
+    width:100%;
+    height:100%;
+    top: 0;
+    object-fit: cover;
+}
 
 .card-and-desc{
     display: flex;
@@ -265,6 +371,16 @@ img {
     align-items: center;
     text-align: center;
     width: 400px;
+}
+
+
+.card-and-desc-small{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 250px;
 }
 
 
@@ -315,8 +431,9 @@ img {
 }
 
 
-.fa{
+.fas{
     margin-left: 0.5em;
+
 }
 
 .post-info{
@@ -331,13 +448,15 @@ img {
     color: #fff;
     padding: 20px 40px;
     text-decoration: none;
-    font-size: 1.1em;
     margin-top: 5px;
     margin-bottom: 25px;
     letter-spacing: 2px;
     border-radius: 10px;
     width: 10em;
     border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .button-long{
@@ -345,7 +464,6 @@ img {
     color: #fff;
     padding: 20px 40px;
     text-decoration: none;
-    font-size: 1.1em;
     margin-top: 5px;
     margin-bottom: 25px;
     letter-spacing: 2px;
@@ -360,7 +478,6 @@ img {
     background: rgba(255,90,38, 0.8);
     color: #fff;
     padding: 10px 20px;
-    font-size: 1.1em;
     margin-top: 5px;
     margin-bottom: 25px;
     letter-spacing: 2px;
@@ -371,7 +488,12 @@ img {
     border: none;
 }
 
-.button a, .button-long a, .button-small a {
+.button a .button-long a .button-small a {
+    text-decoration: none;
+    color: White;
+}
+
+a.button:hover,  a.button-long:hover, a.button-small:hover {
     text-decoration: none;
     color: White;
 }
@@ -434,6 +556,7 @@ img {
 
 .form{
     margin-bottom:5em;
+    width: 80%;
 }
 
 /************** MESSAGES *************/
@@ -441,7 +564,7 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: center;
+    align-items: center;
     width: 90%;
 }
 
@@ -477,7 +600,7 @@ img {
     top:50px;
   }
 
- .tabs__body{
+ .tabs__body.mb-3{
         flex-direction: column;
         width:100%;
     }

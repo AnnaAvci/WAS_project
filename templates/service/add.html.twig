@@ -3,26 +3,28 @@
 {% block title %}Add a photoshoot{% endblock %}
 
 {% block body %}
-<h1>Add a photoshoot</h1>
+<div class="wrapper">
+    <h1>Add a photoshoot</h1>
 
-<div class="form">
-    {{form(formService)}}
+    <div class="form">
+        {{form(formService)}}
 
-    {# check if the route is for modifying displays photos added previously #}
-    {% if app.request.attributes.get('_route') == 'update_service' %}
+        {# check if the route is for modifying displays photos added previously #}
+        {% if app.request.attributes.get('_route') == 'update_service' %}
 
-        <strong>Edit portfolio</strong>
+            <strong>Edit portfolio</strong>
 
-        {% for photoService in service.photoServices %}
-            <div>
-                <img src="{{ asset('img/'~ photoService.namePhoto)}}" alt = "photo" width="300">
-                <a href="{{path('service_delete_photoService', {'id':photoService.id}) }}" class="btn btn-link" 
-                data-delete data-token="{{csrf_token('delete'~ photoService.id)}}"> <i class="fa-solid fa-trash"></i></a>
-            </div>
+            {% for photoService in service.photoServices %}
+                <div>
+                    <img src="{{ asset('uploads/'~ photoService.namePhoto)}}" alt = "photo" width="300">
+                    <a href="{{path('service_delete_photoService', {'id':photoService.id}) }}" class="btn btn-link" 
+                    data-delete data-token="{{csrf_token('delete'~ photoService.id)}}"> <i class="fa-solid fa-trash"></i></a>
+                </div>
 
-        {% endfor %}
-    {% endif %}
+            {% endfor %}
+        {% endif %}
 
+    </div>
  </div>
     {% endblock %}
 

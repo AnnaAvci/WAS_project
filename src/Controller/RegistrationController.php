@@ -41,7 +41,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
-            $userPasswordHasher->hashPassword(
+                $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
@@ -55,34 +55,33 @@ class RegistrationController extends AbstractController
                  $user->addRole("ROLE_HOST");
              }
 
-
-
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                // getting uploaded photos
-                    $pictureUser = $form->get('picture_user')->getData();
+            // getting uploaded photos
+            $pictureUser = $form->get('picture_user')->getData();
                
-                    // generating a unique name for each photo to avoid mix-ups
-                    $file = md5(uniqid()) . '.' . $pictureUser->guessExtension();
-                    //copying the photos to the uploads folder; first we put the destination, then the file
-                    $pictureUser->move(
-                        $this->getParameter('images_directory'),
-                        $file
-                    );
-                    $nom = $user->getPictureUser();
-                    // On supprime le fichier
-                    unlink($this->getParameter('images_directory') . '/' . $nom);
-                    // On créer on stock dans la bdd son nom et l'img stocké dans le disque 
-                    $user->setPictureUser($file); 
-                        //} 
-        
+            if($pictureUser){
+                // generating a unique name for each photo to avoid mix-ups
+                $file = md5(uniqid()).'.'.$pictureUser->guessExtension();
+                //copying the photos to the uploads folder; first we put the destination, then the file
+                $pictureUser->move(
+                    $this->getParameter('images_directory'),
+                    $file
+                );
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+                //$nom = $user->getPictureUser();
+                //  On supprime le fichier
+                //unlink($this->getParameter('images_directory').'/'.$file);
+                //  On créer on stock dans la bdd son nom et l'img stocké dans le disque 
+                $user->setPictureUser($file);
+
+                //$user = $form ->getData();
+                $entityManager->persist($user);
+                $entityManager->flush();
             
-
-        } 
+            } else {
+                //$user = $form->getData();
+                $entityManager->persist($user);
+                $entityManager->flush();
+            }
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation(
                 'app_verify_email',
@@ -97,13 +96,11 @@ class RegistrationController extends AbstractController
 
             return $this->redirectToRoute('app_login');
         
-            }
+        }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-      
-      
-      ]);
+        ]);
 
     }
 

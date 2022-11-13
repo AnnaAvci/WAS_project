@@ -4,41 +4,45 @@
 
 {% block body %}
 
-<div class="signIn">
-    <div class="imgBx">
+<div class="signUp">
+    <div class="imgBx-signUp">
                 <img src="{{asset('../img/signupImg.webp')}}" alt="" srcset="">
     </div>
-    <div class="formBx">
+    <div class="formBx-signUp">
         {% for flash_error in app.flashes('verify_email_error') %}
             <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
         {% endfor %}
 
 
-         <h1 id="signUph1">Register</h1>
+         <h1>Register</h1>
       
-        <div class="regFormInputs">
+        <div class="signUpInputs">
             {{ form_start(registrationForm) }}
             
                 {{ form_row(registrationForm.first_name,{
-                    label: 'User Name'
+                    placeholder: 'Username'
                 }) }}
-                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.email,{
+                    placeholder: 'Email'
+                }) }}
 
                 {{ form_row(registrationForm.plainPassword, {
-                    label: 'Password'
+                     placeholder: 'Password'
                 }) }}
-                {# {{ form_row(registrationForm.picture_user) }} #}
-        <div class="flex-row">
-            {{ form_row(registrationForm.rolePhotographer, {
-                    label: 'I am a photographer'
-                }) }}
-            {{ form_row(registrationForm.roleHost, {
-                    label: 'I am a host'
-                }) }}  
-                
-                {{ form_row(registrationForm.agreeTerms)}} </br>
-                <a href="{{path('terms')}}">Terms and Conditions</a>
-        </div>
+                <div style="display:none">
+                    {{ form_row(registrationForm.picture_user) }}
+                </div>
+                <div class="checkBoxes">
+                    {{ form_row(registrationForm.rolePhotographer, {
+                        label: 'I am a photographer'
+                    }) }}
+                    {{ form_row(registrationForm.roleHost, {
+                        label: 'I am a host'
+                    }) }}  
+                    
+                    {{ form_row(registrationForm.agreeTerms)}} </br>
+                </div>
+                   <a href="{{path('terms')}}">Terms and Conditions</a> <br/>
                 <button type="submit" class="signInBtn g-recaptcha"
                     data-sitekey="reCAPTCHA_site_key" 
                     data-callback='onSubmit' 
