@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\Entity\CommentUserLocation;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
+// use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -45,7 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\Length(min=5, max=15, minMessage="Username must be at least 5 characters", maxMessage="Username can't exceed 15 characters")
+     * 
      */
     private $firstName;
 
@@ -64,17 +65,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=false)
      */
     private $isVerified;
 
     /**
-     * @ORM\OneToMany(targetEntity=Service::class, mappedBy="owner")
+     * @ORM\OneToMany(targetEntity=Service::class, mappedBy="owner",orphanRemoval=true)
      */
     private $services;
 
     /**
-     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="owner")
+     * @ORM\OneToMany(targetEntity=Location::class, mappedBy="owner",orphanRemoval=true)
      */
     private $locations;
 
@@ -125,6 +126,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->sent = new ArrayCollection();
         $this->received = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        
     
     }
 
@@ -257,7 +259,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRegisterDate(\DateTimeInterface $registerDate): self
     {
-        $this->registerDate = $registerDate;
+        $this->registerDate = new \DateTime();
 
         return $this;
     }

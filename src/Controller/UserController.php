@@ -104,11 +104,35 @@ class UserController extends AbstractController
             $this->container->get('security.token_storage')->setToken(null);
 
             $entityManager = $doctrine->getManager();
-          /*   $locationComments= $user->getCommentUserLocations();
-            
+
+            // Anonymise Comments
+            $locationComments= $user->getCommentUserLocations();
             foreach($locationComments as $comment){
-                $comment->setCommenter('');
-            } */
+                $comment->setCommenter(null);
+            }
+            $serviceComments= $user->getCommentUserServices();
+            foreach($serviceComments as $comment){
+                $comment->setCommenter(null);
+            }
+
+            // Anonymise sent messages
+            $sentMsgs = $user->getSent();
+            foreach ($sentMsgs as $sentMsg) {
+                $sentMsg->setSender(null);
+            }
+
+
+            // Anonymise reservations
+            $locationBooks = $user->getLocationBooks();
+            foreach ($locationBooks as $locationBook) {
+                $locationBook->setLocationClient(null);
+            }
+            $serviceBooks = $user->getServiceBooks();
+            foreach ($serviceBooks as $serviceBook) {
+                $serviceBook->setServiceClient(null);
+            }
+
+
             $entityManager->remove($user);
             $entityManager->flush();
 

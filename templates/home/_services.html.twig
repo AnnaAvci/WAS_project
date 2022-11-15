@@ -10,7 +10,7 @@
 			<img src={{ asset("uploads/" ~ service.photoServices[0].namePhoto )}} alt="service" />
 		</div>
 		<h3 class="h3">
-			{{service.nameService}}
+			<strong>{{service.nameService}}</strong>, {{service.countryService}}, {{service.cityService}}
 			<br />
 		{{service.priceService}} $ per hour
 		<a href="{{path("service_like", {'id': service.id})}}" class="btn btn-link js-like">

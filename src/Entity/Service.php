@@ -59,17 +59,17 @@ class Service
     private $photoServices;
 
     /**
-     * @ORM\OneToMany(targetEntity=CommentUserService::class, mappedBy="service")
+     * @ORM\OneToMany(targetEntity=CommentUserService::class, mappedBy="service", orphanRemoval=true)
      */
     private $commentUserServices;
 
     /**
-     * @ORM\OneToMany(targetEntity=ServiceBook::class, mappedBy="service")
+     * @ORM\OneToMany(targetEntity=ServiceBook::class, mappedBy="service", orphanRemoval=true)
      */
     private $serviceBooks;
 
     /**
-     * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="service")
+     * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="service", orphanRemoval=true)
      */
     private $likes;
 

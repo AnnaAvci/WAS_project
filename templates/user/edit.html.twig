@@ -24,6 +24,91 @@
 
 		    {{ form_end(registrationForm) }}
 
-             <a href="{{path('delete_user', {'id':user.id}) }}"> Delete account </a> 
+             {# <a href="{{path('delete_user', {'id':user.id}) }}"> Delete account </a>  #}
+
+         <button type="button" class="btn btn-danger"  id="modalBtn"> Delete account </button>
+
+         {# ************* Modal: Delete Account ************** #}
+         <div id="myModal" class="modale">
+            <!-- Modal content -->
+
+            <div class="modale-content">
+
+                <span class="close">&times;</span>
+
+                <dt>Do you wish to delete your account ?</dt>
+
+                <p>Your account will be deleted</p>
+
+                <div>
+
+                    <a  href="{{ path('delete_user',{'id': app.user.id}) }}" id="deleteAccount" class="btn btn-danger text-white">Delete account</a>
+
+                    <a id="cancel" class="btn button-small text-white">Cancel</a>
+
+                </div>
+
+            </div>
+
+   
+
         </div>
+        </div>
+{% endblock %}
+
+
+{% block javascripts %}
+
+{# ************* Modal JS ***************** #}
+<script>
+
+    var modal = document.getElementById("myModal");
+
+    var delAcc = document.getElementById("deleteAccount");
+
+    var cancel = document.getElementById("cancel");
+
+    // Get the button that opens the modal
+
+    var btn = document.getElementById("modalBtn");
+
+    // Get the <span> element that closes the modal
+
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+
+    btn.onclick = function() {
+
+        modal.style.display = "block";
+
+    }
+
+    // When the user clicks on <span> (x), close the modal
+
+    span.onclick = function() {
+
+        modal.style.display = "none";
+
+    }
+
+    cancel.onclick = function() {
+
+        modal.style.display = "none";
+
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+
+    window.onclick = function(event) {
+
+        if (event.target == modal) {
+
+            modal.style.display = "none";
+
+        }
+
+    }
+</script>
+    
 {% endblock %}

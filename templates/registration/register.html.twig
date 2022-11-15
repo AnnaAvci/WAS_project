@@ -19,16 +19,12 @@
         <div class="signUpInputs">
             {{ form_start(registrationForm) }}
             
-                {{ form_row(registrationForm.first_name,{
-                    placeholder: 'Username'
+                {{ form_row(registrationForm.first_name, {
+                    label: 'Name'
                 }) }}
-                {{ form_row(registrationForm.email,{
-                    placeholder: 'Email'
-                }) }}
+                {{ form_row(registrationForm.email) }}
 
-                {{ form_row(registrationForm.plainPassword, {
-                     placeholder: 'Password'
-                }) }}
+                {{ form_row(registrationForm.plainPassword) }}
                 <div style="display:none">
                     {{ form_row(registrationForm.picture_user) }}
                 </div>
@@ -49,6 +45,7 @@
                     data-action='submit'>Register
                 </button>
             {{ form_end(registrationForm) }}
+           
         </div>
        
     </div>

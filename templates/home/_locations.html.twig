@@ -10,9 +10,10 @@
 			<img src={{ asset("uploads/" ~ location.photoLocations[0].namePhoto )}} alt="location" />
 		</div>
 		<h3 class="h3">
-			{{location.nameLocation}}
+			<strong>{{location.nameLocation}}</strong>, {{location.countryLocation}}, {{location.cityLocation}}
 			<br />
 		{{location.priceLocation}} $ per hour
+			
 		<a href="{{path("location_like", {'id': location.id})}}" class="btn btn-link js-like">
 				<span class="js-likes">{{location.likes | length }}</span>
 

@@ -21,7 +21,8 @@ class MessageController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine, MessageRepository $repository, Request $request, User $user): Response
     {
-        $messages = $doctrine->getRepository(Message::class)->findBy([], ["created_at" => "DESC"]);
+        $messages = $doctrine->getRepository(Message::class)->findBy(["recipient" => $this->getUser()], ["created_at" => "DESC"]);
+        //dd($messages);
 
         return $this->render('message/index.html.twig', [
             'messages'=> $messages,
@@ -52,7 +53,7 @@ class MessageController extends AbstractController
             $em->flush();
 
             $this->addFlash("message", "Message sent");
-            return $this->redirectToRoute("app_message", ["id" => $location->getId()]);
+            return $this->redirectToRoute("app_message", ["id" => $message->getSender()->getId()]);
         }
 
         return $this->render("message/send.html.twig", [
@@ -87,7 +88,7 @@ class MessageController extends AbstractController
             $em->flush();
 
             $this->addFlash("message", "Message sent");
-            return $this->redirectToRoute("app_message", ["id" => $service->getId()]);
+            return $this->redirectToRoute("app_message", ["id" => $message->getSender()->getId()]);
         }
 
         return $this->render("message/send.html.twig", [
@@ -136,10 +137,12 @@ class MessageController extends AbstractController
     /**
      * @Route("/sent/{id}", name="sent")
      */
-    public function sent(User $user): Response
+    public function sent(ManagerRegistry $doctrine, User $user): Response
     {
+        $messages = $doctrine->getRepository(Message::class)->findBy(["sender" => $this->getUser()], ["created_at" => "DESC"]);
         return $this->render('message/sent.html.twig', [
-            "user" => $user
+            "user" => $user,
+            "messages"=>$messages
         ]);
     }
 
@@ -157,14 +160,27 @@ class MessageController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="delete")
+     * @Route("/delete/received/{id}", name="deleteReceived")
      */
-    public function delete(ManagerRegistry $doctrine, Message $message, User $user): Response
+    public function deleteReceived(ManagerRegistry $doctrine, Message $message): Response
     {
+        $user = $message->getRecipient();
         $em = $doctrine->getManager();
         $em->remove($message);
         $em->flush();
 
         return $this->redirectToRoute("app_message", ["id" => $user->getId()]);
+    }
+    /**
+     * @Route("/delete/sent/{id}", name="deleteSent")
+     */
+    public function deleteSent(ManagerRegistry $doctrine, Message $message): Response
+    {
+        $user = $message->getSender();
+        $em = $doctrine->getManager();
+        $em->remove($message);
+        $em->flush();
+
+        return $this->redirectToRoute("sent", ["id" => $user->getId()]);
     }
 }

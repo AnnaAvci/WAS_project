@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+
 use App\Entity\User;
 use App\Entity\PhotoLocation;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\CommentUserLocation;
 use App\Repository\LocationRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -50,34 +52,35 @@ class Location
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="locations")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $owner;
 
 
     /**
      * @ORM\OneToMany(targetEntity=PhotoLocation::class, mappedBy="location", cascade={"persist"})
+     *@Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"application/jpg", "application/jpeg", "application/png", "application/webp"},
+     *     mimeTypesMessage = "Please upload a valid jpg, jpeg, png or webp file"
+     * )
      *
      */
     private $photoLocations;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="comment_location")
-     */
-   /*  private $users; */
 
     /**
-     * @ORM\OneToMany(targetEntity=CommentUserLocation::class, mappedBy="location")
+     * @ORM\OneToMany(targetEntity=CommentUserLocation::class, mappedBy="location", orphanRemoval=true)
      */
     private $commentUserLocations;
 
     /**
-     * @ORM\OneToMany(targetEntity=LocationBook::class, mappedBy="location")
+     * @ORM\OneToMany(targetEntity=LocationBook::class, mappedBy="location", orphanRemoval=true)
      */
     private $locationBooks;
 
     /**
-     * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="location")
+     * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="location", orphanRemoval=true)
      */
     private $likes;
 

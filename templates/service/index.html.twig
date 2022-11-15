@@ -3,41 +3,14 @@
 {% block title %}Photoshoots{% endblock %}
 
 {% block body %}
-<h1 class="page-title">Photoshoots</h1>
+  <h1 class="page-title">Photoshoots</h1>
+  <section class="all-cards"> 
+      {% include "home/_services.html.twig" %}
+  </section>  
 
-    
-<div class="all-cards"> 
-    {% for service in services %}
+  <div class="pagination">
+      {{ knp_pagination_render(services) }}
+  </div> 
 
-      <a class="" href="{{ path('show_service', {'id': service.id }) }}">
-
-      <div class="card-and-desc">
-        <div class="card">
-          <img src={{ asset("uploads/" ~ service.photoServices[0].namePhoto )}} alt="service" />
-        </div>
-        <h3 class="h3">
-          {{service.nameService}}
-          <br />
-        {{service.priceservice}} $ per hour
-        <a href="{{path("service_like", {'id': service.id})}}" class="btn btn-link js-like">
-            <span class="js-likes">{{service.likes | length }}</span>
-
-            {% if app.user and service.isLikedByUser(app.user) %}
-              <i class="fa-solid fa-heart"></i>
-            {% else %}
-              <i class="fa-regular fa-heart"></i>
-            {% endif %}
-          </a>
-        </h3>
-      </div>
-      </a> 
-
-  {% endfor %}  
-</div> 
-
-
-<div class="pagination">
-	{{ knp_pagination_render(services) }}
-</div> 
 
 {% endblock %}

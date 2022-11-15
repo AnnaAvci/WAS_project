@@ -19,7 +19,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                    {% for message in app.user.sent %}
+                    {% for message in messages %}
                         {% set bold = "" %}
                         {% if message.isRead == 0 %}
                             {% set bold = "fw-bold" %}
@@ -28,7 +28,7 @@
                         <td>{{ message.recipient.firstName }}</td>
                         <td>{{ message.createdAt|date }}</td>
                         <td><a href="{{ path("read", {id: message.id}) }}">{{ message.text }}</a></td>
-                        <td><a href="{{ path("delete", {id: message.id}) }}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                        <td><a href="{{ path("deleteSent", {id: message.id}) }}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                         </tr>
                     {% endfor %}
                     

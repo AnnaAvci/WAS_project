@@ -31,8 +31,11 @@
                     <strong>{{service.priceService}} $ / hour</strong> 
                 </p>
                 <p>
+                    <strong>{{service.cityService}}, {{service.countryService}}</strong> 
+                </p>
+                <p>
                     <img src={{ asset("uploads/" ~ service.owner.pictureUser )}} width="30" height="30" alt class="profile-picture">
-                    {#  Service provider and bio #}
+                    {#  Service owner and bio #}
                     <strong>{{service.owner}}</strong>
                 </p>
             

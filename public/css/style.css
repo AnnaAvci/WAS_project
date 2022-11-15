@@ -241,6 +241,7 @@ h1{
 
 .slogan{
     position: relative;
+    font-weight: bold;
     color: #fff;
     font-size: 6em;
     text-align: center;
@@ -315,11 +316,17 @@ h1{
     display: none; 
 }
 
+.menuToggle
+{
+    display: none;
+}
+
 /************** CARDS *************/  
 
 .all-cards{
   display: flex;
-  flex-flow: row wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -509,6 +516,10 @@ a.button:hover,  a.button-long:hover, a.button-small:hover {
     height:30px;
 }
 
+.pagination{
+    margin-bottom: 5em;
+}
+
 /************** FOOTER *************/
 .footer{
     height:2.5em;
@@ -580,6 +591,89 @@ a.button:hover,  a.button-long:hover, a.button-small:hover {
     nav ul li a{
         font-size: 16px;
     }
+
+    i.fas.fa-bars::before {
+        color:#ff5a26;
+    }
+    .menuToggle
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+        cursor: pointer;
+        margin-left: 10px;
+        width: 30px;
+        height: 30px;
+        z-index: 3;
+    }
+    .menuToggle.active
+    {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+    }
+
+    .menuToggle i
+    {
+        position: absolute;
+        display: none;
+    }
+    .menuToggle.active i:nth-child(1)
+    {
+        display: none;
+    }
+    .menuToggle.active i:nth-child(2)
+    {
+        display: block;
+    }
+
+
+    .menuToggle i:nth-child(1)
+    {
+        display: block;
+    }
+    .menuToggle i:nth-child(2)
+    {
+        display: none;
+    }
+
+
+    .navbar .navbar-ul
+    {
+        display: none;
+    }
+    .navbar .navbar-ul.active
+    {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: #fff;
+        z-index: 2;
+    }
+    .navbar ul.navbar-ul li a
+    {
+        font-size: 1.5em;
+        margin-left: 0;
+        margin: 10px 0;
+        display: inline-block;
+    }
+    .navbar ul li a
+    {
+        margin-left: 20px;
+    }
+
+    .tabs__toggle.is-active, .tabs__toggle{
+        display: none;
+    }
+
+
 }
 
 @media (max-width: 858px) {
@@ -588,13 +682,10 @@ a.button:hover,  a.button-long:hover, a.button-small:hover {
     width:100%;
   }
 
-  .card{
-    width: 80%;
-  }
-
   .card-and-desc{
     width: 80%;
   }
+
   .slogan{
     font-size: 3em;
     top:50px;
@@ -609,49 +700,25 @@ a.button:hover,  a.button-long:hover, a.button-small:hover {
         width: 100%;
     }
 
-    #navbar ul li{
-        font-size: 16px;
-        display: block;
-        margin: 50px 0;
-        line-height: 30px;
-
-    }
+    /* #navbar ul li{ */
+        /* font-size: 16px; */
+        /* display: block; */
+        /* margin: 50px 0; */
+        /* line-height: 30px; */
+/*  */
+    /* } */
 
     .checkBtn{
         display: block;
     }
 
-   nav ul{
-        position: fixed;
-        width: 100%;
-        height: 100vh;
-        background: #fea68b;
-        top: 80px;
-        left: -100%;
-        text-align: center;
-        transition: all .5s;
-
+    .signIn, .signUp{
+        flex-direction: column-reverse;
     }
 
-    nav ul li{
-        display: block;
-        margin: 50px 0;
-        line-height: 30px;
+    .formBx, .imgBx, .formBx-signUp, .imgBx-signUp{
+        width:100%;
     }
-
-    nav ul li a{
-        font-size: 20px;
-    }
-
-     nav ul li a:hover, nav ul li a.active{
-        background: none;
-        color:aqua;
-    }
-
-    #check:checked ~ ul{
-        left: 0;
-    }
-
 
 
 }

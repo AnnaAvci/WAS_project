@@ -39,14 +39,14 @@ class ServiceBook
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ServiceBooks")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $serviceClient;
 
     /**
      * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="ServiceBooks")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $service;
 

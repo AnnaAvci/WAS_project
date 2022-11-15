@@ -19,6 +19,7 @@
             {# CSS #}
             <link rel="stylesheet" href="{{asset('css/style.css')}}">
             <link rel="stylesheet" href="{{asset('css/tab.css')}}">
+            <link rel="stylesheet" href="{{asset('css/modale.css')}}">
 
             {#   favicon #}
             <link rel="shortcut icon" href="{{asset('favicon/favicon.ico') }}" type="image/x-icon" />
@@ -31,50 +32,48 @@
      </head>
 
     <body>
-        <nav id="navbar">
+        <nav class="navbar">
             <ul class="navbar-ul">
-                    <li class="nav-item">
-                        <a class="nav-link logo" href="{{path('app_home')}}">
+                    <li>
+                        <a class="logo" href="{{path('app_home')}}">
                             WAS
                         </a>
                     </li>
 
-                    <li class="nav-item">
+                    <li>
                         <div class="tabs__toggle is-active">
                             <span class="tabs__name">Find a location</span>
                         </div>  
                     </li>
 
-                    <li class="nav-item">
+                    <li>
                         <div class="tabs__toggle">
                             <span class="tabs__name">Find a photoshoot</span>
                         </div>
                     <li>
 
-                    <li class="nav-item"><a class="nav-link" href="{{path('app_location')}}">Locations</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{path('app_service')}}">Photoshoots</a></li> 
+                    <li><a href="{{path('app_location')}}">Locations</a></li>
+                    <li><a href="{{path('app_service')}}">Photoshoots</a></li> 
                     
                    {% if app.user %} 
-                        <li class="nav-item"><a class="nav-link" href="{{path('app_message', {'id': app.user.id})}}">Messages</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{path('app_book', {'id': app.user.id})}}">Reservations</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{path('app_like', {'id': app.user.id})}}">Favourites</a></li>
+                        <li><a href="{{path('app_message', {'id': app.user.id})}}">Messages</a></li>
+                        <li><a href="{{path('app_book', {'id': app.user.id})}}">Reservations</a></li>
+                        <li><a href="{{path('app_like', {'id': app.user.id})}}">Favourites</a></li>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <li class="nav-item"><a class="nav-link" href="{{path('admin_dashboard')}}">Admin Dashboard</a></li>
+                            <li><a href="{{path('admin_dashboard')}}">Admin Dashboard</a></li>
                         {% endif %}
-                        <li class="nav-item"><a class="nav-link" href="{{path('show_user', {'id': app.user.id})}}"><i class="fa-regular fa-user"></i> {{app.user.firstName}}</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{path('app_logout')}}"><i class="fa-solid fa-arrow-right-from-bracket"></i></a></li>
+                        <li><a href="{{path('show_user', {'id': app.user.id})}}"><i class="fa-regular fa-user"></i> {{app.user.firstName}}</a></li>
+                        <li><a  href="{{path('app_logout')}}"><i class="fa-solid fa-arrow-right-from-bracket"></i></a></li>
                         
-                       
-                       
                    {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{{path('app_login')}}">Log in</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{path('app_register')}}">Create account</a></li>
+                        <li><a href="{{path('app_login')}}">Log in</a></li>
+                        <li><a href="{{path('app_register')}}">Create account</a></li>
                     {% endif %}
                 </ul>
-                   <input type="checkbox" id="check">
-                   <label for="check" class="checkBtn">
+                     <div class="menuToggle">
                         <i class="fas fa-bars"></i>
-                    </label>
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
             </nav> 
         
         {# <div class="wrapper"> #}
@@ -147,6 +146,9 @@
                 })
           
             </script>
+
+            {# tarte au citron #}
+
             <script src="/tarteaucitron/tarteaucitron.js"></script>
 
             <script>
@@ -192,6 +194,87 @@
             </script>
 
 
+    {# Navbar transforming into a drop-down #}
+
+            <script>
+                let menuToggle = document.querySelector('.menuToggle');
+                let navigation = document.querySelector('.navbar-ul');
+                menuToggle.addEventListener('click', () => {
+                    menuToggle.classList.toggle('active');
+                    navigation.classList.toggle('active');
+                })
+            </script>
+
+
+    {# Confirmation flash messages for Bootstrap #}
+
+    <script>
+
+      var modal = document.getElementById("myModal");
+
+      var delAcc = document.getElementById("deleteAccount");
+
+      var cancel = document.getElementById("cancel");
+
+     
+
+      // Get the button that opens the modal
+
+      var btn = document.getElementById("modalBtn");
+
+     
+
+      // Get the <span> element that closes the modal
+
+      var span = document.getElementsByClassName("close")[0];
+
+     
+
+      // When the user clicks on the button, open the modal
+
+      btn.onclick = function() {
+
+        modal.style.display = "block";
+
+      }
+
+     
+
+
+
+     
+
+      // When the user clicks on <span> (x), close the modal
+
+      span.onclick = function() {
+
+        modal.style.display = "none";
+
+      }
+
+     
+
+      cancel.onclick = function() {
+
+        modal.style.display = "none";
+
+      }
+
+     
+
+      // When the user clicks anywhere outside of the modal, close it
+
+      window.onclick = function(event) {
+
+        if (event.target == modal) {
+
+          modal.style.display = "none";
+
+        }
+
+      }
+
+    </script>
         {% endblock %}
 
     </body>
