@@ -17,7 +17,9 @@ class CommentUserLocationType extends AbstractType
     {
         $builder
          
-            ->add('text_comment', TextareaType::class, ['label' => false])
+            ->add('text_comment', TextareaType::class, 
+                    ['label' => false]
+                )
             ->add('Submit', SubmitType::class)
 
         ;

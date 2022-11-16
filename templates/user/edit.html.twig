@@ -16,7 +16,7 @@
             {{ form_row(registrationForm.plainPassword, {
                 label: 'Password'
             }) }}
-            {{ form_row(registrationForm.picture_user, { attr: {novalidate: 'novalidate'}}, {
+            {{ form_row(registrationForm.picture_user,  {
                 label: 'Upload profile picture'
             }) }}
 
@@ -42,7 +42,7 @@
 
                 <div>
 
-                    <a  href="{{ path('delete_user',{'id': app.user.id}) }}" id="deleteAccount" class="btn btn-danger text-white">Delete account</a>
+                    <a  href="{{ path('delete_user',{'id': app.user.id}) }}" id="deleteAccount" class="btn button-small text-white">Delete account</a>
 
                     <a id="cancel" class="btn button-small text-white">Cancel</a>
 

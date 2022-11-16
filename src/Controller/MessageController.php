@@ -21,8 +21,8 @@ class MessageController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine, MessageRepository $repository, Request $request, User $user): Response
     {
+        // get all messages received by the current user, order by date starting with the most recent ones
         $messages = $doctrine->getRepository(Message::class)->findBy(["recipient" => $this->getUser()], ["created_at" => "DESC"]);
-        //dd($messages);
 
         return $this->render('message/index.html.twig', [
             'messages'=> $messages,

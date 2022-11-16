@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Contact us! {% endblock %}
+
+{% block body %}
+    <div class="contact">
+        <div class="imgBx-contact">
+            <img src="{{asset('../img/contactImg.webp')}}" alt="" srcset="">
+        </div>
+        <div class="formBx-contact">
+            <h1>Contact us</h1>
+            {{form_start(contactForm)}}
+                {{form_row(contactForm.email)}}
+                {{form_widget(contactForm.subject)}}
+                {{form_row(contactForm.message)}}
+                <div class="center"><button type="submit" class="button-small">Send</button></div>
+            {{form_end(contactForm)}}
+        </div>
+      
+    </div>
+{% endblock %}

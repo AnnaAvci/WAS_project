@@ -1,0 +1,131 @@
+@media (max-width: 952px) {
+    nav ul li a
+    {
+        font-size: 16px;
+    }
+
+    i.fas.fa-bars::before 
+    {
+        color:#ff5a26;
+    }
+    
+    .menuToggle
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+        cursor: pointer;
+        margin-left: 10px;
+        width: 30px;
+        height: 30px;
+        z-index: 3;
+    }
+
+    .menuToggle.active
+    {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+    }
+
+    .menuToggle i
+    {
+        position: absolute;
+        display: none;
+    }
+    .menuToggle.active i:nth-child(1)
+    {
+        display: none;
+    }
+    .menuToggle.active i:nth-child(2)
+    {
+        display: block;
+    }
+
+
+    .menuToggle i:nth-child(1)
+    {
+        display: block;
+    }
+    .menuToggle i:nth-child(2)
+    {
+        display: none;
+    }
+
+
+    .navbar .navbar-ul
+    {
+        display: none;
+    }
+    .navbar .navbar-ul.active
+    {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: #fff;
+        z-index: 2;
+    }
+    .navbar ul.navbar-ul li a
+    {
+        font-size: 1.5em;
+        margin-left: 0;
+        margin: 10px 0;
+        display: inline-block;
+    }
+    .navbar ul li a
+    {
+        margin-left: 20px;
+    }
+
+    .tabs__toggle.is-active, .tabs__toggle{
+        display: none;
+    }
+
+
+}
+
+@media (max-width: 858px) {
+  .all-cards{
+    flex-direction: column;
+    width:100%;
+  }
+
+  .card-and-desc{
+    width: 80%;
+  }
+
+  .slogan{
+    font-size: 3em;
+    top:50px;
+  }
+
+ .tabs__body.mb-3{
+        flex-direction: column;
+        width:100%;
+    }
+
+    #q, #min, #max, #countryLocation, #countryService{
+        width: 100%;
+    }
+
+    .checkBtn{
+        display: block;
+    }
+
+    .signIn, .signUp{
+        flex-direction: column-reverse;
+    }
+
+    .formBx, .imgBx, .formBx-signUp, .imgBx-signUp{
+        width:100%;
+    }
+
+
+}

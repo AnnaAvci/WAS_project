@@ -95,7 +95,8 @@ class LocationController extends AbstractController
 
             return $this->render('location/add.html.twig', [
                 'formLocation' => $form->createView(),
-                'location' => $location
+                'location' => $location,
+                "isUpdate" => $location->getId() !== null
 
             ]);
         }

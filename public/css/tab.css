@@ -20,8 +20,8 @@
 
 .tabs__name{
     font-weight: 500;
-    font-size: 14px;
-    color: #484848;
+    font-size: 16px;
+    color: rgb(63, 63, 63);;
 }
 
 .tabs__body{

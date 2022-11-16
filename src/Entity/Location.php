@@ -59,11 +59,6 @@ class Location
 
     /**
      * @ORM\OneToMany(targetEntity=PhotoLocation::class, mappedBy="location", cascade={"persist"})
-     *@Assert\File(
-     *     maxSize = "1024k",
-     *     mimeTypes = {"application/jpg", "application/jpeg", "application/png", "application/webp"},
-     *     mimeTypesMessage = "Please upload a valid jpg, jpeg, png or webp file"
-     * )
      *
      */
     private $photoLocations;

@@ -1,10 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Add a photoshoot{% endblock %}
+{% block title %}
+    {% if isUpdate %}
+        Add a photoshoot
+    {% else %}
+        Update photoshoot
+    {% endif %}
+{% endblock %}
 
 {% block body %}
 <div class="wrapper">
-    <h1>Add a photoshoot</h1>
+    {% if not service %}
+       <h1>Add a photoshoot</h1> 
+    {% else %}
+        <h1>Update photoshoot</h1> 
+    {% endif %}
 
     <div class="form">
         {{form(formService)}}

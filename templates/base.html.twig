@@ -20,6 +20,7 @@
             <link rel="stylesheet" href="{{asset('css/style.css')}}">
             <link rel="stylesheet" href="{{asset('css/tab.css')}}">
             <link rel="stylesheet" href="{{asset('css/modale.css')}}">
+            <link rel="stylesheet" href="{{asset('css/media-queries.css')}}">
 
             {#   favicon #}
             <link rel="shortcut icon" href="{{asset('favicon/favicon.ico') }}" type="image/x-icon" />
@@ -35,7 +36,7 @@
         <nav class="navbar">
             <ul class="navbar-ul">
                     <li>
-                        <a class="logo" href="{{path('app_home')}}">
+                        <a id="logo" href="{{path('app_home')}}">
                             WAS
                         </a>
                     </li>
@@ -63,8 +64,7 @@
                             <li><a href="{{path('admin_dashboard')}}">Admin Dashboard</a></li>
                         {% endif %}
                         <li><a href="{{path('show_user', {'id': app.user.id})}}"><i class="fa-regular fa-user"></i> {{app.user.firstName}}</a></li>
-                        <li><a  href="{{path('app_logout')}}"><i class="fa-solid fa-arrow-right-from-bracket"></i></a></li>
-                        
+                        <li><a  href="{{path('app_logout')}}"><i class="fa-solid fa-arrow-right-from-bracket"></i></a></li>  
                    {% else %}
                         <li><a href="{{path('app_login')}}">Log in</a></li>
                         <li><a href="{{path('app_register')}}">Create account</a></li>
@@ -77,12 +77,12 @@
             </nav> 
         
         {# <div class="wrapper"> #}
-              {% for message in app.flashes("message") %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{message}}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
+            {% for message in app.flashes("message") %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
         
             {% block body %}
            
@@ -93,6 +93,9 @@
         {# </div> #}
         <div class="footer flex">  
             {% block footer %}  
+            <div>
+                <a href="{{path('contact-form')}}">Contact</a>
+            </div>
             <div>
                 <a href="{{path('terms')}}">Terms and Conditions</a>
             </div>

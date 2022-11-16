@@ -22,25 +22,24 @@
                 <tbody>
                     <tr>
                     {% for message in messages %}
-                        
+                     {# Unread messages appear in bold #}
                         {% if message.isRead == 0 %}
                             {% set bold = "fw-bold" %}
                         {% else %}
                             {% set bold = "" %}  
                         {% endif %}
-
-                    {# Anonymise message sender if the profile is deleted #}
-                    <td class="{{bold}}"> 
-                        {% if not message.sender %}
-                            <strong>Deleted account</strong>
-                        {% else %}
-                         <img src={{ asset("uploads/" ~ message.sender.pictureUser )}} width="30" height="30" alt class="profile-picture">
-                         <strong>{{message.sender.firstName}}</strong>
-                    {% endif %}
-                    </td>
-                    <td class="{{bold}}">{{ message.createdAt|date }}</td>
-                    <td class="{{bold}}"><a href="{{ path("read", {id: message.id}) }}">{{ message.text }}</a></td>
-                    <td class="{{bold}}"><a href="{{ path("deleteReceived", {id: message.id}) }}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                    {# Anonymise message sender if the account is deleted #}
+                        <td class="{{bold}}"> 
+                            {% if not message.sender %}
+                                <strong>Deleted account</strong>
+                            {% else %}
+                                <img src={{ asset("uploads/" ~ message.sender.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                                <strong>{{message.sender.firstName}}</strong>
+                            {% endif %}
+                        </td>
+                        <td class="{{bold}}">{{ message.createdAt|date }}</td>
+                        <td class="{{bold}}"><a href="{{ path("read", {id: message.id}) }}">{{ message.text }}</a></td>
+                        <td class="{{bold}}"><a href="{{ path("deleteReceived", {id: message.id}) }}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
