@@ -3,7 +3,7 @@
 {% block title %}Messages{% endblock %}
 
 {% block body %}
-
+    <div class="wrapper">
             <div class="messages">  
                 <h2>Inbox({{ app.user.received|length }})</h2>
         
@@ -33,7 +33,7 @@
                             {% if not message.sender %}
                                 <strong>Deleted account</strong>
                             {% else %}
-                                <img src={{ asset("uploads/" ~ message.sender.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                                <img src={{ asset("uploads/" ~ message.sender.pictureUser )}} width="30" height="30" alt="profile picture" class="profile-picture">
                                 <strong>{{message.sender.firstName}}</strong>
                             {% endif %}
                         </td>
@@ -46,6 +46,7 @@
             </table>
             </div>
        </div>  
+    </div>
 {% endblock %}
 
 

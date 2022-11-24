@@ -422,7 +422,7 @@ h1{
 }
 
 .wrapper{
-    width:100%;
+    /* width:100%; */
     margin:0 1em;
     display: flex;
     flex-direction: column;
@@ -583,6 +583,13 @@ a.button:hover,  a.button-long:hover, a.button-small:hover {
     margin-top:2em;
     margin-bottom: 5em;
     text-align: center;
+}
+
+#message_text{
+    width: 500px;
+    height: 300px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border-radius: 15px;
 }
 
 

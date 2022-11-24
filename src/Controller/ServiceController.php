@@ -185,56 +185,6 @@ class ServiceController extends AbstractController
     }
 
 
-    /**
-     * Allows to like/unlike a service
-     * @Route("/photoshoot/{id}/like", name="service_like")
-     * @param Service $service
-     * @param ManagerRegistry $doctrine
-     * @param PostLikeRepository $repo
-     * @return Response
-     */
-    public function like(Service $service, ManagerRegistry $doctrine, PostLikeRepository $repo): Response
-    {
-        $user = $this->getUser();
-        $entityManager = $doctrine->getManager();
 
-        // if user is not connected, error 403
-        if (!$user) 
-        {
-            return $this->json([
-            'code' => 403,
-            'message' => "Please log in to like a post"
-            ], 403);
-        }
-
-        // unlike service if already liked and count new nb of likes, success code 200 = an http status
-        if ($service->isLikedByUser($user)) {
-            $like = $repo->findOneBy([
-                'service' => $service,
-                'user' => $user
-            ]);
-            $entityManager->remove($like);
-            $entityManager->flush();
-            return $this->json([
-                'code' => 200,
-                'message' => "You no longer like this photoshoot",
-                'likes' => $repo->count(['service' => $service])
-
-            ], 200);
-        }
-
-        $like = new PostLike();
-        $like->setService($service)
-             ->setUser($user);
-        $entityManager->persist($like);
-        $entityManager->flush();
-
-        return $this->json([
-            'code' => 200,
-            'message' => "You like this photoshoot",
-            'likes' => $repo->count(['service' => $service])
-
-        ], 200);
-    }
 
 }

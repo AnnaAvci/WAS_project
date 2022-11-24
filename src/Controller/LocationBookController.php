@@ -33,6 +33,32 @@ class LocationBookController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/user/declineLocationBook/{id}", name="decline_location_book")
+     * 
+     */
+    public function declineLocationBook(ManagerRegistry $doctrine, LocationBook $locationBook, User $user)
+    {
+
+        $entityManager = $doctrine->getManager();
+        $locationBook->setIsAccepted(2);
+        $entityManager->flush();
+        return $this->redirectToRoute('show_user', ["id" => $user->getId()]);
+    }
+
+
+    /**
+     * @Route("/user/acceptLocationBook/{id}", name="accept_location_book")
+     * 
+     */
+    public function acceptLocationBook(ManagerRegistry $doctrine, LocationBook $locationBook)
+    {
+
+        $entityManager = $doctrine->getManager();
+        $locationBook->setIsAccepted(1);
+        $entityManager->flush();
+        return $this->redirectToRoute('show_user', ["id" => $locationBook->getLocation()->getOwner()->getId()]);
+    }
 
 
 

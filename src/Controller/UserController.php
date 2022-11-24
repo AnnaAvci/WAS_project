@@ -18,62 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {
- 
-    /**
-     * @Route("/user/declineLocationBook/{id}", name="decline_location_book")
-     * 
-     */
-    public function declineLocationBook(ManagerRegistry $doctrine, LocationBook $locationBook, User $user)
-    {
-    
-        $entityManager = $doctrine->getManager();
-        $locationBook->setIsAccepted(2);
-        $entityManager->flush();
-        return $this->redirectToRoute('show_user',["id"=>$user->getId()]);
-    }
-
-
-    /**
-     * @Route("/user/declineServiceBook/{id}", name="decline_service_book")
-     * 
-     */
-    public function declineServiceBook(ManagerRegistry $doctrine, ServiceBook $serviceBook, User $user)
-    {
-    
-        $entityManager = $doctrine->getManager();
-        $serviceBook->setIsAccepted(2);
-        $entityManager->flush();
-        return $this->redirectToRoute('show_user',["id"=>$user->getId()]);
-    }
-
-
-    /**
-     * @Route("/user/acceptLocationBook/{id}", name="accept_location_book")
-     * 
-     */
-    public function acceptLocationBook(ManagerRegistry $doctrine, LocationBook $locationBook)
-    {
-    
-        $entityManager = $doctrine->getManager();
-        $locationBook->setIsAccepted(1);
-        $entityManager->flush();
-        return $this->redirectToRoute('show_user' ,["id"=> $locationBook->getLocation()->getOwner()->getId()] );
-     
-    }
-
-    /**
-     * @Route("/user/acceptServiceBook/{id}", name="accept_service_book")
-     * 
-     */
-    public function acceptServiceBook(ManagerRegistry $doctrine, ServiceBook $serviceBook)
-    {
-    
-        $entityManager = $doctrine->getManager();
-        $serviceBook->setIsAccepted(1);
-        $entityManager->flush();
-        return $this->redirectToRoute('show_user' ,["id"=> $serviceBook->getService()->getOwner()->getId()] );
-     
-    }
 
     /**
      * @Route("/user/{id}", name="show_user")
@@ -178,8 +122,8 @@ class UserController extends AbstractController
 
                     //$nom = $user->getPictureUser();
                     //  On supprime le fichier
-                    //unlink($this->getParameter('images_directory').'/'.$file);
-                    //  On créer on stock dans la bdd son nom et l'img stocké dans le disque 
+                    unlink($this->getParameter('images_directory').'/'.$file);
+                    //  On crée on stock dans la bdd son nom et l'img stocké dans le disque 
                     $user->setPictureUser($file);
 
                     //$user = $form ->getData();

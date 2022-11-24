@@ -3,7 +3,7 @@
 {% block title %}Modify photoshoot{% endblock %}
 
 {% block body %}
-<h1>Modify phpotoshoot</h1>
+<h1>Update photoshoot</h1>
 
 <div class="form">
 
@@ -18,7 +18,7 @@
 
         {% for photoService in service.photoServices %}
             <div>
-                <img src="{{ asset('img/'~ photoService.namePhoto)}}" alt = "photo" width="300">
+                <img src="{{ asset('img/'~ photoService.namePhoto)}}" alt = "photoshoot example" width="300">
                 <a href="{{path('service_delete_photoService', {'id':photoService.id}) }}" class="btn btn-link" 
                 data-delete data-token="{{csrf_token('delete'~ photoService.id)}}"> Delete </a>
             </div>

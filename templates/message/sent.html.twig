@@ -3,6 +3,7 @@
 {% block title %}Sent messages{% endblock %}
 
 {% block body %}
+<div class="wrapper">
                 <div class="messages"> 
 				<h2>Sent ({{ app.user.sent|length }}) </h2>	
              
@@ -34,5 +35,6 @@
                     
                     </tbody>
                 </table>
-        </div>  
+        </div>
+    </div>  
 {% endblock %}

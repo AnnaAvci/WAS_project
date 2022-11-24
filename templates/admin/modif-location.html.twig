@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modify location{% endblock %}
+{% block title %}Update location{% endblock %}
 
 {% block body %}
 <h1>Modify location</h1>
@@ -15,11 +15,10 @@
 
     {% for photoLocation in location.photoLocations %}
         <div>
-            <img src="{{ asset('uploads/'~ photoLocation.namePhoto)}}" alt = "photo" width="300">
+            <img src="{{ asset('uploads/'~ photoLocation.namePhoto)}}" alt = "location" width="300">
             <a href="{{path('location_delete_photoLocation', {'id':photoLocation.id}) }}" class="btn btn-link" 
             data-delete data-token="{{csrf_token('delete'~ photoLocation.id)}}"> Delete </a>
         </div>
-
     {% endfor %}
 {% endif %}
 </div>

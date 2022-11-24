@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -35,8 +36,8 @@ class LocationType extends AbstractType
                 'multiple'=>true,
                 'mapped'=>false,
                 'required'=>false,
-             /*     'constraints' => [
-                    new File([
+        /*          'constraints' => [
+                    new Image([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
                             'application/jpeg',
@@ -46,7 +47,7 @@ class LocationType extends AbstractType
                         ],
                         'mimeTypesMessage' => 'Please upload a valid jpg, jpeg, png or webp document',
                     ])
-                ]   */ 
+                ]  */   
              ])
             
             ->add('Submit', SubmitType::class)

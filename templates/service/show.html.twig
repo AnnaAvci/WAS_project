@@ -7,9 +7,11 @@
         <h1 class="page-title">{{service}}   
             {# only the owner can edit/delete a service #}
             <div class="edit-delete">
-                {% if app.user.id == service.owner.id %}
-                    <a href="{{path('update_service', {'id':service.id}) }}"><i class="fa-solid fa-pencil"></i></a> <br>
-                    <a href="{{path('delete_service', {'id':service.id}) }}"><i class="fa-solid fa-trash"></i></a> 
+                {% if app.user %}
+                    {% if app.user.id == service.owner.id %}
+                        <a href="{{path('update_service', {'id':service.id}) }}"><i class="fa-solid fa-pencil"></i></a> <br>
+                        <a href="{{path('delete_service', {'id':service.id}) }}"><i class="fa-solid fa-trash"></i></a> 
+                    {% endif %}
                 {% endif %}
             </div> 
         </h1>

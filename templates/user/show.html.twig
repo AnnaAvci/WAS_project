@@ -144,10 +144,10 @@
                                         {% if not locationBook.locationClient%}
                                             <strong>Deleted account</strong>
                                         {% else %}
-                                            <a href="{{path('show_user', {'id':locationBook.locationClient.id}) }}">{{locationBook.locationClient}} </a>
+                                            {{locationBook.locationClient}} 
                                         {% endif %}
                                    </td>
-                                    <td>{{locationBook.location}} </td> 
+                                    <td><a href="{{path('show_location', {'id':locationBook.location.id}) }}">{{locationBook.location}}</a> </td> 
                                     <td>{{locationBook.dateStart | date('d-m-Y')}}</td> 
                                     <td>{{locationBook.dateEnd | date('d-m-Y')}}</td> 
                                     <td>{{locationBook.message}}</td> 
@@ -156,17 +156,14 @@
                                         <td><a href="{{path('decline_location_book', {'id':locationBook.id}) }}">Decline</a></td>
                                     {% elseif locationBook.isAccepted == 1 %}
                                         <td>You accepted the request
-                                 
-                                            {% if not locationBook.locationClient%}
-                                                
+                                            {% if not locationBook.locationClient%}   
                                             {% else %}
                                                <a href="{{path('send_message_client', {'id': locationBook.locationClient.id})}}"><i class="fa-regular fa-envelope"></i> </a>
                                             {% endif %}
-                                        </td>
-                                        
                                     {% else %}
-                                        <td>You declined the request</td>
+                                        You declined the request
                                     {% endif %}
+                                    </td>
                                 </tr>   
                             {% endfor %}
                             
@@ -201,10 +198,10 @@
                                         {% if not serviceBook.serviceClient%}
                                             <strong>Deleted account</strong>
                                         {% else %}
-                                            <a href="{{path('show_user', {'id':serviceBook.serviceClient.id}) }}">{{serviceBook.serviceClient}} </a>
+                                            {{serviceBook.serviceClient}} 
                                         {% endif %}
                                     </td>
-                                    <td>{{serviceBook.service}} </td>  
+                                    <td><a href="{{path('show_service', {'id':serviceBook.service.id}) }}">{{serviceBook.service}}</a> </td> 
                                     <td>{{serviceBook.dateStart | date('d-m-Y')}}</td> 
                                     <td>{{serviceBook.dateEnd | date('d-m-Y')}}</td> 
                                     <td>{{serviceBook.message}}</td> 
@@ -213,17 +210,14 @@
                                     <td><a href="{{path('decline_service_book', {'id':serviceBook.id}) }}">Decline</a></td>
                                 {% elseif serviceBook.isAccepted == 1 %}
                                     <td>You accepted the request
-                                    <td>You accepted the request
-                                            {% if not serviceBook.serviceClient%}
-                                                
-                                            {% else %}
-                                               <a href="{{path('send_message_client', {'id': serviceBook.serviceClient.id})}}"><i class="fa-regular fa-envelope"></i> </a>
-                                            {% endif %}
-                                        </td>
-                                    </td>
+                                        {% if not serviceBook.serviceClient%}        
+                                        {% else %}
+                                            <a href="{{path('send_message_client', {'id': serviceBook.serviceClient.id})}}"><i class="fa-regular fa-envelope"></i> </a>
+                                        {% endif %}                                    
                                 {% else %}
-                                    <td>You declined the request</td>
+                                    You declined the request
                                 {% endif %}
+                                </td>
                                 </tr>   
                             {% endfor %}
                         

@@ -6,9 +6,11 @@
     <div class="wrapper">
             <h1 class="page-title">{{location}}
                 <div class="edit-delete">
-                    {% if app.user.id == location.owner.id %}
-                        <a href="{{path('update_location', {'id':location.id}) }}"><i class="fa-solid fa-pencil"></i></a> <br>
-                        <a href="{{path('delete_location', {'id':location.id}) }}"><i class="fa-solid fa-trash"></i></a> 
+                    {% if app.user %}
+                        {% if app.user.id == location.owner.id %}
+                            <a href="{{path('update_location', {'id':location.id}) }}"><i class="fa-solid fa-pencil"></i></a> <br>
+                            <a href="{{path('delete_location', {'id':location.id}) }}"><i class="fa-solid fa-trash"></i></a> 
+                        {% endif %}
                     {% endif %}
                 </div> 
             </h1>
@@ -18,7 +20,7 @@
             <div class="all-cards">
                     {% for photoLocation in location.photoLocations %}
                         <div class="card">
-                            <img src={{ asset("uploads/" ~ photoLocation.namePhoto )}} width="300" height="400" alt>
+                            <img src={{ asset("uploads/" ~ photoLocation.namePhoto )}} width="300" height="400" alt="photoshoot">
                         </div>
                     {% endfor %}
                 </div>
@@ -47,7 +49,7 @@
                     {% if not commentUserLocation.commenter %}
                         <strong>Deleted account</strong>
                     {% else %}
-                         <img src={{ asset("uploads/" ~ commentUserLocation.commenter.pictureUser )}} width="30" height="30" alt class="profile-picture">
+                         <img src={{ asset("uploads/" ~ commentUserLocation.commenter.pictureUser )}} width="30" height="30" alt="photoshoot" class="profile-picture">
                          <strong>{{commentUserLocation.commenter.firstName}}</strong>
                     {% endif %}
                     

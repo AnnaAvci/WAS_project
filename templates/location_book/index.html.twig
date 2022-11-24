@@ -24,8 +24,8 @@
                 <tbody>
                     {% for locationBook in user.locationBooks %}
                             <tr>
-                                <td>{{locationBook.location}} </td> 
-                                <td><a href="{{path('show_user', {'id':locationBook.location.owner.id}) }}">{{locationBook.location.owner}} </a></td> 
+                                <td><a href="{{path('show_location', {'id':locationBook.location.id}) }}">{{locationBook.location}}</a> </td> 
+                                <td>{{locationBook.location.owner}}</td> 
                                 <td>{{locationBook.dateStart | date('d-m-Y')}}</td> 
                                 <td>{{locationBook.dateEnd | date('d-m-Y')}}</td> 
                                 <td>{{locationBook.message}}</td>  
@@ -61,8 +61,8 @@
             <tbody>
                 {% for serviceBook in user.serviceBooks %}
                         <tr>
-                            <td>{{serviceBook.service}} </td> 
-                            <td><a href="{{path('show_user', {'id':serviceBook.service.owner.id}) }}">{{serviceBook.service.owner}} </a></td> 
+                            <td><a href="{{path('show_service', {'id':serviceBook.service.id}) }}">{{serviceBook.service}}</a> </td>
+                            <td>{{serviceBook.service.owner}}</td> 
                             <td>{{serviceBook.dateStart | date('d-m-Y')}}</td> 
                             <td>{{serviceBook.dateEnd | date('d-m-Y')}}</td> 
                             <td>{{serviceBook.message}}</td> 
